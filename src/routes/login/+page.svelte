@@ -31,6 +31,7 @@
               type="email"
               name="email"
               value={form?.email ?? null}
+              required
             />
 
             {#if form?.errors.email}
@@ -53,6 +54,7 @@
               type="password"
               name="password"
               value={form?.password ?? ""}
+              required
             />
 
             {#if form?.errors.password}
