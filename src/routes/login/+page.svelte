@@ -10,7 +10,7 @@
 </script>
 
 <div class="row my-5 justify-content-center">
-  <div class="col-4">
+  <div class="col-12 col-sm-8 col-lg-4">
     <!-- Align everything within the 4 center columns -->
     <form action="?/login" method="post">
       <div class="row">
