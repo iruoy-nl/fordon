@@ -4,12 +4,12 @@
   </div>
 </nav>
 
-<style>
+<style lang="scss">
   .navbar {
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid #ced4da;
   }
 
   .navbar-brand {
-    color: var(--bs-primary);
+    color: $primary;
   }
 </style>

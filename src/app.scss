@@ -1,3 +1,13 @@
+// Bootstrap
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/utilities/api";
+
+// Fonts
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 * {
@@ -5,7 +15,7 @@
   margin: 0;
 }
 
-/* Typography */
+// Typography
 h1,
 h2 {
   font-weight: 600;
