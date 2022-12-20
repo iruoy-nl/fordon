@@ -4,29 +4,34 @@ import type { Handle } from "@sveltejs/kit";
 import { none, some } from "fp-ts/Option";
 
 export const handle: Handle = async ({ event, resolve }) => {
+  //
+  event.locals.pocketbase = pocketbase;
+
   // Attempt to load the user's data via the cookie.
   const cookie = event.request.headers.get("cookie");
-  pocketbase.authStore.loadFromCookie(cookie || "");
+  event.locals.pocketbase.authStore.loadFromCookie(cookie || "");
 
   // Validate the cookie.
   try {
-    await pocketbase //
+    await event.locals.pocketbase
       .collection("users")
       .authRefresh();
   } catch (_) {
-    pocketbase.authStore //
-      .clear();
+    event.locals.pocketbase.authStore.clear();
   }
 
   // Update the locals.
-  event.locals.user = pocketbase.authStore.isValid //
-    ? some(pocketbase.authStore.model as User)
+  event.locals.user = event.locals.pocketbase.authStore.isValid //
+    ? some(event.locals.pocketbase.authStore.model as User)
     : none;
 
   const response = await resolve(event);
 
   // Ensure the cookie is set.
-  response.headers.set("set-cookie", pocketbase.authStore.exportToCookie());
+  response.headers.set(
+    "set-cookie",
+    event.locals.pocketbase.authStore.exportToCookie(),
+  );
 
   return response;
 };

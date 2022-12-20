@@ -1,4 +1,3 @@
-import { pocketbase } from "$lib/server/pocketbase";
 import { LoginForm } from "$lib/types";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { ZodError } from "zod";
@@ -7,7 +6,7 @@ export const actions: Actions = {
   /**
    * Handle login.
    */
-  login: async ({ request }) => {
+  login: async ({ request, locals }) => {
     const formData = await request.formData();
     const data = Object.fromEntries([...formData]);
 
@@ -15,7 +14,7 @@ export const actions: Actions = {
       // Parse the received input, and login when valid.
       const { email, password } = LoginForm.parse(data);
 
-      await pocketbase //
+      await locals.pocketbase
         .collection("users")
         .authWithPassword(email, password);
     } catch (e) {
