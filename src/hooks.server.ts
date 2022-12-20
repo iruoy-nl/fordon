@@ -1,34 +1,31 @@
 import { pocketbase } from "$lib/server/pocketbase";
+import type { User } from "$lib/types";
 import type { Handle } from "@sveltejs/kit";
+import { none, some } from "fp-ts/Option";
 
-/**
- * Handles an incoming request.
- *
- * @param input The incoming request.
- */
-export const handle: Handle = async ({ event, resolve }): Promise<Response> => {
-  // Make Pocketbase available locally.
-  event.locals.pocketbase = pocketbase;
+export const handle: Handle = async ({ event, resolve }) => {
+  // Attempt to load the user's data via the cookie.
+  const cookie = event.request.headers.get("cookie");
+  pocketbase.authStore.loadFromCookie(cookie || "");
 
-  // Load the user via the cookie.
-  const cookie = event.request.headers.get("cookie") || "";
-  pocketbase.authStore.loadFromCookie(cookie);
-
+  // Validate the cookie.
   try {
-    await pocketbase.collection("users").authRefresh();
+    await pocketbase //
+      .collection("users")
+      .authRefresh();
   } catch (_) {
-    // The cookie is invalid.
-    pocketbase.authStore.clear();
+    pocketbase.authStore //
+      .clear();
   }
 
-  if (pocketbase.authStore.isValid) {
-    // Update the local user record.
-    event.locals.user = pocketbase.authStore.model;
-  }
+  // Update the locals.
+  event.locals.user = pocketbase.authStore.isValid //
+    ? some(pocketbase.authStore.model as User)
+    : none;
 
   const response = await resolve(event);
 
-  // Set the new cookie.
+  // Ensure the cookie is set.
   response.headers.set("set-cookie", pocketbase.authStore.exportToCookie());
 
   return response;

@@ -2,10 +2,10 @@
   import type { LoginForm } from "$lib/types";
 
   /**
-   * The login form.
+   * Form data on validation fail.
    */
   export let form: LoginForm & {
-    errors: { [name: string]: string };
+    errors: { [field: string]: string };
   };
 </script>
 

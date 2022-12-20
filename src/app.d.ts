@@ -1,10 +1,19 @@
-import { pocketbase } from "$lib/server/pocketbase";
+import type { User } from "$lib/types";
+import type { Option } from "fp-ts/Option";
 
 declare global {
+  //
   namespace App {
+    // interface Error {}
+
     interface Locals {
-      pocketbase: typeof pocketbase;
-      user?: typeof pocketbase.authStore.model;
+      /**
+       * The current user.
+       */
+      user: Option<User>;
     }
+
+    // interface PageData {}
+    // interface Platform {}
   }
 }

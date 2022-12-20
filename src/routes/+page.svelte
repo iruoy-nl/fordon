@@ -1,7 +1,12 @@
-<script lang="ts">
-  import type { User } from "$lib/types";
+<div class="box">
+  <span class="cat">🐱 Build me a landing page!</span>
+</div>
 
-  export let data: { user: User };
-</script>
+<style lang="scss">
+  .box {
+    height: 100vh;
 
-{JSON.stringify(data.user)}
+    display: grid;
+    place-items: center;
+  }
+</style>

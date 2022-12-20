@@ -1,35 +1,33 @@
+import { pocketbase } from "$lib/server/pocketbase";
 import { LoginForm } from "$lib/types";
-import { fail, redirect } from "@sveltejs/kit";
-import { ZodError } from "zod";
-import type { Actions } from "./$types";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
+import type { ZodError } from "zod";
 
 export const actions: Actions = {
   /**
-   * Handle the login action.
+   * Handle login.
    */
-  login: async ({ request, locals }) => {
+  login: async ({ request }) => {
     const formData = await request.formData();
-    const data = Object.fromEntries(formData.entries());
+    const data = Object.fromEntries([...formData]);
 
     try {
+      // Parse the received input, and login when valid.
       const { email, password } = LoginForm.parse(data);
 
-      await locals.pocketbase //
+      await pocketbase //
         .collection("users")
         .authWithPassword(email, password);
     } catch (e) {
-      if (e instanceof ZodError) {
-        const errors = e.flatten().fieldErrors;
+      // Respond with the validation errors.
+      const errors = (e as ZodError).flatten().fieldErrors;
 
-        return fail(400, {
-          ...{ ...data, password: "" },
-          errors,
-        });
-      } else {
-        console.error(e);
-      }
+      return fail(400, {
+        ...{ ...data, password: "" },
+        errors,
+      });
     }
 
-    throw redirect(303, "/");
+    throw redirect(301, "_");
   },
 };
