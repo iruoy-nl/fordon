@@ -21,9 +21,7 @@
   </div>
 </nav>
 
-<div class="container">
-  <slot />
-</div>
+<slot />
 
 <style lang="scss">
   .navbar {
