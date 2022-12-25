@@ -15,7 +15,7 @@ declare global {
       /**
        * The pocketbase instance.
        */
-      pocketbase: typeof pocketbase,
+      pocketbase: typeof pocketbase;
     }
 
     // interface PageData {}

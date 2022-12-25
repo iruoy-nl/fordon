@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export type ZodError = z.ZodError;
+
 export const LoginForm = z.object({
   email: z //
     .string()

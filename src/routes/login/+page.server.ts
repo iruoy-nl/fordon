@@ -1,32 +1,50 @@
-import { LoginForm } from "$lib/types";
+import { getData } from "$lib/helpers";
+import { LoginForm, type ZodError } from "$lib/types";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import type { ZodError } from "zod";
+import * as Either from "fp-ts/Either";
+import * as TaskEither from "fp-ts/TaskEither";
+import type { ClientResponseError } from "pocketbase";
 
 export const actions: Actions = {
-  /**
-   * Handle login.
-   */
+  //
   login: async ({ request, locals }) => {
-    const formData = await request.formData();
-    const data = Object.fromEntries([...formData]);
+    const data = await getData(request);
 
-    try {
-      // Parse the received input, and login when valid.
-      const { email, password } = LoginForm.parse(data);
+    // Parse and validate form.
+    const one = Either.tryCatch(
+      () => LoginForm.parse(data),
+      (e) => (e as ZodError).flatten()
+    );
 
-      await locals.pocketbase
-        .collection("users")
-        .authWithPassword(email, password);
-    } catch (e) {
-      // Respond with the validation errors.
-      const errors = (e as ZodError).flatten().fieldErrors;
-
+    if (Either.isLeft(one)) {
       return fail(400, {
-        ...{ ...data, password: "" },
-        errors,
+        data: { email: data.email },
+        errors: one.left,
       });
     }
 
-    throw redirect(301, "_");
+    const { email, password } = one.right;
+
+    // Attempt to authenticate with Pocketbase.
+    const two = await TaskEither.tryCatch(
+      () => {
+        return locals.pocketbase //
+          .collection("users")
+          .authWithPassword(email, password);
+      },
+      (e) => (e as ClientResponseError).message
+    )();
+
+    if (Either.isLeft(two)) {
+      return fail(400, {
+        data: { email: data.email },
+        errors: {
+          formErrors: ["The provided credentials are invalid."],
+          fieldErrors: {},
+        },
+      });
+    }
+
+    throw redirect(301, "/app");
   },
 };

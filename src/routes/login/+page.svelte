@@ -1,13 +1,8 @@
 <script lang="ts">
   import BaseInput from "$lib/components/BaseInput.svelte";
-  import type { LoginForm } from "$lib/types";
+  import type { ActionData } from "./$types";
 
-  /**
-   * Form data.
-   */
-  export let form: LoginForm & {
-    errors: { [field: string]: string };
-  };
+  export let form: ActionData;
 </script>
 
 <div class="row vh-100">
@@ -36,9 +31,9 @@
                 label="Email"
                 name="email"
                 placeholder="Enter your email"
-                value={form?.email || ""}
+                value={form?.data.email || ""}
                 type="email"
-                error={form?.errors?.email[0]}
+                error={form?.errors.fieldErrors.email?.at(0)}
               />
             </div>
 
@@ -49,9 +44,9 @@
                 label="Password"
                 name="password"
                 placeholder="●●●●●●●●"
-                value={form?.password || ""}
+                value=""
                 type="password"
-                error={form?.errors?.password[0]}
+                error={form?.errors.fieldErrors.password?.at(0)}
               />
             </div>
 
