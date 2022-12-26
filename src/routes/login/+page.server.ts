@@ -39,7 +39,9 @@ export const actions: Actions = {
       return fail(400, {
         data: { email: data.email },
         errors: {
-          formErrors: ["The provided credentials are invalid."],
+          formErrors: [
+            "Het ingevoerde e-mailadres en/of wachtwoord is incorrect.",
+          ],
           fieldErrors: {},
         },
       });

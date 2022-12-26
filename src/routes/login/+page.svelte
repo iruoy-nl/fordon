@@ -1,7 +1,10 @@
 <script lang="ts">
-  import BaseInput from "$lib/components/BaseInput.svelte";
+  import TextInput from "$lib/components/fields/TextInput.svelte";
   import type { ActionData } from "./$types";
 
+  /**
+   * Form data.
+   */
   export let form: ActionData;
 </script>
 
@@ -27,8 +30,18 @@
 
               <div class="w-100 my-3" />
 
+              {#if form?.errors.formErrors.at(0)}
+                <div class="col-6">
+                  <div class="alert alert-danger">
+                    {form?.errors.formErrors.at(0)}
+                  </div>
+                </div>
+
+                <div class="w-100 my-2" />
+              {/if}
+
               <div class="col-6">
-                <BaseInput
+                <TextInput
                   label="E-mailadres"
                   name="email"
                   placeholder="Voer je e-mailadres in"
@@ -41,7 +54,7 @@
               <div class="w-100 my-2" />
 
               <div class="col-6">
-                <BaseInput
+                <TextInput
                   label="Wachtwoord"
                   name="password"
                   placeholder="●●●●●●●●"
