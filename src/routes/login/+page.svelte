@@ -14,7 +14,7 @@
       <div class="row h-100 p-4">
         <!-- Header -->
         <div class="col-12">
-          <span class="text-primary">● Fordon</span>
+          <h3 class="text-primary">● Fordon</h3>
         </div>
 
         <!-- Main -->
@@ -90,7 +90,7 @@
 
 <style lang="scss">
   .image {
-    background-image: url("https://images.unsplash.com/photo-1619677122678-b8e28f74cf42");
+    background-image: url("https://images.unsplash.com/photo-1619677122678-b8e28f74cf42?w=700&h=900");
     background-size: cover;
 
     // Fallback
