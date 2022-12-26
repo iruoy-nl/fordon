@@ -1,11 +1,11 @@
-import { pocketbase } from "$lib/server/pocketbase";
 import type { User } from "$lib/types";
 import type { Handle } from "@sveltejs/kit";
 import { none, some } from "fp-ts/Option";
+import PocketBase from "pocketbase";
 
 export const handle: Handle = async ({ event, resolve }) => {
   //
-  event.locals.pocketbase = pocketbase;
+  event.locals.pocketbase = new PocketBase("http://127.0.0.1:8090");
 
   // Attempt to load the user's data via the cookie.
   const cookie = event.request.headers.get("cookie");
@@ -13,9 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   // Validate the cookie.
   try {
-    await event.locals.pocketbase
-      .collection("users")
-      .authRefresh();
+    await event.locals.pocketbase.collection("users").authRefresh();
   } catch (_) {
     event.locals.pocketbase.authStore.clear();
   }
@@ -30,7 +28,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   // Ensure the cookie is set.
   response.headers.set(
     "set-cookie",
-    event.locals.pocketbase.authStore.exportToCookie(),
+    event.locals.pocketbase.authStore.exportToCookie()
   );
 
   return response;

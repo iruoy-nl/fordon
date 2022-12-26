@@ -1,4 +1,4 @@
-import type { pocketbase } from "$lib/server/pocketbase";
+import type { Client } from "$lib/server/pocketbase";
 import type { User } from "$lib/types";
 import type { Option } from "fp-ts/Option";
 
@@ -15,7 +15,7 @@ declare global {
       /**
        * The pocketbase instance.
        */
-      pocketbase: typeof pocketbase;
+      pocketbase: Client;
     }
 
     // interface PageData {}
