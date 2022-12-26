@@ -7,9 +7,5 @@ export const load: ServerLoad = ({ locals }) => {
     throw redirect(301, "/login");
   }
 
-  const { id, email } = locals.user.value;
-
-  return {
-    user: { id, email },
-  };
+  return {};
 };

@@ -9,11 +9,8 @@ export const load: ServerLoad = ({ locals }) => {
 };
 
 export const actions: Actions = {
-  /**
-   * Handle logout.
-   */
+  //
   logout: async ({ locals }) => {
-    //
     locals.pocketbase.authStore.clear();
 
     throw redirect(301, "/login");
