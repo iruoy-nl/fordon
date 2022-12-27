@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TextInput from "$lib/components/fields/TextInput.svelte";
+  import BaseInput from "$lib/components/BaseInput.svelte";
   import type { ActionData } from "./$types";
 
   /**
@@ -41,7 +41,7 @@
               {/if}
 
               <div class="col-6">
-                <TextInput
+                <BaseInput
                   label="E-mailadres"
                   name="email"
                   placeholder="Voer je e-mailadres in"
@@ -54,7 +54,7 @@
               <div class="w-100 my-2" />
 
               <div class="col-6">
-                <TextInput
+                <BaseInput
                   label="Wachtwoord"
                   name="password"
                   placeholder="●●●●●●●●"
