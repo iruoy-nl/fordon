@@ -10,3 +10,9 @@ export interface User {
   name?: string;
   avatar?: string;
 }
+
+export interface Vehicle {
+  id: string;
+  model: string;
+  avatar?: string;
+}

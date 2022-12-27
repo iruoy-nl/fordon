@@ -19,7 +19,7 @@ export const load: ServerLoad = ({ locals, url }) => {
     { icon: "speedometer", title: "Overzicht", href: "/app/dashboard" },
     { icon: "signpost", title: "Kilometers", href: "/app/mileage" },
     { icon: "tools", title: "Onderhoud", href: "/app/maintenance" },
-    { icon: "card-checklist", title: "Voertuigen", href: "/app/vehicles" },
+    { icon: "card-heading", title: "Garage", href: "/app/garage" },
     { icon: "gear", title: "Instellingen", href: "/app/settings" },
   ];
 
