@@ -1,35 +1,52 @@
+import { POCKETBASE_URL } from "$env/static/private";
 import type { User } from "$lib/types";
 import type { Handle } from "@sveltejs/kit";
-import { none, some } from "fp-ts/Option";
+import * as E from "fp-ts/lib/Either";
+import * as O from "fp-ts/lib/Option";
+import * as TE from "fp-ts/lib/TaskEither";
 import PocketBase from "pocketbase";
 
 export const handle: Handle = async ({ event, resolve }) => {
   //
-  event.locals.pocketbase = new PocketBase("http://127.0.0.1:8090");
+  const { locals, request } = event;
 
-  // Attempt to load the user's data via the cookie.
-  const cookie = event.request.headers.get("cookie");
-  event.locals.pocketbase.authStore.loadFromCookie(cookie || "");
+  // Initialise the locals.
+  locals.pocketbase = new PocketBase(POCKETBASE_URL);
+  locals.user = O.none;
 
-  // Validate the cookie.
-  try {
-    await event.locals.pocketbase.collection("users").authRefresh();
-  } catch (_) {
-    event.locals.pocketbase.authStore.clear();
+  // Load the cookie.
+  const { headers } = request;
+  const cookie = O.fromNullable(headers.get("cookie"));
+
+  if (O.isSome(cookie)) {
+    locals.pocketbase.authStore.loadFromCookie(cookie.value);
   }
 
-  // Update the locals.
-  event.locals.user = event.locals.pocketbase.authStore.isValid //
-    ? some(event.locals.pocketbase.authStore.model as User)
-    : none;
+  // Validate the cookie.
+  const one = await TE.tryCatch(
+    () => {
+      return locals.pocketbase //
+        .collection("users")
+        .authRefresh();
+    },
+    () => null
+  )();
+
+  if (E.isLeft(one)) {
+    locals.pocketbase.authStore.clear();
+  }
+
+  // Set the current user.
+  const { authStore } = locals.pocketbase;
+
+  if (authStore.isValid) {
+    locals.user = O.some(authStore.model?.export() as User);
+  }
 
   const response = await resolve(event);
 
-  // Ensure the cookie is set.
-  response.headers.set(
-    "set-cookie",
-    event.locals.pocketbase.authStore.exportToCookie()
-  );
+  // Set the cookie.
+  headers.set("set-cookie", authStore.exportToCookie());
 
   return response;
 };

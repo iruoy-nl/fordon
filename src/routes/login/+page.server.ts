@@ -1,8 +1,8 @@
 import { getData } from "$lib/helpers";
 import { LoginForm, type ZodError } from "$lib/types";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import * as Either from "fp-ts/Either";
-import * as TaskEither from "fp-ts/TaskEither";
+import * as E from "fp-ts/Either";
+import * as TE from "fp-ts/TaskEither";
 import type { ClientResponseError } from "pocketbase";
 
 export const actions: Actions = {
@@ -11,23 +11,23 @@ export const actions: Actions = {
     const data = await getData(request);
 
     // Parse and validate form.
-    const one = Either.tryCatch(
+    const one = E.tryCatch(
       () => LoginForm.parse(data),
       (e) => (e as ZodError).flatten()
     );
 
-    if (Either.isLeft(one)) {
+    if (E.isLeft(one)) {
       return fail(400, {
         data: { email: data.email },
         errors: one.left,
       });
     }
 
-    const { email, password } = one.right;
-
     // Attempt to authenticate with Pocketbase.
-    const two = await TaskEither.tryCatch(
+    const two = await TE.tryCatch(
       () => {
+        const { email, password } = one.right;
+
         return locals.pocketbase //
           .collection("users")
           .authWithPassword(email, password);
@@ -35,7 +35,7 @@ export const actions: Actions = {
       (e) => (e as ClientResponseError).message
     )();
 
-    if (Either.isLeft(two)) {
+    if (E.isLeft(two)) {
       return fail(400, {
         data: { email: data.email },
         errors: {
