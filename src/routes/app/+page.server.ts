@@ -3,10 +3,14 @@ import { fail, redirect, type Actions, type ServerLoad } from "@sveltejs/kit";
 import { isLeft } from "fp-ts/lib/Either";
 import { isNone } from "fp-ts/Option";
 
-export const load: ServerLoad = ({ locals }) => {
+export const load: ServerLoad = ({ locals, url }) => {
   //
   if (isNone(locals.user)) {
     throw redirect(302, "/sign-in");
+  }
+
+  if (url.pathname === "/app") {
+    throw redirect(302, "/app/dashboard");
   }
 };
 
