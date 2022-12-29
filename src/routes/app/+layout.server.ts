@@ -1,30 +1,30 @@
-import type { Section } from "$lib/types";
+import { fileUrl } from "$lib/services/url";
 import { redirect, type ServerLoad } from "@sveltejs/kit";
-import { isNone } from "fp-ts/Option";
+import { pipe } from "fp-ts/function";
+import { fold, fromNullable, getOrElse, isNone } from "fp-ts/Option";
 
-export const load: ServerLoad = ({ locals, url }) => {
+export const load: ServerLoad = ({ locals }) => {
   //
   if (isNone(locals.user)) {
-    throw redirect(301, "/login");
-  }
-
-  if (url.pathname === "/app") {
-    throw redirect(301, "/app/dashboard");
+    throw redirect(302, "/sign-in");
   }
 
   const user = locals.user.value;
-  const avatar = `http://localhost:8090/api/files/users/${user.id}/${user.avatar}`;
-
-  const sections: Section[] = [
-    { icon: "speedometer", title: "Overzicht", href: "/app/dashboard" },
-    { icon: "signpost", title: "Kilometers", href: "/app/mileage" },
-    { icon: "tools", title: "Onderhoud", href: "/app/maintenance" },
-    { icon: "card-heading", title: "Garage", href: "/app/garage" },
-    { icon: "gear", title: "Instellingen", href: "/app/settings" },
-  ];
 
   return {
-    user: { ...user, avatar },
-    sections,
+    user: {
+      ...user,
+      name: pipe(
+        fromNullable(user.name),
+        getOrElse(() => "Anoniem")
+      ),
+      avatar: pipe(
+        fromNullable(user.avatar),
+        fold(
+          () => null,
+          (filename) => fileUrl("users", user.id, filename)
+        )
+      ),
+    },
   };
 };

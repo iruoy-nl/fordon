@@ -2,9 +2,6 @@
   import BaseInput from "$lib/components/BaseInput.svelte";
   import type { ActionData } from "./$types";
 
-  /**
-   * Form data.
-   */
   export let form: ActionData;
 </script>
 
@@ -19,7 +16,7 @@
 
         <!-- Main -->
         <div class="col">
-          <form action="?/login" method="post">
+          <form action="?/signIn" method="post">
             <div class="row justify-content-center">
               <div class="col-6">
                 <h2>Welkom terug</h2>
@@ -43,7 +40,7 @@
               <div class="col-6">
                 <BaseInput
                   label="E-mailadres"
-                  name="email"
+                  id="email"
                   placeholder="Voer je e-mailadres in"
                   value={form?.data.email || ""}
                   type="email"
@@ -56,7 +53,7 @@
               <div class="col-6">
                 <BaseInput
                   label="Wachtwoord"
-                  name="password"
+                  id="password"
                   placeholder="●●●●●●●●"
                   value=""
                   type="password"

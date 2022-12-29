@@ -1,52 +1,42 @@
-import { POCKETBASE_URL } from "$env/static/private";
 import type { User } from "$lib/types";
+import { pb } from "$server/domain";
 import type { Handle } from "@sveltejs/kit";
-import * as E from "fp-ts/lib/Either";
-import * as O from "fp-ts/lib/Option";
-import * as TE from "fp-ts/lib/TaskEither";
-import PocketBase from "pocketbase";
+import * as E from "fp-ts/Either";
+import { fromNullable, isSome, some } from "fp-ts/Option";
+import { tryCatch } from "fp-ts/TaskEither";
 
 export const handle: Handle = async ({ event, resolve }) => {
   //
   const { locals, request } = event;
 
-  // Initialise the locals.
-  locals.pocketbase = new PocketBase(POCKETBASE_URL);
-  locals.user = O.none;
-
   // Load the cookie.
-  const { headers } = request;
-  const cookie = O.fromNullable(headers.get("cookie"));
+  const cookie = fromNullable(request.headers.get("cookie"));
 
-  if (O.isSome(cookie)) {
-    locals.pocketbase.authStore.loadFromCookie(cookie.value);
+  if (isSome(cookie)) {
+    pb.authStore.loadFromCookie(cookie.value);
   }
 
   // Validate the cookie.
-  const one = await TE.tryCatch(
-    () => {
-      return locals.pocketbase //
-        .collection("users")
-        .authRefresh();
-    },
+  const one = await tryCatch(
+    () => pb.collection("users").authRefresh(),
     () => null
   )();
 
   if (E.isLeft(one)) {
-    locals.pocketbase.authStore.clear();
+    pb.authStore.clear();
   }
 
   // Set the current user.
-  const { authStore } = locals.pocketbase;
+  if (pb.authStore.isValid) {
+    const user = pb.authStore.model?.export() as User;
 
-  if (authStore.isValid) {
-    locals.user = O.some(authStore.model?.export() as User);
+    locals.user = some(user);
   }
 
   const response = await resolve(event);
 
   // Set the cookie.
-  headers.set("set-cookie", authStore.exportToCookie());
+  response.headers.set("set-cookie", pb.authStore.exportToCookie());
 
   return response;
 };

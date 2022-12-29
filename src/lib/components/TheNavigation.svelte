@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import type { Section, User } from "$lib/types";
+  import type { User } from "$lib/types";
 
   /**
    * The current user.
@@ -8,9 +8,15 @@
   export let user: User;
 
   /**
-   * The sections to display.
+   * The available pages.
    */
-  export let sections: Section[];
+  const pages = [
+    { icon: "speedometer", title: "Overzicht", href: "/app" },
+    { icon: "signpost", title: "Kilometers", href: "/app/mileage" },
+    { icon: "tools", title: "Onderhoud", href: "/app/maintenance" },
+    { icon: "card-heading", title: "Garage", href: "/app/garage" },
+    { icon: "gear", title: "Instellingen", href: "/app/settings" },
+  ];
 </script>
 
 <div class="row h-100 border-end justiy-content-between p-4">
@@ -22,14 +28,14 @@
 
   <div class="col">
     <ul class="list-group">
-      {#each sections as section (section.href)}
+      {#each pages as { icon, title, href } (href)}
         <a
           class="list-group-item border-0 rounded p-3"
-          class:active={section.href === $page.route.id}
-          href={section.href}
+          class:active={href === $page.route.id}
+          {href}
         >
-          <i class="bi bi-{section.icon} me-2" />
-          {section.title}
+          <i class="bi bi-{icon} me-2" />
+          {title}
         </a>
       {/each}
     </ul>
