@@ -1,6 +1,7 @@
 import { pb } from "$lib/server/domain";
 import type { Either } from "fp-ts/Either";
 import { tryCatch } from "fp-ts/TaskEither";
+import type { ClientResponseError } from "pocketbase";
 
 /**
  * Signs in the user.
@@ -41,7 +42,20 @@ export const signUp = (
         .collection("users")
         .create({ email, password, passwordConfirm });
     },
-    () => new Error("Er is een onbekende fout opgetreden.")
+    (e) => {
+      const error = e as ClientResponseError;
+      const { email, passwordConfirm } = error.data.data;
+
+      if (email) {
+        return new Error("Het e-mailadres is al in gebruik.");
+      }
+
+      if (passwordConfirm) {
+        return new Error("De wachtwoorden komen niet overeen.");
+      }
+
+      return new Error("Er is een onbekende fout opgetreden.");
+    }
   )();
 };
 

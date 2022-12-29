@@ -21,6 +21,6 @@ export const actions: Actions = {
       });
     }
 
-    throw redirect(301, "/login");
+    throw redirect(302, "/sign-in");
   },
 };

@@ -16,13 +16,13 @@
 
         <!-- Main -->
         <div class="col">
-          <form action="?/signIn" method="post">
+          <form action="?/signUp" method="post">
             <div class="row justify-content-center">
               <div class="col-6">
-                <h2>Inloggen</h2>
+                <h2>Registreren</h2>
                 <p class="text-muted">
-                  Voer je e-mailadres en wachtwoord in om door te gaan naar
-                  Fordon.
+                  Kies een e-mailadres en wachtwoord om een account aan te maken
+                  bij Fordon.
                 </p>
               </div>
 
@@ -62,17 +62,30 @@
                 />
               </div>
 
+              <div class="w-100 my-2" />
+
+              <div class="col-6">
+                <BaseInput
+                  label="Herhaal wachtwoord"
+                  id="passwordConfirm"
+                  placeholder="●●●●●●●●"
+                  value=""
+                  type="password"
+                  error={form?.errors.fieldErrors.passwordConfirm?.at(0)}
+                />
+              </div>
+
               <div class="w-100 my-3" />
 
               <div class="col-6">
-                <button class="btn btn-primary">Inloggen</button>
+                <button class="btn btn-primary">Registreren</button>
               </div>
 
               <div class="w-100 my-3" />
 
               <div class="col-6 text-center">
-                <span class="text-muted">Nog geen account?</span>
-                <a href="/sign-up" class="text-primary">Registreren</a>
+                <span class="text-muted">Heb je al een account?</span>
+                <a href="/sign-in" class="text-primary">Inloggen</a>
               </div>
 
               <div class="w-100 my-5" />

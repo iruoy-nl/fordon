@@ -1,11 +1,11 @@
 import { fileUrl } from "$lib/services/url";
 import { redirect, type ServerLoad } from "@sveltejs/kit";
 import { pipe } from "fp-ts/function";
-import { fold, fromNullable, getOrElse, isNone } from "fp-ts/Option";
+import * as O from "fp-ts/Option";
 
 export const load: ServerLoad = ({ locals }) => {
   //
-  if (isNone(locals.user)) {
+  if (O.isNone(locals.user)) {
     throw redirect(302, "/sign-in");
   }
 
@@ -15,13 +15,13 @@ export const load: ServerLoad = ({ locals }) => {
     user: {
       ...user,
       name: pipe(
-        fromNullable(user.name),
-        getOrElse(() => "Anoniem")
+        user.name ? O.some(user.name) : O.none,
+        O.getOrElse(() => "Anoniem")
       ),
       avatar: pipe(
-        fromNullable(user.avatar),
-        fold(
-          () => null,
+        user.avatar ? O.some(user.avatar) : O.none,
+        O.fold(
+          () => `https://avatars.dicebear.com/api/adventurer/${user.id}.svg`,
           (filename) => fileUrl("users", user.id, filename)
         )
       ),
