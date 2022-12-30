@@ -1,3 +1,4 @@
+import type { Failure } from "$lib/types";
 import { pb } from "$server/domain";
 import type { Either } from "fp-ts/Either";
 import { tryCatch } from "fp-ts/TaskEither";
@@ -12,7 +13,7 @@ import type { ClientResponseError } from "pocketbase";
 export const signIn = (
   email: string,
   password: string
-): Promise<Either<Error, void>> => {
+): Promise<Either<Failure, void>> => {
   return tryCatch(
     async () => {
       // Attempt to authenticate with Pocketbase.
@@ -20,7 +21,7 @@ export const signIn = (
         .collection("users")
         .authWithPassword(email, password);
     },
-    () => new Error("Het e-mailadres en/of wachtwoord is incorrect.")
+    () => ({ message: "Het e-mailadres en/of wachtwoord is incorrect." })
   )();
 };
 
@@ -35,7 +36,7 @@ export const signUp = (
   email: string,
   password: string,
   passwordConfirm: string
-): Promise<Either<Error, void>> => {
+): Promise<Either<Failure, void>> => {
   return tryCatch(
     async () => {
       await pb //
@@ -47,14 +48,14 @@ export const signUp = (
       const { email, passwordConfirm } = error.data.data;
 
       if (email) {
-        return new Error("Het e-mailadres is al in gebruik.");
+        return { message: "Het e-mailadres is al in gebruik." };
       }
 
       if (passwordConfirm) {
-        return new Error("De wachtwoorden komen niet overeen.");
+        return { message: "De wachtwoorden komen niet overeen." };
       }
 
-      return new Error("Er is een onbekende fout opgetreden.");
+      return { message: "Er is een onbekende fout opgetreden." };
     }
   )();
 };
@@ -62,11 +63,11 @@ export const signUp = (
 /**
  * Signs out the user.
  */
-export const signOut = (): Promise<Either<Error, void>> => {
+export const signOut = (): Promise<Either<Failure, void>> => {
   return tryCatch(
     async () => {
       pb.authStore.clear();
     },
-    () => new Error("Er is een onbekende fout opgetreden.")
+    () => ({ message: "Er is een onbekende fout opgetreden." })
   )();
 };
