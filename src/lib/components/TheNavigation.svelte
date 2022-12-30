@@ -14,7 +14,7 @@
     { icon: "speedometer", title: "Overzicht", href: "/app/dashboard" },
     { icon: "signpost", title: "Kilometers", href: "/app/mileage" },
     { icon: "tools", title: "Onderhoud", href: "/app/maintenance" },
-    { icon: "card-heading", title: "Garage", href: "/app/garage" },
+    { icon: "card-heading", title: "Garage", href: "/app/vehicles" },
     { icon: "gear", title: "Instellingen", href: "/app/settings" },
   ];
 </script>

@@ -1,4 +1,4 @@
-import { pb } from "$lib/server/domain";
+import { pb } from "$server/domain";
 import type { Either } from "fp-ts/Either";
 import { tryCatch } from "fp-ts/TaskEither";
 import type { ClientResponseError } from "pocketbase";
