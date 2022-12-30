@@ -1,6 +1,5 @@
 import { fileUrl } from "$lib/services/url";
 import { redirect, type ServerLoad } from "@sveltejs/kit";
-import { pipe } from "fp-ts/function";
 import * as O from "fp-ts/Option";
 
 export const load: ServerLoad = ({ locals }) => {
@@ -14,17 +13,12 @@ export const load: ServerLoad = ({ locals }) => {
   return {
     user: {
       ...user,
-      name: pipe(
-        user.name ? O.some(user.name) : O.none,
-        O.getOrElse(() => "Anoniem")
-      ),
-      avatar: pipe(
-        user.avatar ? O.some(user.avatar) : O.none,
-        O.fold(
-          () => `https://avatars.dicebear.com/api/adventurer/${user.id}.svg`,
-          (filename) => fileUrl("users", user.id, filename)
-        )
-      ),
+      name: user.name //
+        ? user.name
+        : "Anoniem",
+      avatar: user.avatar //
+        ? fileUrl("users", user.id, user.avatar)
+        : null,
     },
   };
 };

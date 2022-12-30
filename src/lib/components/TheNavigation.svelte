@@ -44,12 +44,16 @@
   <div class="w-100" />
 
   <div class="col text-center mt-auto">
-    <img
-      class="rounded-circle"
-      src={user.avatar || "https://via.placeholder.com/64"}
-      alt="avatar"
-      style="width: 64px; height: 64px;"
-    />
+    {#if user.avatar}
+      <img
+        class="rounded-circle"
+        src={user.avatar}
+        alt="avatar"
+        style="width: 64px; height: 64px;"
+      />
+    {:else}
+      <i class="bi bi-person-circle text-muted" style="font-size: 64px;" />
+    {/if}
 
     <div class="w-100 my-2" />
 
