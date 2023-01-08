@@ -77,7 +77,7 @@ export async function verify(
 
   return tryCatch(
     async () => {
-      await pb //
+      const one = await pb //
         .collection("users")
         .authWithOAuth2(
           provider.value.name,
@@ -86,10 +86,18 @@ export async function verify(
           redirectUrl
         );
 
+      await pb //
+        .collection("users")
+        .update(one.record.id, {
+          name: one.meta?.name || "",
+          avatarUrl: one.meta?.avatarUrl || "",
+        });
+
       removeByKey("provider");
     },
     (e) => {
       const error = e as ClientResponseError;
+      removeByKey("provider");
 
       return { message: error.message };
     }
