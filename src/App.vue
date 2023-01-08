@@ -1,5 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { user$ } from "~/store/user";
+</script>
 
-<template></template>
+<template>
+  {{ user$ }}
 
-<style scoped></style>
+  <router-view></router-view>
+</template>
+
+<style scoped lang="scss"></style>
