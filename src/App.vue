@@ -1,10 +1,6 @@
-<script setup lang="ts">
-import { user$ } from "~/store/user";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  {{ user$ }}
-
   <router-view></router-view>
 </template>
 

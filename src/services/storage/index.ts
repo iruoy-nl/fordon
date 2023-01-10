@@ -1,24 +1,24 @@
-import { none, Option, some } from "fp-ts/lib/Option";
+import { pipe } from "fp-ts/lib/function";
+import * as O from "fp-ts/lib/Option";
 
 /**
- * Get a value by its key.
+ * Get a value from local storage.
  *
  * @param key The key to retrieve the item for.
  */
-export function getByKey<T>(key: string): Option<T> {
-  const value = localStorage.getItem(key);
-
-  if (value === null) {
-    return none;
-  }
-
-  // Attempt to parse the object, otherwise return the value.
-  try {
-    return some(JSON.parse(value));
-  } catch (_) {
-    return some(value as T);
-  }
-}
+export const getItem = <A>(key: string): O.Option<A> => {
+  return pipe(
+    localStorage.getItem(key),
+    O.fromNullable,
+    O.map((v) => {
+      // When the value exists, attempt to parse it.
+      return pipe(
+        O.tryCatch(() => JSON.parse(v) as A),
+        O.getOrElse(() => v as A)
+      );
+    })
+  );
+};
 
 /**
  * Put a value by its key.
@@ -26,21 +26,24 @@ export function getByKey<T>(key: string): Option<T> {
  * @param key The key to store the value under.
  * @param value The value to store.
  */
-export function putByKey<T>(key: string, value: T): void {
-  localStorage.setItem(
-    key,
-    // When the value isn't a string, ensure it is stringified.
-    typeof value === "string" //
-      ? value
-      : JSON.stringify(value)
+export const putItem = <A>(key: string, value: A): void => {
+  return pipe(
+    value,
+    (v) => {
+      // When the value is not a string, stringify it.
+      return typeof v !== "string" //
+        ? JSON.stringify(v)
+        : v;
+    },
+    (v) => localStorage.setItem(key, v)
   );
-}
+};
 
 /**
  * Remove a value by it's key.
  *
  * @param key The key to remove the value for.
  */
-export function removeByKey(key: string): void {
-  localStorage.removeItem(key);
-}
+export const removeItem = (key: string): void => {
+  return pipe(key, localStorage.removeItem);
+};
