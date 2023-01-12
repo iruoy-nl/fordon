@@ -14,3 +14,12 @@ export const User = t.type({
 });
 
 export type User = t.TypeOf<typeof User>;
+
+export const Provider = t.type({
+  name: t.string,
+  state: t.string,
+  codeVerifier: t.string,
+  authUrl: t.string,
+});
+
+export type Provider = t.TypeOf<typeof Provider>;

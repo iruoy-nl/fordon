@@ -1,5 +1,5 @@
 import { pipe } from "fp-ts/function";
-import { getOrElse } from "fp-ts/Option";
+import * as O from "fp-ts/Option";
 import Pocketbase from "pocketbase";
 import { getEnv } from "~/services/env";
 
@@ -8,7 +8,7 @@ import { getEnv } from "~/services/env";
  */
 export const pbUrl = pipe(
   getEnv("VITE_POCKETBASE_URL"),
-  getOrElse(() => "http://localhost:8090")
+  O.getOrElse(() => "http://localhost:8090")
 );
 
 /**
@@ -16,7 +16,7 @@ export const pbUrl = pipe(
  */
 export const redirectUrl = pipe(
   getEnv("VITE_REDIRECT_URL"),
-  getOrElse(() => "http://localhost:5173/inloggen")
+  O.getOrElse(() => "http://localhost:5173/oauth")
 );
 
 /**
