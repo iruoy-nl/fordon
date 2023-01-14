@@ -103,3 +103,10 @@ export const verify = async (
     })
   )();
 };
+
+/**
+ * Clears the local authentication store.
+ */
+export const clear = (): void => {
+  pb.authStore.clear();
+};

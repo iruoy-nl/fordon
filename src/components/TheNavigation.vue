@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import * as O from "fp-ts/lib/Option";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { clear } from "~/state/oauth";
 import { user } from "~/state/user";
+
+const { push } = useRouter();
 
 /**
  * The pages the navigation should display.
@@ -13,6 +17,15 @@ const pages = ref([
   { icon: "card-heading", title: "Garage", name: "app" },
   { icon: "gear", title: "Instellingen", name: "app" },
 ]);
+
+/**
+ * Logs out the user.
+ */
+const logout = () => {
+  clear();
+
+  push({ name: "oauth" });
+};
 </script>
 
 <template>
@@ -62,7 +75,7 @@ const pages = ref([
 
         <div class="w-100 my-2"></div>
 
-        <button class="btn border">
+        <button class="btn border" @click="logout">
           <i class="bi bi-door-closed me-2" />
           Uitloggen
         </button>
