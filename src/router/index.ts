@@ -12,6 +12,7 @@ const router = createRouter({
       component: OAuthPage,
     },
   ],
+  linkActiveClass: "active",
 });
 
 export default router;
