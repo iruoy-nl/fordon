@@ -17,6 +17,9 @@ const router = createRouter({
       path: "/oauth",
       name: "oauth",
       component: OAuthPage,
+      meta: {
+        title: "Oauth",
+      },
     },
   ],
   linkActiveClass: "active",
