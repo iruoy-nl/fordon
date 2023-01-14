@@ -66,6 +66,11 @@ onMounted(async () => {
             <template v-for="provider of providers">
               <div class="col-6">
                 <button class="btn btn-primary" @click="challenge(provider)">
+                  <!-- Show provider-specific icons -->
+                  <template v-if="provider.name === 'google'">
+                    <i class="bi bi-google me-2"></i>
+                  </template>
+
                   Login met
                   <span class="text-capitalize">
                     {{ provider.name }}
@@ -74,6 +79,10 @@ onMounted(async () => {
               </div>
 
               <div class="w-100 my-2"></div>
+            </template>
+
+            <template v-if="providers.length === 0">
+              <div class="spinner-border text-primary" role="status"></div>
             </template>
           </div>
         </div>
