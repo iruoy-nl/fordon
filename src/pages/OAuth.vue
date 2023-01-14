@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import * as E from "fp-ts/lib/Either";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import AppLogo from "~/components/AppLogo.vue";
 import HalfHalf from "~/layouts/HalfHalf.vue";
 import { challenge, getAll, verify } from "~/state/oauth";
 import { Provider } from "~/types";
-import { useRouter } from "vue-router";
 
 const { currentRoute, push } = useRouter();
 
@@ -45,13 +46,7 @@ onMounted(async () => {
     <template #left>
       <div class="row h-100 p-4">
         <div class="col">
-          <h3 class="text-primary">
-            <i
-              class="bi bi-circle-fill align-middle"
-              style="font-size: 0.5rem"
-            ></i>
-            Fordon
-          </h3>
+          <AppLogo />
         </div>
 
         <div class="w-100"></div>
@@ -71,6 +66,11 @@ onMounted(async () => {
             <template v-for="provider of providers">
               <div class="col-6">
                 <button class="btn btn-primary" @click="challenge(provider)">
+                  <!-- Show provider-specific icons -->
+                  <template v-if="provider.name === 'google'">
+                    <i class="bi bi-google me-2"></i>
+                  </template>
+
                   Login met
                   <span class="text-capitalize">
                     {{ provider.name }}
@@ -79,6 +79,10 @@ onMounted(async () => {
               </div>
 
               <div class="w-100 my-2"></div>
+            </template>
+
+            <template v-if="providers.length === 0">
+              <div class="spinner-border text-primary" role="status"></div>
             </template>
           </div>
         </div>
