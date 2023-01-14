@@ -11,11 +11,11 @@ const { push } = useRouter();
  * The pages the navigation should display.
  */
 const pages = ref([
-  { icon: "speedometer", title: "Overzicht", name: "app" },
-  { icon: "signpost", title: "Kilometers", name: "app" },
-  { icon: "tools", title: "Onderhoud", name: "app" },
-  { icon: "card-heading", title: "Garage", name: "app" },
-  { icon: "gear", title: "Instellingen", name: "app" },
+  { icon: "speedometer", title: "Overzicht", name: "dashboard" },
+  { icon: "signpost", title: "Kilometers", name: "mileage" },
+  { icon: "tools", title: "Onderhoud", name: "maintenance" },
+  { icon: "card-heading", title: "Garage", name: "garage" },
+  { icon: "gear", title: "Instellingen", name: "settings" },
 ]);
 
 /**
