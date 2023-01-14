@@ -2,6 +2,7 @@
 import * as O from "fp-ts/lib/Option";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import AppLogo from "~/components/AppLogo.vue";
 import { clear } from "~/state/oauth";
 import { user } from "~/state/user";
 
@@ -31,10 +32,7 @@ const logout = () => {
 <template>
   <div class="row h-100 justify-content-between border-end p-4">
     <div class="col">
-      <h3 class="text-primary">
-        <i class="bi bi-circle-fill align-middle" style="font-size: 0.5rem"></i>
-        Fordon
-      </h3>
+      <AppLogo />
     </div>
 
     <div class="w-100"></div>
