@@ -23,3 +23,9 @@ export const Provider = D.struct({
 });
 
 export type Provider = D.TypeOf<typeof Provider>;
+
+export const PageMeta = D.struct({
+  title: D.string,
+});
+
+export type PageMeta = D.TypeOf<typeof PageMeta>;

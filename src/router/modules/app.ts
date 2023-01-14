@@ -22,26 +22,41 @@ const routes: RouteRecordRaw[] = [
         path: "overzicht",
         name: "dashboard",
         component: AppDashboardPage,
+        meta: {
+          title: "Overzicht",
+        },
       },
       {
         path: "kilometers",
         name: "mileage",
         component: AppMileagePage,
+        meta: {
+          title: "Kilometers",
+        },
       },
       {
         path: "onderhoud",
         name: "maintenance",
         component: AppMaintenancePage,
+        meta: {
+          title: "Onderhoud",
+        },
       },
       {
         path: "garage",
         name: "garage",
         component: AppGaragePage,
+        meta: {
+          title: "Garage",
+        },
       },
       {
         path: "instellingen",
         name: "settings",
         component: AppSettingsPage,
+        meta: {
+          title: "Instellingen",
+        },
       },
     ],
   },
