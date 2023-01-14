@@ -1,25 +1,25 @@
-import * as t from "io-ts";
+import * as D from "io-ts/lib/Decoder";
 
-export const Failure = t.type({
-  message: t.string,
+export const Failure = D.struct({
+  message: D.string,
 });
 
-export type Failure = t.TypeOf<typeof Failure>;
+export type Failure = D.TypeOf<typeof Failure>;
 
-export const User = t.type({
-  id: t.string,
-  email: t.string,
-  name: t.string,
-  avatarUrl: t.string,
+export const User = D.struct({
+  id: D.string,
+  email: D.string,
+  name: D.string,
+  avatarUrl: D.string,
 });
 
-export type User = t.TypeOf<typeof User>;
+export type User = D.TypeOf<typeof User>;
 
-export const Provider = t.type({
-  name: t.string,
-  state: t.string,
-  codeVerifier: t.string,
-  authUrl: t.string,
+export const Provider = D.struct({
+  name: D.string,
+  state: D.string,
+  codeVerifier: D.string,
+  authUrl: D.string,
 });
 
-export type Provider = t.TypeOf<typeof Provider>;
+export type Provider = D.TypeOf<typeof Provider>;
