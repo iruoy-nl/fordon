@@ -1,31 +1,29 @@
-import * as D from "io-ts/lib/Decoder";
+export type Failure = {
+  message: string;
+};
 
-export const Failure = D.struct({
-  message: D.string,
-});
+export type Notification = {
+  id: number;
+  type: "danger" | "warning" | "info" | "success";
+  message: string;
+};
 
-export type Failure = D.TypeOf<typeof Failure>;
+export type NotificationForm = Omit<Notification, "id">;
 
-export const User = D.struct({
-  id: D.string,
-  email: D.string,
-  name: D.string,
-  avatarUrl: D.string,
-});
+export type User = {
+  id: string;
+  email: string;
+  name: string;
+  avatarUrl: string;
+};
 
-export type User = D.TypeOf<typeof User>;
+export type Provider = {
+  name: string;
+  state: string;
+  codeVerifier: string;
+  authUrl: string;
+};
 
-export const Provider = D.struct({
-  name: D.string,
-  state: D.string,
-  codeVerifier: D.string,
-  authUrl: D.string,
-});
-
-export type Provider = D.TypeOf<typeof Provider>;
-
-export const PageMeta = D.struct({
-  title: D.string,
-});
-
-export type PageMeta = D.TypeOf<typeof PageMeta>;
+export type PageMeta = {
+  title: string | null;
+};
