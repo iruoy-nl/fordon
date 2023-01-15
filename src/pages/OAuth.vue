@@ -25,16 +25,16 @@ async function onLoad() {
   const { code, state } = currentRoute.value.query;
 
   if (code && state) {
-    await stepTwo(code as string, state as string);
+    await handleRedirect(code as string, state as string);
   } else {
-    await stepOne();
+    await listProviders();
   }
 }
 
 /**
  * Loads the available providers.
  */
-async function stepOne() {
+async function listProviders() {
   const task = await getAll();
 
   if (E.isLeft(task)) {
@@ -55,7 +55,7 @@ async function stepOne() {
  * @param code The incoming code,
  * @param state The incoming state.
  */
-async function stepTwo(code: string, state: string) {
+async function handleRedirect(code: string, state: string) {
   const task = await verify(code, state);
 
   if (E.isLeft(task)) {
