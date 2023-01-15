@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import * as E from "fp-ts/lib/Either";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import AppLogo from "~/components/AppLogo.vue";
 import HalfHalf from "~/layouts/HalfHalf.vue";
+import { addNotification } from "~/state/notifications";
 import { challenge, getAll, verify } from "~/state/oauth";
 import { Provider } from "~/types";
 
@@ -14,31 +15,62 @@ const { currentRoute, push } = useRouter();
  */
 const providers = ref<Provider[]>([]);
 
-onMounted(async () => {
+onMounted(onLoad);
+watch(currentRoute, onLoad);
+
+/**
+ * Determines which step the user is currently in.
+ */
+async function onLoad() {
   const { code, state } = currentRoute.value.query;
 
   if (code && state) {
-    // The user has already initiated the authentication process.
-    const one = await verify(`${code}`, `${state}`);
-
-    if (E.isLeft(one)) {
-      return console.error(one.left);
-    }
-
-    push("/app");
-  } //
-  else {
-    // First time loading the Oauth page.
-    const two = await getAll();
-
-    if (E.isLeft(two)) {
-      // Todo: display error to the user.
-      return console.error(two.left);
-    }
-
-    providers.value = two.right;
+    await stepTwo(code as string, state as string);
+  } else {
+    await stepOne();
   }
-});
+}
+
+/**
+ * Loads the available providers.
+ */
+async function stepOne() {
+  const task = await getAll();
+
+  if (E.isLeft(task)) {
+    addNotification({
+      type: "danger",
+      message: task.left.message,
+    });
+
+    return;
+  }
+
+  providers.value = task.right;
+}
+
+/**
+ * Verifies the provided details.
+ *
+ * @param code The incoming code,
+ * @param state The incoming state.
+ */
+async function stepTwo(code: string, state: string) {
+  const task = await verify(code, state);
+
+  if (E.isLeft(task)) {
+    addNotification({
+      type: "danger",
+      message: task.left.message,
+    });
+
+    push({ name: "oauth" });
+
+    return;
+  }
+
+  push({ name: "app" });
+}
 </script>
 
 <template>
