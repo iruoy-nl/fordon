@@ -12,7 +12,11 @@ export const user = ref<O.Option<User>>(O.none);
 /**
  * Watch for updates on the user's authentication status.
  */
-pb.authStore.onChange(
-  (_, model) => (user.value = pipe(model, User.decode, O.fromEither)),
-  true
-);
+pb.authStore.onChange((_, model) => {
+  user.value = pipe(
+    //
+    model,
+    (m) => m?.export() as User | null,
+    O.fromNullable
+  );
+}, true);

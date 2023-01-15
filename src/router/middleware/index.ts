@@ -25,9 +25,8 @@ export const isAuthenticated = (() => {
  */
 export const syncTitle = ((to) => {
   pipe(
-    to.meta,
-    PageMeta.decode,
-    O.fromEither,
-    O.map(({ title }) => putTitle(title))
+    to.meta as PageMeta,
+    (v) => O.fromNullable(v.title),
+    O.map((v) => putTitle(v))
   );
 }) satisfies NavigationGuard;
