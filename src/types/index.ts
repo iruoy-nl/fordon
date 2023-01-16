@@ -27,3 +27,10 @@ export type Provider = {
 export type PageMeta = {
   title: string | null;
 };
+
+export type Vehicle = {
+  id: string;
+  model: string;
+  photo: string | null;
+  photoUrl: string | null;
+};

@@ -49,6 +49,13 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: "Garage",
         },
+        children: [
+          {
+            path: ":id",
+            name: "garage-details",
+            component: AppGaragePage,
+          },
+        ],
       },
       {
         path: "instellingen",
