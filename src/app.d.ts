@@ -1,12 +1,18 @@
-// See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
+import * as O from 'fp-ts/lib/Option';
+import type { User } from '/types';
+
 declare global {
 	namespace App {
-		// interface Error {}
-		// interface Locals {}
+		interface Error {
+			message: string;
+		}
+
+		interface Locals {
+			user: O.Option<User>;
+		}
+
 		// interface PageData {}
+
 		// interface Platform {}
 	}
 }
-
-export {};
