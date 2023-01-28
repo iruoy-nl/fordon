@@ -6,10 +6,9 @@
 
 <div class="row">
 	<div class="col">
-		<h2 class="mb-1">Welkom bij Fordon!</h2>
-		<p class="text-muted">
-			Vul hieronder jouw e-mailadres in om een account aan te maken of in te loggen.
-		</p>
+		<small class="text-muted">Stap 1/2</small>
+		<h2 class="mb-1">Inloggen via e-mail</h2>
+		<p>We zijn jouw e-mailadres nodig om door te kunnen naar Fordon.</p>
 	</div>
 
 	<div class="w-100 my-2" />
@@ -27,7 +26,7 @@
 		<div class="col">
 			<div class="alert alert-success">
 				<i class="bi bi-check-circle-fill me-1" />
-				We hebben een e-mail naar je verstuurd. Gebruik de link in de e-mail om in te loggen.
+				We hebben een e-mail naar je verstuurd waarmee je kunt inloggen. Dit tabblad kun je nu sluiten.
 			</div>
 		</div>
 	{/if}

@@ -12,7 +12,7 @@ export const actions = ({
     /**
      * Finalize the authentication process.
      */
-    confirm: async ({ request, cookies }) => {
+    default: async ({ request, cookies }) => {
         return pipe(
             getData(request),
             T.chain((data) => {

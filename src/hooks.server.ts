@@ -25,7 +25,7 @@ export const handle = (async ({ event, resolve }) => {
 
   // When the user is not set, deny access to `/app`.
   if (O.isNone(locals.user) && url.pathname.startsWith('/app')) {
-    throw redirect(302, '/oauth/challenge')
+    throw redirect(302, '/oauth')
   }
 
   return resolve(event);
