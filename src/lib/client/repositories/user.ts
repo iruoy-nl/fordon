@@ -1,6 +1,7 @@
 import { auth } from '$lib/client/firebase';
 import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, type ActionCodeSettings } from 'firebase/auth';
-import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
+import { constVoid, pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 
 export const sendMagicLink = (email: string, url: string): TE.TaskEither<App.Error, void> => {
@@ -18,9 +19,18 @@ export const sendMagicLink = (email: string, url: string): TE.TaskEither<App.Err
     );
 };
 
-export const isMagicLink = (link: string): boolean => {
+export const isMagicLink = (link: string): E.Either<App.Error, void> => {
     return pipe(
-        isSignInWithEmailLink(auth, link)
+        link,
+        E.fromPredicate(
+            (v) => isSignInWithEmailLink(auth, v),
+            () => {
+                return {
+                    message: 'De opgegeven link is geen magic link.',
+                };
+            }
+        ),
+        E.map(() => constVoid()),
     );
 };
 
