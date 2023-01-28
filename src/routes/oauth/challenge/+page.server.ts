@@ -10,7 +10,7 @@ export const actions = ({
     /**
      * Initiate the authentication proces.
      */
-    challenge: async ({ request }) => {
+    default: async ({ request }) => {
         return pipe(
             getData(request),
             T.chain((data) => {

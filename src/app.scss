@@ -11,10 +11,20 @@
 @import 'bootstrap/scss/helpers';
 @import 'bootstrap/scss/utilities/api';
 
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
 * {
 	box-sizing: border-box;
 }
 
-body {
+body,
+h1,
+h2,
+h3,
+p {
 	margin: 0;
+}
+
+button {
+	width: 100%;
 }

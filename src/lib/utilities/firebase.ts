@@ -1,5 +1,4 @@
-import { AuthErrorCodes, type AuthError } from "firebase/auth";
-import * as C from 'fp-ts/lib/Console';
+import type { AuthError } from "firebase/auth";
 
 export const handleError = (
     error?: unknown,
@@ -9,24 +8,29 @@ export const handleError = (
         const { code } = error as AuthError;
 
         switch (code) {
-            case AuthErrorCodes.EMAIL_EXISTS:
+            case 'auth/email-already-in-use':
                 return {
                     message: 'Het opgegeven e-mailadres is al in gebruik.',
                 };
 
-            case AuthErrorCodes.INVALID_EMAIL:
+            case 'auth/invalid-email':
                 return {
                     message: 'Het opgegeven e-mailaders is niet geldig.',
                 };
 
+            case 'auth/missing-email':
+                return {
+                    message: 'Het opgegeven van een e-mailadres is verplicht.',
+                };
+
             default:
-                C.error(error);
+                console.error(error);
 
                 return { message };
         }
     }
     catch (error) {
-        C.error(error);
+        console.error(error);
 
         return { message };
     }
