@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
-import { sendMagicLink } from '$lib/client/repositories/user';
-import { getData } from '$lib/utilities/form';
+import { sendMagicLink } from '$lib/server/repositories/user';
+import { getData } from '$lib/server/utilities/form';
 import { fail, type Actions } from '@sveltejs/kit';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';

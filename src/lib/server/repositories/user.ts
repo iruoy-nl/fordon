@@ -1,22 +1,86 @@
-import { auth } from '$lib/server/firebase';
-import { handleError } from '$lib/utilities/firebase';
+import { adminAuth } from '$lib/server/firebase/admin';
+import { auth } from '$lib/server/firebase/app';
+import { handleError } from '$lib/server/utilities/firebase';
 import type { DecodedIdToken } from 'firebase-admin/auth';
-import { pipe } from 'fp-ts/lib/function';
+import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signOut, type ActionCodeSettings } from 'firebase/auth';
+import * as E from 'fp-ts/lib/Either';
+import { constVoid, pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-export const createSessionCookie = (token: string, expiresIn: number): TE.TaskEither<App.Error, string> => {
+export const sendMagicLink = (
+    email: string,
+    url: string,
+): TE.TaskEither<App.Error, void> => {
+    const settings: ActionCodeSettings = { url, handleCodeInApp: true };
+
     return pipe(
         TE.tryCatch(
-            () => auth.createSessionCookie(token, { expiresIn: expiresIn * 1000 }),
+            () => sendSignInLinkToEmail(auth, email, settings),
+            handleError,
+        )
+    );
+};
+
+export const isMagicLink = (
+    link: string,
+): E.Either<App.Error, void> => {
+    return pipe(
+        link,
+        E.fromPredicate(
+            (v) => isSignInWithEmailLink(auth, v),
+            () => handleError(),
+        ),
+        E.map(() => constVoid()),
+    );
+};
+
+export const signInWithMagicLink = (
+    email: string,
+    link: string,
+): TE.TaskEither<App.Error, string> => {
+    return pipe(
+        TE.tryCatch(
+            () => signInWithEmailLink(auth, email, link),
+            handleError,
+        ),
+        TE.chain((credential) => {
+            return pipe(
+                TE.tryCatch(
+                    () => credential.user.getIdToken(),
+                    handleError,
+                ),
+            );
+        }),
+    );
+};
+
+export const logOut = (): TE.TaskEither<App.Error, void> => {
+    return pipe(
+        TE.tryCatch(
+            () => signOut(auth),
             handleError,
         ),
     );
 };
 
-export const verifySessionCookie = (cookie?: string): TE.TaskEither<App.Error, DecodedIdToken> => {
+export const createSessionCookie = (
+    token: string,
+    expiresIn: number,
+): TE.TaskEither<App.Error, string> => {
     return pipe(
         TE.tryCatch(
-            () => auth.verifySessionCookie(cookie || ''),
+            () => adminAuth.createSessionCookie(token, { expiresIn: expiresIn * 1000 }),
+            handleError,
+        ),
+    );
+};
+
+export const verifySessionCookie = (
+    cookie?: string,
+): TE.TaskEither<App.Error, DecodedIdToken> => {
+    return pipe(
+        TE.tryCatch(
+            () => adminAuth.verifySessionCookie(cookie || ''),
             handleError,
         ),
     );

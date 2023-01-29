@@ -1,6 +1,6 @@
-import { isMagicLink, signInWithMagicLink } from "$lib/client/repositories/user";
+import { isMagicLink, signInWithMagicLink } from "$lib/server/repositories/user";
 import { createSessionCookie } from "$lib/server/repositories/user";
-import { getData } from "$lib/utilities/form";
+import { getData } from "$lib/server/utilities/form";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { pipe } from "fp-ts/lib/function";
 import * as T from 'fp-ts/lib/Task';
