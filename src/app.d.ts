@@ -1,5 +1,3 @@
-import * as O from 'fp-ts/lib/Option';
-import type { User } from '/types';
 
 declare global {
 	namespace App {
@@ -8,7 +6,7 @@ declare global {
 		}
 
 		interface Locals {
-			user: O.Option<User>;
+			user: import('fp-ts/lib/Option').Option<import('$lib/types').User>;
 		}
 
 		// interface PageData {}
@@ -16,3 +14,5 @@ declare global {
 		// interface Platform {}
 	}
 }
+
+export { }

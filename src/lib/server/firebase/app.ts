@@ -29,4 +29,3 @@ export const auth = (() => {
 
     return auth;
 })();
-

@@ -1,6 +1,6 @@
 import { adminAuth } from '$lib/server/firebase/admin';
 import { auth } from '$lib/server/firebase/app';
-import { handleError } from '$lib/server/utilities/firebase';
+import { handleAuthError } from '$lib/server/utilities/firebase';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signOut, type ActionCodeSettings } from 'firebase/auth';
 import * as E from 'fp-ts/lib/Either';
@@ -16,7 +16,7 @@ export const sendMagicLink = (
     return pipe(
         TE.tryCatch(
             () => sendSignInLinkToEmail(auth, email, settings),
-            handleError,
+            handleAuthError,
         )
     );
 };
@@ -28,7 +28,7 @@ export const isMagicLink = (
         link,
         E.fromPredicate(
             (v) => isSignInWithEmailLink(auth, v),
-            () => handleError(),
+            () => handleAuthError(),
         ),
         E.map(() => constVoid()),
     );
@@ -41,13 +41,13 @@ export const signInWithMagicLink = (
     return pipe(
         TE.tryCatch(
             () => signInWithEmailLink(auth, email, link),
-            handleError,
+            handleAuthError,
         ),
         TE.chain((credential) => {
             return pipe(
                 TE.tryCatch(
                     () => credential.user.getIdToken(),
-                    handleError,
+                    handleAuthError,
                 ),
             );
         }),
@@ -58,7 +58,7 @@ export const logOut = (): TE.TaskEither<App.Error, void> => {
     return pipe(
         TE.tryCatch(
             () => signOut(auth),
-            handleError,
+            handleAuthError,
         ),
     );
 };
@@ -70,7 +70,7 @@ export const createSessionCookie = (
     return pipe(
         TE.tryCatch(
             () => adminAuth.createSessionCookie(token, { expiresIn: expiresIn * 1000 }),
-            handleError,
+            handleAuthError,
         ),
     );
 };
@@ -81,7 +81,7 @@ export const verifySessionCookie = (
     return pipe(
         TE.tryCatch(
             () => adminAuth.verifySessionCookie(cookie || ''),
-            handleError,
+            handleAuthError,
         ),
     );
 };

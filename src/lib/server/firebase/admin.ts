@@ -1,6 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { cert, getApp, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
 
 const name = 'fordon-admin';
 
@@ -23,4 +24,8 @@ export const adminApp = (() => {
 
 export const adminAuth = (() => {
     return getAuth(adminApp);
+})();
+
+export const firestore = (() => {
+    return getFirestore(adminApp);
 })();

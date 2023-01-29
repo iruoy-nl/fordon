@@ -10,3 +10,8 @@ export interface Page {
     title: string;
     href: string;
 }
+
+export interface Vehicle {
+    uid: string;
+    model: string;
+}

@@ -3,11 +3,13 @@ import * as O from 'fp-ts/lib/Option';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
-    if (O.isNone(locals.user)) {
+    const user = locals.user;
+
+    if (O.isNone(user)) {
         throw redirect(302, '/oauth');
     }
 
     return {
-        user: locals.user.value,
+        user: user.value,
     };
 }) satisfies LayoutServerLoad;

@@ -1,8 +1,11 @@
 import type { AuthError } from "firebase/auth";
+import type { FirestoreError } from "firebase/firestore";
 
-export const handleError = (
+const unknown = 'De communicatie met onze backend is mislukt.';
+
+export const handleAuthError = (
     error?: unknown,
-    message = 'De communicatie met onze backend is mislukt.',
+    message = unknown,
 ): App.Error => {
     try {
         const { code } = error as AuthError;
@@ -24,14 +27,37 @@ export const handleError = (
                 };
 
             default:
-                console.error(error);
-
                 return { message };
         }
     }
     catch (error) {
-        console.error(error);
+        return { message };
+    }
+};
 
+export const handleFirestoreError = (
+    error?: unknown,
+    message = unknown,
+): App.Error => {
+    try {
+        const { code } = error as FirestoreError;
+
+        switch (code) {
+            case 'not-found':
+                return {
+                    message: 'Het opgevraagde document kon niet worden gevonden.',
+                };
+
+            case 'permission-denied':
+                return {
+                    message: 'Je hebt geen toegang tot deze documenten.',
+                };
+
+            default:
+                return { message };
+        }
+    }
+    catch (error) {
         return { message };
     }
 };
