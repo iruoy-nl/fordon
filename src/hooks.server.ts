@@ -16,7 +16,6 @@ export const handle = (async ({ event, resolve }) => {
     TE.map((token) => {
       return {
         uid: token.uid,
-        photoURL: O.fromNullable(token.picture),
         email: O.fromNullable(token.email),
       };
     }),

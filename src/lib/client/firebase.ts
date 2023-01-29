@@ -11,7 +11,7 @@ const config = {
 	measurementId: 'G-WKLJEL00EV'
 };
 
-const app = initializeApp(config);
+const app = initializeApp(config, 'fordon-client');
 const auth = getAuth(app);
 
 auth.setPersistence(inMemoryPersistence);

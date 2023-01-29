@@ -10,7 +10,7 @@ const config = {
 	}),
 };
 
-const app = initializeApp(config);
+const app = initializeApp(config, 'fordon-admin');
 const auth = getAuth(app);
 
 export { app, auth };
