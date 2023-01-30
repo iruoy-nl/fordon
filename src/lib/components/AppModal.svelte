@@ -16,10 +16,19 @@
 	 * Indicate that the modal should be closed.
 	 */
 	const close = () => dispatch('close');
+
+	/**
+	 * Close when the 'Esc' key has been pressed.
+	 */
+	const onKeydown = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') close();
+	};
 </script>
 
+<svelte:window on:keydown={onKeydown} />
+
 {#if show}
-	<div class="modal" on:click={close} on:keypress={close} transition:fly={flyTransition}>
+	<div class="modal" transition:fly={flyTransition} tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				{#if $$slots.header}
@@ -43,11 +52,17 @@
 		</div>
 	</div>
 
-	<div class="modal-backdrop show" transition:fade={fadeTransition} />
+	<div
+		class="modal-backdrop show"
+		transition:fade={fadeTransition}
+		on:click={close}
+		on:keypress={close}
+	/>
 {/if}
 
 <style lang="scss">
 	.modal {
 		display: block;
+		pointer-events: none;
 	}
 </style>

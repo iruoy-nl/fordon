@@ -9,7 +9,7 @@
 			<p>Een overzicht van al jouw voertuigen.</p>
 		</div>
 
-		<div class="w-100 my-4" />
+		<div class="w-100 my-3" />
 
 		<div class="col">
 			<slot />
