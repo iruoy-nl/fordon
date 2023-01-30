@@ -29,7 +29,7 @@
 			{#each sections as { href, icon, title }}
 				<a
 					{href}
-					class="list-group-item rounded border-0 p-3"
+					class="list-group-item rounded border-0 p-3 my-1"
 					class:active={$page.url.pathname.startsWith(href)}
 				>
 					<i class="bi bi-{icon} me-2" />
