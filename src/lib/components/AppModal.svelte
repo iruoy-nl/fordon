@@ -1,0 +1,53 @@
+<script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import { fade, fly } from 'svelte/transition';
+
+	/**
+	 * Whether the modal is shown.
+	 */
+	export let show: boolean = false;
+
+	const dispatch = createEventDispatcher();
+
+	const flyTransition = { y: -50, duration: 300 };
+	const fadeTransition = { duration: 300 };
+
+	/**
+	 * Indicate that the modal should be closed.
+	 */
+	const close = () => dispatch('close');
+</script>
+
+{#if show}
+	<div class="modal" on:click={close} on:keypress={close} transition:fly={flyTransition}>
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				{#if $$slots.header}
+					<div class="modal-header">
+						<slot name="header" />
+					</div>
+				{/if}
+
+				{#if $$slots.body}
+					<div class="modal-body">
+						<slot name="body" />
+					</div>
+				{/if}
+
+				{#if $$slots.footer}
+					<div class="modal-footer">
+						<slot name="footer" />
+					</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-backdrop show" transition:fade={fadeTransition} />
+{/if}
+
+<style lang="scss">
+	.modal {
+		display: block;
+	}
+</style>
