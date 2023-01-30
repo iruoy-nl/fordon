@@ -1,17 +1,20 @@
 import * as O from 'fp-ts/lib/Option';
 
 export interface User {
-    uid: string;
-    email: O.Option<string>;
+  id: string;
+  email: O.Option<string>;
 }
 
 export interface Page {
-    icon: string;
-    title: string;
-    href: string;
+  icon: string;
+  title: string;
+  href: string;
 }
 
 export interface Vehicle {
-    uid: string;
-    model: string;
+  id: string;
+  model: string;
+  userId: string;
 }
+
+export type VehicleForm = Omit<Vehicle, 'id'>;

@@ -9,11 +9,11 @@
 
 	export let data: PageData;
 
-	$: uid = $page.url.searchParams.get('uid');
+	$: id = $page.url.searchParams.get('id');
 
 	$: vehicle = pipe(
 		data.vehicles,
-		A.findFirst((v) => v.uid === uid)
+		A.findFirst((v) => v.id === id)
 	);
 
 	$: show = O.isSome(vehicle);
@@ -24,7 +24,7 @@
 		<div class="col-4">
 			<div class="card">
 				<div class="card-body">
-					<a class="card-title" href="/app/vehicles?uid={vehicle.uid}">
+					<a class="card-title text-primary" href="/app/vehicles?id={vehicle.id}">
 						{vehicle.model}
 					</a>
 					<div class="card-text">32.948km</div>

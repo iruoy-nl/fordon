@@ -1,12 +1,12 @@
-import { verifySessionCookie } from '$lib/server/repositories/user';
-import { redirect, type Handle } from '@sveltejs/kit';
-import { pipe } from 'fp-ts/lib/function';
+import {verifySessionCookie} from '$lib/server/repositories/user';
+import {redirect, type Handle} from '@sveltejs/kit';
+import {pipe} from 'fp-ts/lib/function';
 import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-export const handle = (async ({ event, resolve }) => {
-  const { locals, cookies, url } = event;
+export const handle = (async ({event, resolve}) => {
+  const {locals, cookies, url} = event;
 
   // Set the user within the locals based on the session.
   const cookie = cookies.get('session');
@@ -15,7 +15,7 @@ export const handle = (async ({ event, resolve }) => {
     verifySessionCookie(cookie),
     TE.map((token) => {
       return {
-        uid: token.uid,
+        id: token.uid,
         email: O.fromNullable(token.email),
       };
     }),
