@@ -4,20 +4,17 @@
 	export let data: PageData;
 </script>
 
-<svelte:head>
-	<title>Fordon - Voertuigen</title>
-</svelte:head>
-
-<div class="container-small p-5">
-	<div class="row">
-		<div class="col">
-			<h1>Voertuigen</h1>
+<div class="row">
+	{#each data.vehicles as vehicle}
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<a class="card-title" href="/app/vehicles?selected={vehicle.uid}">
+						{vehicle.model}
+					</a>
+					<div class="card-text">32.948km</div>
+				</div>
+			</div>
 		</div>
-
-		<div class="w-100 my-4" />
-
-		<div class="col">
-			<pre>{JSON.stringify(data.vehicles, null, 2)}</pre>
-		</div>
-	</div>
+	{/each}
 </div>

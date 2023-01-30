@@ -1,7 +1,8 @@
 import { listVehicles } from "$lib/server/repositories/vehicle";
-import { redirect, type ServerLoad } from "@sveltejs/kit";
+import { error, redirect, type ServerLoad } from "@sveltejs/kit";
 import { pipe } from "fp-ts/lib/function";
 import * as O from 'fp-ts/lib/Option';
+import * as TE from 'fp-ts/lib/TaskEither';
 
 export const load = (async ({ locals }) => {
     const user = locals.user;
@@ -12,7 +13,13 @@ export const load = (async ({ locals }) => {
 
     const vehicles = pipe(
         user.value.uid,
-        listVehicles
+        listVehicles,
+        TE.match(
+            (e) => {
+                throw error(422, e);
+            },
+            (vehicles) => vehicles,
+        ),
     )();
 
     return {
