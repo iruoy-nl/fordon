@@ -26,8 +26,8 @@
 
 <style lang="scss">
 	.card-img-top {
-		height: 12rem;
-		background: $secondary;
+		height: 10rem;
+		background: $light;
 		object-fit: cover;
 	}
 </style>
