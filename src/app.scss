@@ -36,8 +36,3 @@ p {
 button {
 	width: 100%;
 }
-
-.container-small {
-	@extend .container;
-	max-width: 960px;
-}
