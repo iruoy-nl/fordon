@@ -3,7 +3,7 @@ import {handleFirestoreError} from '$lib/server/utilities/firebase';
 import type {Vehicle, VehicleForm} from "$lib/types";
 import type {DocumentReference, FirestoreDataConverter, QueryDocumentSnapshot} from 'firebase-admin/firestore';
 import * as A from 'fp-ts/lib/Array';
-import {pipe} from 'fp-ts/lib/function';
+import {constVoid, pipe} from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 
 const converter = ({
@@ -57,7 +57,7 @@ export function listVehicles(
 
 export function addVehicle(
   data: VehicleForm,
-): TE.TaskEither<App.Error, Vehicle> {
+): TE.TaskEither<App.Error, void> {
   const query = firestore
     .collection('vehicles')
     .withConverter(converter);
@@ -67,11 +67,39 @@ export function addVehicle(
       () => query.add({id: '', ...data}),
       handleFirestoreError,
     ),
-    TE.map((reference) => {
-      return {
-        id: reference.id,
-        ...data,
-      };
-    }),
+    TE.map(constVoid),
+  );
+}
+
+export function editVehicle(
+  vehicleId: string,
+  data: VehicleForm,
+): TE.TaskEither<App.Error, void> {
+  const query = firestore
+    .collection('vehicles')
+    .doc(vehicleId);
+
+  return pipe(
+    TE.tryCatch(
+      () => query.update({id: vehicleId, ...data}),
+      handleFirestoreError,
+    ),
+    TE.map(constVoid),
+  );
+}
+
+export function removeVehicle(
+  vehicleId: string,
+): TE.TaskEither<App.Error, void> {
+  const query = firestore
+    .collection('vehicles')
+    .doc(vehicleId);
+
+  return pipe(
+    TE.tryCatch(
+      () => query.delete(),
+      handleFirestoreError,
+    ),
+    TE.map(constVoid),
   );
 }

@@ -1,27 +1,24 @@
-import {listVehicles} from "$lib/server/repositories/vehicle";
-import {error, redirect, type ServerLoad} from "@sveltejs/kit";
-import {pipe} from "fp-ts/lib/function";
-import * as O from 'fp-ts/lib/Option';
+import {listVehicles} from '$lib/server/repositories/vehicle';
+import {getUser} from '$lib/server/utilities/sveltekit';
+import {error} from '@sveltejs/kit';
+import {pipe} from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
+import type {PageServerLoad} from './$types';
 
 export const load = (async ({locals}) => {
-  const user = locals.user;
-
-  if (O.isNone(user)) {
-    throw redirect(302, '/oauth');
-  }
+  const user = getUser(locals);
 
   const vehicles = pipe(
-    listVehicles(user.value.id),
+    listVehicles(user.id),
     TE.match(
       (e) => {
         throw error(422, e);
       },
-      (vehicles) => vehicles,
+      (a) => a,
     ),
-  )();
+  );
 
   return {
-    vehicles,
+    vehicles: vehicles(),
   };
-}) satisfies ServerLoad;
+}) satisfies PageServerLoad;

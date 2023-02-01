@@ -2,11 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
-	/**
-	 * Whether the modal is shown.
-	 */
-	export let show: boolean = false;
-
 	const dispatch = createEventDispatcher();
 
 	const flyTransition = { y: -50, duration: 300 };
@@ -27,38 +22,36 @@
 
 <svelte:window on:keydown={onKeydown} />
 
-{#if show}
-	<div class="modal" transition:fly={flyTransition} tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				{#if $$slots.header}
-					<div class="modal-header">
-						<slot name="header" />
-					</div>
-				{/if}
+<div class="modal" transition:fly={flyTransition} tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			{#if $$slots.header}
+				<div class="modal-header">
+					<slot name="header" />
+				</div>
+			{/if}
 
-				{#if $$slots.body}
-					<div class="modal-body">
-						<slot name="body" />
-					</div>
-				{/if}
+			{#if $$slots.body}
+				<div class="modal-body">
+					<slot name="body" />
+				</div>
+			{/if}
 
-				{#if $$slots.footer}
-					<div class="modal-footer">
-						<slot name="footer" />
-					</div>
-				{/if}
-			</div>
+			{#if $$slots.footer}
+				<div class="modal-footer">
+					<slot name="footer" />
+				</div>
+			{/if}
 		</div>
 	</div>
+</div>
 
-	<div
-		class="modal-backdrop show"
-		transition:fade={fadeTransition}
-		on:click={close}
-		on:keypress={close}
-	/>
-{/if}
+<div
+	class="modal-backdrop show"
+	transition:fade={fadeTransition}
+	on:click={close}
+	on:keypress={close}
+/>
 
 <style lang="scss">
 	.modal {
