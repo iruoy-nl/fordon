@@ -1,5 +1,6 @@
 import type {AuthError} from "firebase/auth";
 import type {FirestoreError} from "firebase/firestore";
+import {firestore} from "$lib/server/firebase/admin";
 
 const unknown = 'De communicatie met onze backend is mislukt.';
 
@@ -37,7 +38,7 @@ export function handleAuthError(
 
 export function handleFirestoreError(
   error?: unknown,
-  message = unknown,
+  message = 'Er is een onbekende fout opgetreden.',
 ): App.Error {
   try {
     const {code} = error as FirestoreError;

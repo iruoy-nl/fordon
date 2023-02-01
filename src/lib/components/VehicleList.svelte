@@ -11,7 +11,7 @@
 				<div class="card-img-top" />
 
 				<div class="card-body">
-					<a class="card-title text-primary" href="/app/vehicles/edit?id={vehicle.id}">
+					<a class="card-title text-primary" href="/app/vehicles?edit={vehicle.id}">
 						{vehicle.model}
 					</a>
 

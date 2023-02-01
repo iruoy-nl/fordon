@@ -1,99 +1,65 @@
 import {firestore} from '$lib/server/firebase/admin';
 import {handleFirestoreError} from '$lib/server/utilities/firebase';
-import type {Vehicle, VehicleForm} from "$lib/types";
-import type {DocumentReference, FirestoreDataConverter, QueryDocumentSnapshot} from 'firebase-admin/firestore';
+import type {AddVehicle, EditVehicle, ListVehicles, RemoveVehicle, Vehicle} from "$lib/types";
 import * as A from 'fp-ts/lib/Array';
 import {constVoid, pipe} from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-const converter = ({
-  fromFirestore: (snapshot: QueryDocumentSnapshot): Vehicle => {
-    const data = snapshot.data();
-    const userRef = (data.user as DocumentReference);
-
-    return {
-      id: snapshot.id,
-      model: data.model,
-      userId: userRef.id,
-    };
-  },
-  toFirestore: (object: Vehicle): Record<string, unknown> => {
-    const userRef = firestore
-      .collection('users')
-      .doc(object.userId);
-
-    return {
-      model: object.model,
-      user: userRef,
-    };
-  },
-}) satisfies FirestoreDataConverter<Vehicle>;
-
-export function listVehicles(
-  userId: string,
-): TE.TaskEither<App.Error, Vehicle[]> {
-  const user = firestore
-    .collection('users')
-    .doc(userId);
-
+export const listVehicles = ((config) => {
   const query = firestore
     .collection('vehicles')
-    .where('user', '==', user)
-    .withConverter(converter);
+    .where('user', '==', config.userId);
 
   return pipe(
     TE.tryCatch(
       () => query.get(),
       handleFirestoreError,
     ),
-    TE.map((snapshot) => {
+    TE.map((a) => {
       return pipe(
-        snapshot.docs,
-        A.map((document) => document.data() as Vehicle),
+        a.docs,
+        A.map((b) => {
+          const id = b.id;
+          const data = b.data();
+
+          return {id, ...data} as Vehicle;
+        }),
       );
     }),
   );
-}
+}) satisfies ListVehicles;
 
-export function addVehicle(
-  data: VehicleForm,
-): TE.TaskEither<App.Error, void> {
+export const addVehicle = ((data, config) => {
   const query = firestore
-    .collection('vehicles')
-    .withConverter(converter);
+    .collection('vehicles');
 
   return pipe(
     TE.tryCatch(
-      () => query.add({id: '', ...data}),
+      () => query.add({...data, user: config.userId}),
       handleFirestoreError,
     ),
     TE.map(constVoid),
   );
-}
+}) satisfies AddVehicle;
 
-export function editVehicle(
-  vehicleId: string,
-  data: VehicleForm,
-): TE.TaskEither<App.Error, void> {
+export const editVehicle = ((id, data, config) => {
   const query = firestore
     .collection('vehicles')
-    .doc(vehicleId);
+    .doc(id);
 
   return pipe(
     TE.tryCatch(
-      () => query.update({id: vehicleId, ...data}),
+      () => query.update({...data, user: config.userId}),
       handleFirestoreError,
     ),
     TE.map(constVoid),
   );
-}
+}) satisfies EditVehicle;
 
-export function removeVehicle(
-  vehicleId: string,
-): TE.TaskEither<App.Error, void> {
+export const removeVehicle = ((id) => {
   const query = firestore
     .collection('vehicles')
-    .doc(vehicleId);
+    .doc(id);
 
   return pipe(
     TE.tryCatch(
@@ -102,4 +68,4 @@ export function removeVehicle(
     ),
     TE.map(constVoid),
   );
-}
+}) satisfies RemoveVehicle;

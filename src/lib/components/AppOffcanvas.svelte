@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
 	/**
@@ -11,14 +12,22 @@
 	 */
 	export let show = false;
 
+	const dispatch = createEventDispatcher();
+
 	const offcanvasFly = { x: width, duration: 300 };
 	const offcanvasFade = { duration: 300 };
+
+	/**
+	 * Dispatch an event when it is openend.
+	 */
+	$: if (show) dispatch('opened');
 
 	/**
 	 * Indicate that the offcanvas should be closed.
 	 */
 	function close() {
 		show = false;
+		dispatch('closed');
 	}
 
 	/**
@@ -40,12 +49,21 @@
 		style="min-width: {width}px;"
 		tabindex="-1"
 	>
-		<div class="offcanvas-header">
-			<slot name="header" />
-		</div>
-		<div class="offcanvas-body">
+		{#if $$slots.header}
+			<div class="offcanvas-header p-4 border-bottom">
+				<slot name="header" />
+			</div>
+		{/if}
+
+		<div class="offcanvas-body p-4">
 			<slot />
 		</div>
+
+		{#if $$slots.footer}
+			<div class="offcanvas-footer p-4 border-top">
+				<slot name="footer" />
+			</div>
+		{/if}
 	</div>
 
 	<div
