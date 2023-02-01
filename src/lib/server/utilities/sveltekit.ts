@@ -1,5 +1,6 @@
 import type {User} from "$lib/types";
 import {redirect} from "@sveltejs/kit";
+import {pipe} from "fp-ts/lib/function";
 import * as O from 'fp-ts/lib/Option';
 
 /**
@@ -10,11 +11,13 @@ import * as O from 'fp-ts/lib/Option';
 export function getUser(
   locals: App.Locals,
 ): User {
-  const user = locals.user;
-
-  if (O.isNone(user)) {
-    throw redirect(302, '/oauth');
-  }
-
-  return user.value;
+  return pipe(
+    locals.user,
+    O.match(
+      () => {
+        throw redirect(302, '/oauth');
+      },
+      (a) => a,
+    ),
+  );
 }

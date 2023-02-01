@@ -1,15 +1,10 @@
-import { redirect } from '@sveltejs/kit';
-import * as O from 'fp-ts/lib/Option';
-import type { LayoutServerLoad } from './$types';
+import {getUser} from '$lib/server/utilities/sveltekit';
+import type {LayoutServerLoad} from './$types';
 
-export const load = (async ({ locals }) => {
-    const user = locals.user;
+export const load = (async ({locals}) => {
+  const user = getUser(locals);
 
-    if (O.isNone(user)) {
-        throw redirect(302, '/oauth');
-    }
-
-    return {
-        user: user.value,
-    };
+  return {
+    user,
+  };
 }) satisfies LayoutServerLoad;
