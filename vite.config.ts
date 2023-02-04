@@ -1,18 +1,24 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import type { UserConfig } from 'vite';
+import vue from "@vitejs/plugin-vue";
+import {join, resolve} from "path";
+import {defineConfig} from "vite";
 
-const config: UserConfig = {
-	plugins: [sveltekit()],
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
-	},
-	css: {
-		preprocessorOptions: {
-			scss: {
-				additionalData: '@use "src/variables.scss" as *;'
-			}
-		}
-	}
-};
+const base = resolve("./src");
 
-export default config;
+export default defineConfig({
+  plugins: [vue()],
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@use "src/variables.scss" as *;',
+      },
+    },
+  },
+
+  resolve: {
+    alias: {
+      bootstrap: join(__dirname, "/node_modules/bootstrap"),
+      "~": join(base, "/"),
+    },
+  },
+});
