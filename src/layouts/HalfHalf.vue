@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="container-fluid">
     <div class="row vh-100">
@@ -16,6 +14,8 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .image {

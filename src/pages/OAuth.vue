@@ -1,78 +1,3 @@
-<script setup lang="ts">
-import * as E from "fp-ts/lib/Either";
-import {onMounted, ref, watch} from "vue";
-import {useRouter} from "vue-router";
-import AppLogo from "~/components/AppLogo.vue";
-import HalfHalf from "~/layouts/HalfHalf.vue";
-import {addNotification} from "~/state/notifications";
-import {challenge, getAll, verify} from "~/state/oauth";
-import {Provider} from "~/types";
-
-const {currentRoute, push} = useRouter();
-
-/**
- * The available providers.
- */
-const providers = ref<Provider[]>([]);
-
-onMounted(onLoad);
-watch(currentRoute, onLoad);
-
-/**
- * Determines which step the user is currently in.
- */
-async function onLoad() {
-  const {code, state} = currentRoute.value.query;
-
-  if (code && state) {
-    await handleRedirect(code as string, state as string);
-  } else {
-    await listProviders();
-  }
-}
-
-/**
- * Loads the available providers.
- */
-async function listProviders() {
-  const task = await getAll();
-
-  if (E.isLeft(task)) {
-    addNotification({
-      type: "danger",
-      message: task.left.message,
-    });
-
-    return;
-  }
-
-  providers.value = task.right;
-}
-
-/**
- * Verifies the provided details.
- *
- * @param code The incoming code,
- * @param state The incoming state.
- */
-async function handleRedirect(code: string, state: string) {
-  const task = await verify(code, state);
-
-  if (E.isLeft(task)) {
-    addNotification({
-      type: "danger",
-      message: task.left.message,
-    });
-
-    push({name: "oauth"});
-
-    return;
-  }
-
-  push({name: "app"});
-}
-</script>
-
 <template>
   <HalfHalf>
     <template #left>
@@ -127,6 +52,52 @@ async function handleRedirect(code: string, state: string) {
   </HalfHalf>
 </template>
 
-<style scoped lang="scss">
+<script setup lang="ts">
+import {pipe} from "fp-ts/lib/function";
+import * as TE from 'fp-ts/lib/TaskEither';
+import {onMounted, watch} from "vue";
+import {useRouter} from "vue-router";
+import AppLogo from "~/components/AppLogo.vue";
+import HalfHalf from "~/layouts/HalfHalf.vue";
+import {challenge, listProviders, providers, verify} from "~/state/oauth";
 
-</style>
+const {currentRoute, push} = useRouter();
+
+onMounted(onLoad);
+watch(currentRoute, onLoad);
+
+/**
+ * Determines which step the user is currently in.
+ */
+async function onLoad() {
+  const {code, state} = currentRoute.value.query;
+
+  if (code && state) {
+    await handleRedirect(code as string, state as string);
+  } else {
+    await pipe(
+      listProviders(),
+    )();
+  }
+}
+
+/**
+ * Verifies the provided details.
+ *
+ * @param code The incoming code,
+ * @param state The incoming state.
+ */
+async function handleRedirect(code: string, state: string) {
+  await pipe(
+    verify(code, state),
+    TE.match(
+      () => {
+        push({name: 'oauth'});
+      },
+      () => {
+        push({name: 'app'});
+      },
+    ),
+  )();
+}
+</script>

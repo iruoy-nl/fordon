@@ -1,5 +1,4 @@
 import * as A from "fp-ts/lib/Array";
-import * as E from "fp-ts/lib/Either";
 import {pipe} from "fp-ts/lib/function";
 import * as TE from "fp-ts/lib/TaskEither";
 import {ClientResponseError} from "pocketbase";
@@ -8,34 +7,31 @@ import {pb} from "~/di";
 import {getFileUrl} from "~/services/url";
 import {Failure, Vehicle} from "~/types";
 
-/**
- * The name of the collection.
- */
 const collection = "vehicles";
 
 /**
- * The user's vehicles.
+ * The state.
  */
 export const vehicles = ref<Vehicle[]>([]);
 
 /**
- * Gets the user's vehicles.
+ * List vehicles.
  */
-export const getVehicles = async (): Promise<E.Either<Failure, void>> => {
+export const listVehicles = (): TE.TaskEither<Failure, void> => {
   return pipe(
     TE.tryCatch(
       () => pb.collection(collection).getFullList(),
-      (e) => {
-        const error = e as ClientResponseError;
+      (a) => {
+        const error = a as ClientResponseError;
 
         return {message: error.message};
       }
     ),
-    TE.map((values) => {
-      pipe(
-        values,
-        A.map((v) => {
-          const vehicle = v.export() as Vehicle;
+    TE.map((b) => {
+      return pipe(
+        b,
+        A.map((c) => {
+          const vehicle = c.export() as Vehicle;
 
           // Correctly associate the url of the photo.
           if (vehicle.photo !== null) {
@@ -48,8 +44,11 @@ export const getVehicles = async (): Promise<E.Either<Failure, void>> => {
 
           return vehicle;
         }),
-        (v) => (vehicles.value = v)
       );
-    })
-  )();
+    }),
+    TE.map((d) => {
+      // Set the state.
+      vehicles.value = d;
+    }),
+  );
 };

@@ -1,21 +1,34 @@
-import * as E from "fp-ts/lib/Either";
 import {constVoid, pipe} from "fp-ts/lib/function";
 import * as TE from "fp-ts/lib/TaskEither";
+import {ClientResponseError} from "pocketbase";
+import {ref} from "vue";
 import {pb, redirectUrl} from "~/di";
 import {getItem, putItem} from "~/services/storage";
 import {Failure, Provider} from "~/types";
 
 /**
- * Get all providers.
+ * The state
  */
-export const getAll = (): Promise<E.Either<Failure, Provider[]>> => {
+export const providers = ref<Provider[]>([]);
+
+/**
+ * List providers
+ */
+export const listProviders = (): TE.TaskEither<Failure, void> => {
   return pipe(
     TE.tryCatch(
       () => pb.collection("users").listAuthMethods(),
-      () => ({message: "Er is een onbekende fout opgetreden."})
+      (a) => {
+        const error = a as ClientResponseError;
+
+        return {message: error.message};
+      }
     ),
-    TE.map((r) => r.authProviders)
-  )();
+    TE.map((b) => {
+      // Set the state
+      providers.value = b.authProviders;
+    })
+  );
 };
 
 /**
@@ -36,11 +49,10 @@ export const challenge = (provider: Provider): void => {
  * @param code The code received by the provider.
  * @param state The current state.
  */
-export const verify = async (
+export const verify = (
   code: string,
   state: string
-): Promise<E.Either<Failure, void>> => {
-  //
+): TE.TaskEither<Failure, void> => {
   const provider = getItem<Provider>("provider");
 
   return pipe(
@@ -101,7 +113,7 @@ export const verify = async (
         })
       );
     })
-  )();
+  );
 };
 
 /**

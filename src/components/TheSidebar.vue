@@ -1,34 +1,3 @@
-<script setup lang="ts">
-import * as O from "fp-ts/lib/Option";
-import {ref} from "vue";
-import {useRouter} from "vue-router";
-import AppLogo from "~/components/AppLogo.vue";
-import {clear} from "~/state/oauth";
-import {user} from "~/state/user";
-
-const {push} = useRouter();
-
-/**
- * The pages the navigation should display.
- */
-const pages = ref([
-  {icon: "speedometer", title: "Overzicht", name: "dashboard"},
-  {icon: "signpost", title: "Kilometers", name: "mileage"},
-  {icon: "tools", title: "Onderhoud", name: "maintenance"},
-  {icon: "card-heading", title: "Garage", name: "garage"},
-  {icon: "gear", title: "Instellingen", name: "settings"},
-]);
-
-/**
- * Logs out the user.
- */
-const logout = () => {
-  clear();
-
-  push({name: "oauth"});
-};
-</script>
-
 <template>
   <div class="row h-100 justify-content-between border-end p-4">
     <div class="col">
@@ -74,6 +43,32 @@ const logout = () => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<script setup lang="ts">
+import * as O from "fp-ts/lib/Option";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+import AppLogo from "~/components/AppLogo.vue";
+import {clear} from "~/state/oauth";
+import {user} from "~/state/user";
 
-</style>
+const {push} = useRouter();
+
+/**
+ * The pages the navigation should display.
+ */
+const pages = ref([
+  // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
+  // {icon: "signpost", title: "Kilometers", name: "mileage"},
+  // {icon: "tools", title: "Onderhoud", name: "maintenance"},
+  {icon: "card-heading", title: "Voertuigen", name: "vehicles"},
+  // {icon: "gear", title: "Instellingen", name: "settings"},
+]);
+
+/**
+ * Logs out the user.
+ */
+const logout = () => {
+  clear();
+  push({name: "oauth"});
+};
+</script>

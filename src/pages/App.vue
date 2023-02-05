@@ -1,12 +1,8 @@
-<script setup lang="ts">
-import TheNavigation from "~/components/TheNavigation.vue";
-</script>
-
 <template>
   <div class="container-fluid">
     <div class="row vh-100">
       <div class="col-2">
-        <TheNavigation></TheNavigation>
+        <TheSidebar />
       </div>
 
       <div class="col-10">
@@ -16,4 +12,6 @@ import TheNavigation from "~/components/TheNavigation.vue";
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<script setup lang="ts">
+import TheSidebar from '~/components/TheSidebar.vue';
+</script>
