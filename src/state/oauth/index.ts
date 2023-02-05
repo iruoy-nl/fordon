@@ -1,5 +1,5 @@
 import * as E from "fp-ts/lib/Either";
-import {pipe} from "fp-ts/lib/function";
+import {constVoid, pipe} from "fp-ts/lib/function";
 import * as TE from "fp-ts/lib/TaskEither";
 import {pb, redirectUrl} from "~/di";
 import {getItem, putItem} from "~/services/storage";
@@ -74,7 +74,7 @@ export const verify = async (
                 return {message: "Er is een onbekende fout opgetreden."};
               }
             ),
-            TE.map((u) => {
+            TE.chain((u) => {
               // The authentication was successfull, update user data.
               const name = u.meta?.name;
               const avatarUrl = u.meta?.avatarUrl;
@@ -94,7 +94,7 @@ export const verify = async (
                     };
                   }
                 ),
-                () => { }
+                TE.map(constVoid),
               );
             })
           );
