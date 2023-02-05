@@ -60,7 +60,7 @@ const pages = ref([
   // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
   // {icon: "signpost", title: "Kilometers", name: "mileage"},
   // {icon: "tools", title: "Onderhoud", name: "maintenance"},
-  {icon: "card-heading", title: "Voertuigen", name: "vehicles"},
+  {icon: "card-heading", title: "Voertuigen", name: "vehicle-list"},
   // {icon: "gear", title: "Instellingen", name: "settings"},
 ]);
 
