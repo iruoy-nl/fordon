@@ -5,6 +5,7 @@ import AppVehicleEdit from '~/pages/AppVehicleEdit.vue';
 import AppVehicleList from '~/pages/AppVehicleList.vue';
 import AppVehicleShow from '~/pages/AppVehicleShow.vue';
 import OAuthPage from "~/pages/OAuth.vue";
+import {isAuthenticated} from "./middleware";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -44,6 +45,16 @@ const router = createRouter({
     }
   ],
   linkActiveClass: "active",
+});
+
+router.beforeEach((to, from, next) => {
+  const protect = /^\/app.*/;
+
+  if (protect.test(to.path)) {
+    return isAuthenticated(to, from, next);
+  }
+
+  next();
 });
 
 export default router;
