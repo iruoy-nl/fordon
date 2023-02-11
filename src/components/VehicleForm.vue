@@ -29,7 +29,7 @@ const photo = string('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="file" name="photo" :value="vehicle?.photo" :validator="photo">
+        <BaseFormInput type="file" name="photo" :value="null" :validator="photo">
           Foto
         </BaseFormInput>
       </div>
@@ -53,5 +53,4 @@ const photo = string('De foto is verplicht.');
       </div>
     </div>
   </BaseForm>
-
 </template>

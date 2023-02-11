@@ -4,7 +4,7 @@ import * as O from 'fp-ts/lib/Option';
 import {onMounted} from 'vue';
 import {useRouter} from 'vue-router';
 import Centered from '~/layouts/Centered.vue';
-import {getOne, selected} from '~/state/vehicle';
+import {getById, selected} from '~/state/vehicle';
 
 const {currentRoute} = useRouter();
 
@@ -12,7 +12,7 @@ onMounted(async () => {
   const id = String(currentRoute.value.params.id);
 
   await pipe(
-    getOne(id)
+    getById(id)
   )();
 });
 </script>

@@ -1,4 +1,5 @@
 import {pipe} from "fp-ts/lib/function";
+import * as A from 'fp-ts/lib/Array';
 import * as O from 'fp-ts/lib/Option';
 import * as TE from "fp-ts/lib/TaskEither";
 import {ClientResponseError, Record} from "pocketbase";
@@ -56,7 +57,7 @@ export function getAll(): TE.TaskEither<Error, void> {
 /**
  * Get one vehicle.
  */
-export function getOne(
+export function getById(
   id: string,
 ): TE.TaskEither<Error, void> {
   return pipe(
@@ -96,7 +97,41 @@ export function addOne(
     }),
     TE.map((c) => {
       // Set the state.
-      vehicles.value = [...vehicles.value, c];
+      vehicles.value = pipe(
+        vehicles.value,
+        A.append(c),
+      );
+    }),
+  );
+}
+
+/**
+ * Edit a vehicle.
+ */
+export function editById(
+  id: string,
+  data: FormData,
+): TE.TaskEither<Error, void> {
+  // Associates this vehicle with the correct user.
+  pipe(
+    user.value,
+    O.map((a) => data.append('user', a.id)),
+  );
+
+  return pipe(
+    TE.tryCatch(
+      () => pb.collection(collection).update(id, data),
+      (a) => a as ClientResponseError,
+    ),
+    TE.map((b) => {
+      return toVehicle(b);
+    }),
+    TE.map((c) => {
+      // Set the state.
+      vehicles.value = pipe(
+        vehicles.value,
+        A.map((d) => c.id === d.id ? c : d),
+      );
     }),
   );
 }
