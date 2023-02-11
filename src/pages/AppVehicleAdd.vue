@@ -2,27 +2,10 @@
 import BaseForm from '~/components/BaseForm.vue';
 import BaseFormInput from '~/components/BaseFormInput.vue';
 import Centered from '~/layouts/Centered.vue';
-import {Error} from '~/types';
+import {makeDecodeString} from '~/services/form';
 
-function validateModel(
-  value: unknown,
-): Error | null {
-  if (typeof value !== 'string' || value.length === 0) {
-    return {message: 'Het model is verplicht.'};
-  }
-
-  return null;
-}
-
-function validatePhoto(
-  value: unknown,
-): Error | null {
-  if (typeof value !== 'string' || value.length === 0) {
-    return {message: 'De foto is verplicht.'};
-  }
-
-  return null;
-}
+const model = makeDecodeString('Het model is verplicht.');
+const photo = makeDecodeString('De foto is verplicht.');
 
 function submit(data: FormData): void {
   console.clear();
@@ -41,7 +24,7 @@ function submit(data: FormData): void {
         <div class="w-100"></div>
 
         <div class="col mb-3">
-          <BaseFormInput name="model" value="" :validator="validateModel">
+          <BaseFormInput type="text" name="model" value="" :validator="model">
             Model
           </BaseFormInput>
         </div>
@@ -49,8 +32,8 @@ function submit(data: FormData): void {
         <div class="w-100"></div>
 
         <div class="col mb-3">
-          <BaseFormInput type="file" name="photo" value="" :validator="validatePhoto">
-            Model
+          <BaseFormInput type="file" name="photo" value="" :validator="photo">
+            Foto
           </BaseFormInput>
         </div>
 

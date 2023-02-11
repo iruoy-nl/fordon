@@ -1,4 +1,5 @@
 import {InjectionKey} from "vue";
+import * as E from 'fp-ts/lib/Either';
 
 export type Error = {
   message: string;
@@ -41,7 +42,6 @@ export type BaseFormInput = {
   touched: () => boolean;
   touch: () => void;
   isValid: () => boolean;
-  error: () => Error | null;
 };
 
 export type BaseForm = InjectionKey<{
@@ -49,3 +49,5 @@ export type BaseForm = InjectionKey<{
 }>;
 
 export const baseFormKey = Symbol() as BaseForm;
+
+export type Decoder = (input: unknown) => E.Either<Error, unknown>;
