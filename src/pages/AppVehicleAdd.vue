@@ -1,15 +1,28 @@
 <script setup lang="ts">
+import * as E from 'fp-ts/lib/Either';
+import {pipe} from 'fp-ts/lib/function';
+import {useRouter} from 'vue-router';
 import BaseForm from '~/components/BaseForm.vue';
 import BaseFormInput from '~/components/BaseFormInput.vue';
 import Centered from '~/layouts/Centered.vue';
 import {makeDecodeString} from '~/services/form';
+import {addOne} from '~/state/vehicle';
+
+const {push} = useRouter();
 
 const model = makeDecodeString('Het model is verplicht.');
 const photo = makeDecodeString('De foto is verplicht.');
 
-function submit(data: FormData): void {
-  console.clear();
-  data.forEach(console.log);
+async function submit(
+  data: FormData,
+): Promise<void> {
+  const one = await pipe(
+    addOne(data),
+  )();
+
+  if (E.isRight(one)) {
+    push({name: 'vehicle-list'});
+  }
 }
 </script>
 
