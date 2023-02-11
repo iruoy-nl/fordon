@@ -1,4 +1,6 @@
-export type Failure = {
+import {InjectionKey} from "vue";
+
+export type Error = {
   message: string;
 };
 
@@ -34,3 +36,16 @@ export type Vehicle = {
   photo: string | null;
   photoUrl: string | null;
 };
+
+export type BaseFormInput = {
+  touched: () => boolean;
+  touch: () => void;
+  isValid: () => boolean;
+  error: () => Error | null;
+};
+
+export type BaseForm = InjectionKey<{
+  register: (input: BaseFormInput) => void;
+}>;
+
+export const baseFormKey = Symbol() as BaseForm;

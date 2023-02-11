@@ -4,7 +4,7 @@ import {ClientResponseError} from "pocketbase";
 import {ref} from "vue";
 import {pb, redirectUrl} from "~/di";
 import {getItem, putItem} from "~/services/storage";
-import {Failure, Provider} from "~/types";
+import {Error, Provider} from "~/types";
 
 /**
  * The state
@@ -14,7 +14,7 @@ export const providers = ref<Provider[]>([]);
 /**
  * List providers
  */
-export const listProviders = (): TE.TaskEither<Failure, void> => {
+export const listProviders = (): TE.TaskEither<Error, void> => {
   return pipe(
     TE.tryCatch(
       () => pb.collection("users").listAuthMethods(),
@@ -52,12 +52,12 @@ export const challenge = (provider: Provider): void => {
 export const verify = (
   code: string,
   state: string
-): TE.TaskEither<Failure, void> => {
+): TE.TaskEither<Error, void> => {
   const provider = getItem<Provider>("provider");
 
   return pipe(
     provider,
-    TE.fromOption<Failure>(() => {
+    TE.fromOption<Error>(() => {
       return {message: "Het authenticatieproces is nog niet gestart."};
     }),
     TE.chain((provider) => {

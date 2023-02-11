@@ -1,7 +1,7 @@
 <template>
   <div class="row h-100 justify-content-between border-end p-4">
     <div class="col">
-      <AppLogo />
+      <BaseLogo />
     </div>
 
     <div class="w-100"></div>
@@ -47,7 +47,7 @@
 import * as O from "fp-ts/lib/Option";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
-import AppLogo from "~/components/AppLogo.vue";
+import BaseLogo from "~/components/BaseLogo.vue";
 import {clear} from "~/state/oauth";
 import {user} from "~/state/user";
 

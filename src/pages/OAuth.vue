@@ -3,7 +3,7 @@
     <template #left>
       <div class="row h-100 p-4">
         <div class="col">
-          <AppLogo />
+          <BaseLogo />
         </div>
 
         <div class="w-100"></div>
@@ -57,7 +57,7 @@ import {pipe} from "fp-ts/lib/function";
 import * as TE from 'fp-ts/lib/TaskEither';
 import {onMounted, watch} from "vue";
 import {useRouter} from "vue-router";
-import AppLogo from "~/components/AppLogo.vue";
+import BaseLogo from "~/components/BaseLogo.vue";
 import HalfHalf from "~/layouts/HalfHalf.vue";
 import {challenge, listProviders, providers, verify} from "~/state/oauth";
 

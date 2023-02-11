@@ -3,15 +3,16 @@ import {pipe} from 'fp-ts/lib/function';
 import {onMounted} from 'vue';
 import VehicleList from '~/components/VehicleList.vue';
 import Centered from '~/layouts/Centered.vue';
-import {listVehicles, vehicles} from '~/state/vehicles';
+import {getAll, vehicles} from '~/state/vehicle';
 
 onMounted(async () => {
   await pipe(
-    listVehicles(),
+    getAll(),
   )();
 });
 
 </script>
+
 <template>
   <Centered>
     <div class="row">
