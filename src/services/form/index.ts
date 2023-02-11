@@ -1,29 +1,15 @@
-import * as D from 'io-ts/lib/Decoder';
+import * as E from 'fp-ts/lib/Either';
+import {constVoid} from "fp-ts/lib/function";
+import type {FormInputValidator} from "~/types";
 
-export function makeDecodeString(
+export function string(
   message: string,
-): D.Decoder<unknown, unknown> {
-  return {
-    decode: (i) => {
-      if (typeof i !== 'string' || i.length === 0) {
-        return D.failure(i, message);
-      }
+): FormInputValidator {
+  return (i) => {
+    if (typeof i !== 'string' || i.length === 0) {
+      return E.left(new Error(message));
+    }
 
-      return D.success(null);
-    },
+    return E.right(constVoid());
   };
-}
-
-export function getMessage(
-  e: D.DecodeError,
-): string {
-  switch (e._tag) {
-    case 'Of':
-      switch (e.value._tag) {
-        case 'Leaf':
-          return e.value.error;
-      }
-  }
-
-  return '';
 }

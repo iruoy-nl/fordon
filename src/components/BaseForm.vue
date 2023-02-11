@@ -2,16 +2,17 @@
 import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
 import {computed, provide, ref} from 'vue';
-import {BaseFormInput, baseFormKey} from '~/types';
+import {FormInput, formKey} from '~/types';
 
 const emits = defineEmits<{
-  (event: 'submit', value: FormData): void;
+  (event: 'save', value: FormData): void;
+  (event: 'cancel', value: never): void;
 }>();
 
 /**
  * Collection of registerd inputs.
  */
-const inputs = ref<BaseFormInput[]>([]);
+const inputs = ref<FormInput[]>([]);
 
 /**
  * Reference to the form.
@@ -22,12 +23,12 @@ const formRef = ref<HTMLFormElement | null>(null);
  * We provide this `register` function which is used by the `BaseFormInput`
  * components to automatically register themselves.
  */
-provide(baseFormKey, {register});
+provide(formKey, {register});
 
 /**
  * Register an input with this form.
  */
-function register(input: BaseFormInput): void {
+function register(input: FormInput): void {
   inputs.value = [...inputs.value, input];
 }
 
@@ -57,12 +58,12 @@ function submit(): void {
   if (!isValid.value) return;
 
   const data = new FormData(formRef.value);
-  emits('submit', data);
+  emits('save', data);
 }
 </script>
 
 <template>
-  <form method="post" @submit.prevent="submit" ref="formRef">
+  <form method="post" @submit.prevent="submit" @reset.prevent="$emit('cancel')" ref="formRef">
     <slot />
   </form>
 </template>

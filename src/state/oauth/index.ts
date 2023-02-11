@@ -4,7 +4,7 @@ import {ClientResponseError} from "pocketbase";
 import {ref} from "vue";
 import {pb, redirectUrl} from "~/di";
 import {getItem, putItem} from "~/services/storage";
-import {Error, Provider} from "~/types";
+import {Provider} from "~/types";
 
 /**
  * The state
@@ -21,8 +21,8 @@ export const listProviders = (): TE.TaskEither<Error, void> => {
       (a) => {
         const error = a as ClientResponseError;
 
-        return {message: error.message};
-      }
+        return new Error(error.message);
+      },
     ),
     TE.map((b) => {
       // Set the state
@@ -57,20 +57,14 @@ export const verify = (
 
   return pipe(
     provider,
-    TE.fromOption<Error>(() => {
-      return {message: "Het authenticatieproces is nog niet gestart."};
-    }),
+    TE.fromOption(() => new Error('Het authenticatieproces is nog niet gestart.')),
     TE.chain((provider) => {
       // We have a valid provider.
       return pipe(
         provider.state,
         TE.fromPredicate(
           (v) => v === state,
-          () => {
-            return {
-              message: `De communicatie met ${provider.name} is mislukt.`,
-            };
-          }
+          () => new Error(`De communicatie met ${provider.name} is mislukt.`),
         ),
         TE.chain(() => {
           // We have a valid state.
@@ -82,9 +76,7 @@ export const verify = (
                 pb //
                   .collection("users")
                   .authWithOAuth2(name, code, codeVerifier, redirectUrl),
-              () => {
-                return {message: "Er is een onbekende fout opgetreden."};
-              }
+              () => new Error('Er is een onbekende fout opgetreden.'),
             ),
             TE.chain((u) => {
               // The authentication was successfull, update user data.
@@ -97,14 +89,7 @@ export const verify = (
                     pb //
                       .collection("users")
                       .update(u.record.id, {name, avatarUrl}),
-                  () => {
-                    return {
-                      message: `
-                        Er is iets misgegaan tijdens het wijzigen van de
-                        profielgegevens.
-                      `,
-                    };
-                  }
+                  () => new Error('Er is iets misgegaan tijdens het wijzigen van de profielgegevens.'),
                 ),
                 TE.map(constVoid),
               );

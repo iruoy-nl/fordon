@@ -1,10 +1,8 @@
 <script setup lang="ts" generic="T">
 import * as E from 'fp-ts/lib/Either';
 import {constVoid} from 'fp-ts/lib/function';
-import * as D from 'io-ts/lib/Decoder';
 import {computed, inject, onMounted, ref} from 'vue';
-import {getMessage} from '~/services/form';
-import {baseFormKey} from '~/types';
+import {FormInputValidator, formKey} from '~/types';
 
 const props = defineProps<{
   /**
@@ -22,7 +20,7 @@ const props = defineProps<{
   /**
    * Validate the current value and display any errors.
    */
-  validator: D.Decoder<unknown, unknown>;
+  validator: FormInputValidator;
 }>();
 
 /**
@@ -39,14 +37,14 @@ const currentValue = ref<unknown>(props.value);
  * Validate the current value using the given validator.
  */
 const error = computed(() => {
-  return props.validator.decode(currentValue.value);
+  return props.validator(currentValue.value);
 });
 
 /**
  * Register this form input with a parent form.
  */
 onMounted(() => {
-  const {register} = inject(baseFormKey, {register: constVoid});
+  const {register} = inject(formKey, {register: constVoid});
 
   register({
     touched: () => touched.value,
@@ -66,7 +64,7 @@ onMounted(() => {
       :class="{'form-control': true, 'is-invalid': touched === true && E.isLeft(error)}" @focusout="touched = true">
 
     <div v-if="touched === true && E.isLeft(error)" class="invalid-feedback">
-      {{getMessage(error.left)}}
+      {{error.left.message}}
     </div>
   </div>
 </template>

@@ -6,7 +6,7 @@ import {ref} from "vue";
 import {pb} from "~/di";
 import {getFileUrl} from "~/services/url";
 import {user} from '~/state/user';
-import {Error, Vehicle} from "~/types";
+import {Vehicle} from "~/types";
 
 const collection = "vehicles";
 
