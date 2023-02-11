@@ -25,13 +25,11 @@ export function toVehicle(
   const vehicle = record.export() as Vehicle;
 
   // Correctly associate the url of the photo.
-  if (vehicle.photo !== null) {
-    vehicle.photoUrl = getFileUrl(
-      collection,
-      vehicle.id,
-      vehicle.photo,
-    );
-  }
+  vehicle.photoUrl = getFileUrl(
+    collection,
+    vehicle.id,
+    vehicle.photo,
+  );
 
   return vehicle;
 }
