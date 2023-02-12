@@ -7,9 +7,9 @@ import {computed, onMounted} from 'vue';
 import {useRouter} from 'vue-router';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {editById, getById, vehicles} from '~/state/vehicle';
+import {editById, getById, removeById, vehicles} from '~/state/vehicle';
 
-const {currentRoute} = useRouter();
+const {currentRoute, push} = useRouter();
 
 /**
  * The id of the selected vehicle.
@@ -52,7 +52,7 @@ function editVehicle(): void {
        */
       cancel: (): void => closeModal(),
       /**
-       * Save to the database.
+       * Edit the vehicle on save.
        */
       save: async (data: FormData): Promise<void> => {
         await pipe(
@@ -69,7 +69,46 @@ function editVehicle(): void {
           ),
         )();
       }
-    });
+    }
+  );
+}
+
+/**
+ * Remove an existing vehicle.
+ */
+function removeVehicle(): void {
+  openModal(
+    () => import('~/components/ModalConfirm.vue'),
+    {
+      title: 'Weet je het zeker?',
+      body: 'Deze actie kan niet ongedaan worden gemaakt.',
+    },
+    {
+      /**
+       * Close the modal on cancel.
+       */
+      cancel: (): void => closeModal(),
+      /**
+       * Remove the vehicle on confirm.
+       */
+      confirm: async (): Promise<void> => {
+        await pipe(
+          removeById(id.value),
+          TE.match(
+            (e) => {
+              // todo: display error to the user.
+              console.error(e);
+            },
+            () => {
+              // The vehicle was removed sucessfully.
+              closeModal();
+              push({name: 'vehicle-list'});
+            },
+          ),
+        )();
+      },
+    }
+  );
 }
 </script>
 
@@ -93,8 +132,16 @@ function editVehicle(): void {
 
         <div class="w-100 my-2"></div>
 
-        <div class="col-auto">
-          <button class="btn btn-primary" @click="editVehicle">Wijzigen</button>
+        <div class="col">
+          <div class="row">
+            <div class="col-auto">
+              <button class="btn btn-primary" @click="editVehicle">Wijzigen</button>
+            </div>
+
+            <div class="col-auto">
+              <button class="btn btn-danger" @click="removeVehicle">Verwijderen</button>
+            </div>
+          </div>
         </div>
       </div>
     </template>

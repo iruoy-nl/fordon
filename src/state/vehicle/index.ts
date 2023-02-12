@@ -149,3 +149,24 @@ export function editById(
     }),
   );
 }
+
+/**
+ * Remove a vehicle.
+ */
+export function removeById(
+  id: string,
+): TE.TaskEither<Error, void> {
+  return pipe(
+    TE.tryCatch(
+      () => pb.collection(collection).delete(id),
+      (a) => a as ClientResponseError,
+    ),
+    TE.map(() => {
+      // Set the state.
+      vehicles.value = pipe(
+        vehicles.value,
+        A.filter((a) => a.id !== id)
+      );
+    })
+  );
+}

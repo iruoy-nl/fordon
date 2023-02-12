@@ -26,7 +26,7 @@ function addVehicle(): void {
        */
       cancel: (): void => closeModal(),
       /**
-       * Save to the database.
+       * Add the vehicle on save.
        */
       save: async (data: FormData): Promise<void> => {
         await pipe(
