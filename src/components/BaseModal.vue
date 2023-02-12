@@ -1,30 +1,22 @@
 <script setup lang="ts">
-defineProps<{
-  /**
-   * Whether the model is visible.
-   */
-  modelValue: boolean;
-}>();
-
 defineEmits<{
-  (event: 'update:modelValue', value: boolean): void;
+  /**
+   * Indicate that the modal should be closed.
+   */
+  (event: 'close', value: never): void;
 }>();
 </script>
 
 <template>
-  <template v-if="modelValue">
-    <div class="modal">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <slot />
-        </div>
+  <div class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <slot />
       </div>
     </div>
-  </template>
+  </div>
 
-  <template v-if="modelValue">
-    <div class="modal-backdrop show" @click="$emit('update:modelValue', false)"></div>
-  </template>
+  <div class="modal-backdrop show" @click="$emit('close')"></div>
 </template>
 
 <style scoped lang="scss">

@@ -37,7 +37,7 @@ onMounted(async () => {
 
         <div class="w-100 my-2"></div>
 
-        <div class="col">
+        <div class="col-auto">
           <router-link class="btn btn-primary" :to="{name: 'vehicle-edit', params: {id: selected.value.id}}">
             Wijzigen
           </router-link>
