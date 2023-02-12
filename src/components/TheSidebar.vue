@@ -25,9 +25,9 @@
 
         <div class="w-100 my-2"></div>
 
-        <h4 class="text-primary">
+        <h6 class="text-primary">
           {{user.value.name}}
-        </h4>
+        </h6>
         <small class="text-muted">
           {{user.value.email}}
         </small>
@@ -58,7 +58,7 @@ const {push} = useRouter();
  */
 const pages = ref([
   // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
-  // {icon: "signpost", title: "Kilometers", name: "mileage"},
+  {icon: "signpost", title: "Kilometers", name: "mileage-list"},
   // {icon: "tools", title: "Onderhoud", name: "maintenance"},
   {icon: "card-heading", title: "Voertuigen", name: "vehicle-list"},
   // {icon: "gear", title: "Instellingen", name: "settings"},

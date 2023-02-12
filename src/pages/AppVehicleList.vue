@@ -56,7 +56,7 @@ function addVehicle(): void {
         <div class="row justify-content-between">
           <div class="col">
             <h1>Voertuigen</h1>
-            <p>Een overzicht van al jouw voertuigen.</p>
+            <p>...</p>
           </div>
 
           <div class="col-auto my-auto">

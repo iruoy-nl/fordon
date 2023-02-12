@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import App from '~/pages/App.vue';
+import AppMileageList from '~/pages/AppMileageList.vue';
 import AppVehicleList from '~/pages/AppVehicleList.vue';
 import AppVehicleShow from '~/pages/AppVehicleShow.vue';
 import OAuthPage from "~/pages/OAuth.vue";
@@ -16,9 +17,14 @@ const router = createRouter({
     {
       path: '/app',
       name: 'app',
-      redirect: {name: 'vehicle-list'},
+      redirect: {name: 'mileage-list'},
       component: App,
       children: [
+        {
+          path: 'kilometers',
+          name: 'mileage-list',
+          component: AppMileageList,
+        },
         {
           path: 'voertuigen',
           name: 'vehicle-list',
