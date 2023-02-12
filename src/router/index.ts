@@ -1,7 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
 import App from '~/pages/App.vue';
-import AppVehicleAdd from '~/pages/AppVehicleAdd.vue';
-import AppVehicleEdit from '~/pages/AppVehicleEdit.vue';
 import AppVehicleList from '~/pages/AppVehicleList.vue';
 import AppVehicleShow from '~/pages/AppVehicleShow.vue';
 import OAuthPage from "~/pages/OAuth.vue";
@@ -27,19 +25,9 @@ const router = createRouter({
           component: AppVehicleList,
         },
         {
-          path: 'voertuigen/add',
-          name: 'vehicle-add',
-          component: AppVehicleAdd,
-        },
-        {
           path: 'voertuigen/:id',
           name: 'vehicle-show',
           component: AppVehicleShow,
-        },
-        {
-          path: 'voertuigen/:id/edit',
-          name: 'vehicle-edit',
-          component: AppVehicleEdit,
         },
       ],
     }

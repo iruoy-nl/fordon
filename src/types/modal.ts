@@ -1,6 +1,7 @@
-import type {Component} from "vue";
+import {Component} from "vue";
 
 export type Modal = {
   slot: Component;
-  props: Record<string, unknown>;
+  bind: Record<string, unknown>;
+  on: Record<string, (data: any) => void>;
 };

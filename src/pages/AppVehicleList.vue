@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import {pipe} from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/lib/TaskEither';
 import {onMounted} from 'vue';
 import VehicleList from '~/components/VehicleList.vue';
 import Centered from '~/layouts/Centered.vue';
-import {getAll, vehicles} from '~/state/vehicle';
+import {closeModal, openModal} from '~/services/modal';
+import {addOne, getAll, vehicles} from '~/state/vehicle';
 
 onMounted(async () => {
   await pipe(
@@ -11,6 +13,38 @@ onMounted(async () => {
   )();
 });
 
+/**
+ * Add a new vehicle.
+ */
+function addVehicle(): void {
+  openModal(
+    () => import('~/components/VehicleForm.vue'),
+    {},
+    {
+      /**
+       * Close the modal on cancel.
+       */
+      cancel: (): void => closeModal(),
+      /**
+       * Save to the database.
+       */
+      save: async (data: FormData): Promise<void> => {
+        await pipe(
+          addOne(data),
+          TE.match(
+            (e) => {
+              // todo: display error to the user.
+              console.error(e);
+            },
+            () => {
+              // The vehicle was added sucessfully.
+              closeModal();
+            },
+          ),
+        )();
+      }
+    });
+}
 </script>
 
 <template>
@@ -26,9 +60,9 @@ onMounted(async () => {
           </div>
 
           <div class="col-auto my-auto">
-            <router-link class="btn btn-primary" :to="{name: 'vehicle-add'}">
+            <button class="btn btn-primary" @click="addVehicle">
               Nieuw voertuig
-            </router-link>
+            </button>
           </div>
         </div>
       </div>

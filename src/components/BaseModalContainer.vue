@@ -5,6 +5,6 @@ import BaseModal from './BaseModal.vue';
 
 <template>
   <BaseModal v-for="(modal, index) in modals" :key="index" @close="closeModal(index)">
-    <component :is="modal.slot" v-bind="modal.props" />
+    <component :is="modal.slot" v-bind="modal.bind" v-on="modal.on" />
   </BaseModal>
 </template>

@@ -21,6 +21,14 @@ const photo = string('De foto is verplicht.');
   <BaseForm @save="a => $emit('save', a)" @cancel="$emit('cancel')">
     <div class="row">
       <div class="col mb-3">
+        <h1>
+          {{vehicle? 'Wijzig': 'Nieuw'}} voertuig
+        </h1>
+      </div>
+
+      <div class="w-100"></div>
+
+      <div class="col mb-3">
         <BaseFormInput type="text" name="model" :value="vehicle?.model" :validator="model">
           Model
         </BaseFormInput>

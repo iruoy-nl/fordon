@@ -10,7 +10,7 @@ defineEmits<{
 <template>
   <div class="modal">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content p-4">
         <slot />
       </div>
     </div>

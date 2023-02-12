@@ -1,5 +1,5 @@
-import {pipe} from "fp-ts/lib/function";
 import * as A from 'fp-ts/lib/Array';
+import {constVoid, pipe} from "fp-ts/lib/function";
 import * as O from 'fp-ts/lib/Option';
 import * as TE from "fp-ts/lib/TaskEither";
 import {ClientResponseError, Record} from "pocketbase";
@@ -60,6 +60,16 @@ export function getAll(): TE.TaskEither<Error, void> {
 export function getById(
   id: string,
 ): TE.TaskEither<Error, void> {
+  // Quick exit when the vehicle has already been loaded.
+  const exists = pipe(
+    vehicles.value,
+    A.exists((a) => a.id === id),
+  );
+
+  if (exists) {
+    return TE.of(constVoid());
+  };
+
   return pipe(
     TE.tryCatch(
       () => pb.collection(collection).getOne(id),
@@ -70,7 +80,11 @@ export function getById(
     }),
     TE.map((c) => {
       // Set the state.
-      selected.value = O.some(c);
+
+      vehicles.value = pipe(
+        vehicles.value,
+        A.append(c),
+      );
     }),
   );
 }
