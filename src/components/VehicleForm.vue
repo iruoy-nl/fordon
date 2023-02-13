@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {string} from '~/services/form';
+import {makeString} from '~/services/form';
 import type {Vehicle} from '~/types';
 import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
@@ -13,8 +13,8 @@ defineEmits<{
   (event: 'cancel', value: never): void;
 }>();
 
-const model = string('Het model is verplicht.');
-const photo = string('De foto is verplicht.');
+const model = makeString('Het model is verplicht.');
+const photo = makeString('De foto is verplicht.');
 </script>
 
 <template>

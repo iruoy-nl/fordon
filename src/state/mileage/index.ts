@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/lib/Array';
 import {pipe} from "fp-ts/lib/function";
 import * as TE from 'fp-ts/lib/TaskEither';
 import {ClientResponseError, Record} from "pocketbase";
@@ -52,3 +53,37 @@ export function getAll(): TE.TaskEither<Error, void> {
     }),
   );
 };
+
+/**
+ * Add one mileage.
+ */
+export function addOne(
+  data: FormData,
+  vehicleId: string,
+): TE.TaskEither<Error, void> {
+  // Associates this mileage with the correct vehicle.
+  data.append('vehicle', vehicleId);
+
+  return pipe(
+    TE.tryCatch(
+      () => {
+        return pb
+          .collection(collection)
+          .create(data, {
+            expand: 'vehicle'
+          });
+      },
+      (a) => a as ClientResponseError,
+    ),
+    TE.map((b) => {
+      return toMileage(b);
+    }),
+    TE.map((c) => {
+      // Set the state.
+      mileages.value = pipe(
+        mileages.value,
+        A.prepend(c)
+      );
+    }),
+  );
+}

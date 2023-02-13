@@ -10,13 +10,13 @@ const props = defineProps<{
    */
   name: string;
   /**
-   * The type of input
-   */
-  type: 'text' | 'file' | 'number' | 'date';
-  /**
    * The value to initiate the input with.
    */
   value: unknown;
+  /**
+   * The available select options.
+   */
+  options: {label: string, value: unknown}[];
   /**
    * Validate the current value and display any errors.
    */
@@ -60,8 +60,12 @@ onMounted(() => {
   </label>
 
   <div class="input-group has-validation">
-    <input :type="type" :name="name" :id="`${name}-input`" v-model="currentValue"
-      :class="{'form-control': true, 'is-invalid': touched === true && E.isLeft(error)}" @focusout="touched = true">
+    <select :name="name" :id="`${name}-input`" v-model="currentValue"
+      :class="{'form-select': true, 'is-invalid': touched === true && E.isLeft(error)}" @focusout="touched = true">
+      <template v-for="option in options">
+        <option :value="option.value" :selected="option.value === currentValue">{{option.label}}</option>
+      </template>
+    </select>
 
     <div v-if="touched === true && E.isLeft(error)" class="invalid-feedback">
       {{error.left.message}}
