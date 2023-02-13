@@ -51,7 +51,7 @@ const options = computed(() => pipe(
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="number" name="mileage" :value="mileage?.mileage" :validator="value">
+        <BaseFormInput type="number" name="mileage" :value="mileage?.mileage" :validator="value" placeholder="30000">
           Kilometerstand
         </BaseFormInput>
       </div>

@@ -29,7 +29,7 @@ const photo = makeString('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="text" name="model" :value="vehicle?.model" :validator="model">
+        <BaseFormInput type="text" name="model" :value="vehicle?.model" :validator="model" placeholder="Suzuki Gs500e">
           Model
         </BaseFormInput>
       </div>

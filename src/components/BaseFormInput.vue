@@ -18,6 +18,10 @@ const props = defineProps<{
    */
   value: unknown;
   /**
+   * Placeholder for the input.
+   */
+  placeholder?: string;
+  /**
    * Validate the current value and display any errors.
    */
   validator: FormInputValidator;
@@ -61,7 +65,8 @@ onMounted(() => {
 
   <div class="input-group has-validation">
     <input :type="type" :name="name" :id="`${name}-input`" v-model="currentValue"
-      :class="{'form-control': true, 'is-invalid': touched === true && E.isLeft(error)}" @focusout="touched = true">
+      :class="{'form-control': true, 'is-invalid': touched === true && E.isLeft(error)}" @focusout="touched = true"
+      :placeholder="placeholder">
 
     <div v-if="touched === true && E.isLeft(error)" class="invalid-feedback">
       {{error.left.message}}
