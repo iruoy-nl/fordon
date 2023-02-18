@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router";
 import App from '~/pages/App.vue';
-import AppMileageList from '~/pages/AppMileageList.vue';
-import AppVehicleList from '~/pages/AppVehicleList.vue';
-import AppVehicleShow from '~/pages/AppVehicleShow.vue';
+import AppGarage from '~/pages/AppGarage.vue';
+import AppGarageShow from '~/pages/AppGarageShow.vue';
+import AppMileages from '~/pages/AppMileages.vue';
 import OAuthPage from "~/pages/OAuth.vue";
 import {isAuthenticated} from "./middleware";
 
@@ -17,23 +17,23 @@ const router = createRouter({
     {
       path: '/app',
       name: 'app',
-      redirect: {name: 'mileage-list'},
+      redirect: {name: 'mileages'},
       component: App,
       children: [
         {
           path: 'kilometers',
-          name: 'mileage-list',
-          component: AppMileageList,
+          name: 'mileages',
+          component: AppMileages,
         },
         {
           path: 'voertuigen',
-          name: 'vehicle-list',
-          component: AppVehicleList,
+          name: 'garage',
+          component: AppGarage,
         },
         {
           path: 'voertuigen/:id',
-          name: 'vehicle-show',
-          component: AppVehicleShow,
+          name: 'garage-show',
+          component: AppGarageShow,
         },
       ],
     }

@@ -60,7 +60,7 @@ function deleteMileage(
             },
             () => {
               closeModal();
-              push({name: 'mileage-list'});
+              push({name: 'mileages'});
             },
           ),
         )();

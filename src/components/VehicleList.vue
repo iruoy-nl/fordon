@@ -14,7 +14,7 @@ defineProps<{
           <img :src="vehicle.photoUrl" class="card-img-top">
 
           <div class="card-body">
-            <router-link class="btn btn-link p-0" :to="{name: 'vehicle-show', params: {id: vehicle.id}}">
+            <router-link class="btn btn-link p-0" :to="{name: 'garage-show', params: {id: vehicle.id}}">
               {{ vehicle.model }}
             </router-link>
           </div>

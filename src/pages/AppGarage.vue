@@ -21,7 +21,7 @@ function addVehicle(): void {
       cancel: (): void => closeModal(),
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          addVehicle(data),
+          insertOneVehicle(data),
           TE.matchW(
             (e) => {
               // todo: display error to the user.

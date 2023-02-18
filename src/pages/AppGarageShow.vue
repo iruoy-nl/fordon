@@ -83,7 +83,7 @@ function removeVehicle(
             },
             () => {
               closeModal();
-              push({name: 'vehicle-list'});
+              push({name: 'garage'});
             },
           ),
         )();

@@ -10,9 +10,9 @@ const {push} = useRouter();
 
 const pages = ref([
   // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
-  {icon: "signpost", title: "Kilometers", name: "mileage-list"},
+  {icon: "signpost", title: "Kilometers", name: "mileages"},
   // {icon: "tools", title: "Onderhoud", name: "maintenance"},
-  {icon: "card-heading", title: "Voertuigen", name: "vehicle-list"},
+  {icon: "card-heading", title: "Garage", name: "garage"},
   // {icon: "gear", title: "Instellingen", name: "settings"},
 ]);
 
