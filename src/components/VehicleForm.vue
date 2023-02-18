@@ -5,7 +5,7 @@ import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
 
 defineProps<{
-  vehicle?: Vehicle;
+  defaultValue?: Vehicle;
 }>();
 
 defineEmits<{
@@ -13,8 +13,8 @@ defineEmits<{
   (event: 'cancel', value: never): void;
 }>();
 
-const model = makeString('Het model is verplicht.');
-const photo = makeString('De foto is verplicht.');
+const modelInput = makeString('Het model is verplicht.');
+const photoInput = makeString('De foto is verplicht.');
 </script>
 
 <template>
@@ -22,14 +22,15 @@ const photo = makeString('De foto is verplicht.');
     <div class="row">
       <div class="col mb-3">
         <h1>
-          {{vehicle? 'Wijzig': 'Nieuw'}} voertuig
+          {{ defaultValue ? 'Wijzig' : 'Nieuw' }} voertuig
         </h1>
       </div>
 
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="text" name="model" :value="vehicle?.model" :validator="model" placeholder="Suzuki Gs500e">
+        <BaseFormInput type="text" name="model" :value="defaultValue?.model" :validator="modelInput"
+          placeholder="Suzuki Gs500e">
           Model
         </BaseFormInput>
       </div>
@@ -37,7 +38,7 @@ const photo = makeString('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="file" name="photo" :value="null" :validator="photo">
+        <BaseFormInput type="file" name="photo" :value="null" :validator="photoInput">
           Foto
         </BaseFormInput>
       </div>

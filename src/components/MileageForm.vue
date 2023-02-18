@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import * as A from 'fp-ts/lib/Array';
-import {pipe} from 'fp-ts/lib/function';
-import {computed, onMounted} from 'vue';
 import {makeDate, makeNumber, makeString} from '~/services/form';
-import {getAll, vehicles} from '~/state/vehicle';
 import type {Mileage} from '~/types';
 import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
 import BaseFormSelect from './BaseFormSelect.vue';
 
 defineProps<{
-  /**
-   * The default value for the form.
-   */
-  mileage?: Mileage;
+  defaultValue?: Mileage;
 }>();
 
 defineEmits<{
@@ -21,37 +14,24 @@ defineEmits<{
   (event: 'cancel', value: never): void;
 }>();
 
-onMounted(async () => {
-  await pipe(
-    getAll(),
-  )();
-});
-
-const value = makeNumber('De kilometerstand moet hoger zijn dan 0.');
-const date = makeDate('De datum is verplicht.');
-const vehicle = makeString('Het voertuig is verplicht.');
-
-const options = computed(() => pipe(
-  vehicles.value,
-  A.map((a) => {
-    return {label: a.model, value: a.id};
-  })
-));
+const mileageInput = makeNumber('De kilometerstand moet hoger zijn dan 0.');
+const dateInput = makeDate('De datum is verplicht.');
+const vehicleInput = makeString('Het voertuig is verplicht.');
 </script>
 
 <template>
-  <BaseForm @save="a => $emit('save', a)" @cancel="$emit('cancel')">
+  <BaseForm @save="$emit('save', $event)" @cancel="$emit('cancel')">
     <div class="row">
       <div class="col mb-3">
         <h1>
-          {{mileage? 'Wijzig': 'Nieuwe'}} registratie
+          {{ defaultValue ? 'Wijzig' : 'Nieuwe' }} registratie
         </h1>
       </div>
 
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="number" name="mileage" :value="mileage?.mileage" :validator="value" placeholder="30000">
+        <BaseFormInput type="number" name="mileage" :default-value="defaultValue?.mileage" :validator="mileageInput">
           Kilometerstand
         </BaseFormInput>
       </div>
@@ -59,7 +39,7 @@ const options = computed(() => pipe(
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="date" name="date" :value="mileage?.date" :validator="date">
+        <BaseFormInput type="date" name="date" :default-value="defaultValue?.date" :validator="dateInput">
           Datum
         </BaseFormInput>
       </div>
@@ -67,7 +47,7 @@ const options = computed(() => pipe(
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormSelect name="vehicle" :value="mileage?.vehicle.id" :validator="vehicle" :options="options">
+        <BaseFormSelect name="vehicle" :value="defaultValue?.vehicle.id" :validator="vehicleInput" :options="[]">
           Voertuig
         </BaseFormSelect>
       </div>
