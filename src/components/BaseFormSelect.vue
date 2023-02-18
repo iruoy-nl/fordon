@@ -24,7 +24,7 @@ const {current, error, touch} = useFormField(props.defaultValue, props.validator
     <select :name="name" :id="`${name}-input`" v-model="current" :class="{'form-select': true, 'is-invalid': error}"
       @focusout="touch">
       <template v-for="option in options">
-        <option :value="option.value" :selected="option.value === current">{{ option.label }}</option>
+        <option :value="option.value">{{ option.label }}</option>
       </template>
     </select>
 

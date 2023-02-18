@@ -59,11 +59,7 @@ export function getAllMileages(): TE.TaskEither<Error, void> {
  */
 export function addOneMileage(
   data: FormData,
-  vehicleId: string,
 ): TE.TaskEither<Error, void> {
-  // Associates this mileage with the correct vehicle.
-  data.append('vehicle', vehicleId);
-
   return pipe(
     TE.tryCatch(
       () => {
@@ -85,5 +81,51 @@ export function addOneMileage(
         A.prepend(c)
       );
     }),
+  );
+}
+
+export function editMileageById(
+  mileageId: string,
+  data: FormData,
+): TE.TaskEither<Error, void> {
+  return pipe(
+    TE.tryCatch(
+      () => {
+        return pb
+          .collection(collection)
+          .update(mileageId, data, {
+            expand: 'vehicle'
+          });
+      },
+      (a) => a as ClientResponseError,
+    ),
+    TE.map((b) => {
+      return toMileage(b);
+    }),
+    TE.map((c) => {
+      // Set the state.
+      mileages.value = pipe(
+        mileages.value,
+        A.map((d) => c.id === d.id ? c : d),
+      );
+    }),
+  );
+}
+
+export function removeMileageById(
+  mileageId: string,
+): TE.TaskEither<Error, void> {
+  return pipe(
+    TE.tryCatch(
+      () => pb.collection(collection).delete(mileageId),
+      (a) => a as ClientResponseError,
+    ),
+    TE.map(() => {
+      // Set the state.
+      mileages.value = pipe(
+        mileages.value,
+        A.filter((a) => a.id !== mileageId)
+      );
+    })
   );
 }

@@ -13,33 +13,21 @@ onMounted(async () => {
   )();
 });
 
-/**
- * Add a new mileage.
- */
 function addMileage(): void {
   openModal(
     () => import('~/components/MileageForm.vue'),
     {},
     {
-      /**
-       * Close the modal on cancel.
-       */
       cancel: (): void => closeModal(),
-      /**
-       * Add the vehicle on save.
-       */
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          addOneMileage(data, ''),
-          TE.match(
+          addOneMileage(data),
+          TE.matchW(
             (e) => {
               // todo: display error to the user.
               console.error(e);
             },
-            () => {
-              // The vehicle was added sucessfully.
-              closeModal();
-            },
+            () => closeModal()
           ),
         )();
       }
@@ -61,7 +49,7 @@ function addMileage(): void {
 
           <div class="col-auto my-auto">
             <button class="btn btn-primary" @click="addMileage">
-              Nieuwe registratie
+              Nieuw
             </button>
           </div>
         </div>

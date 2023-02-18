@@ -17,12 +17,8 @@ defineProps<Props>();
 
           <div class="card-body">
             <router-link class="btn btn-link p-0" :to="{name: 'vehicle-show', params: {id: vehicle.id}}">
-              {{vehicle.model}}
+              {{ vehicle.model }}
             </router-link>
-
-            <p class="card-text">
-              ...
-            </p>
           </div>
         </div>
       </div>

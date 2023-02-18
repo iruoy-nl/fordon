@@ -3,13 +3,13 @@ import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
 import {computed, onMounted} from 'vue';
 import {makeDate, makeNumber, makeString} from '~/services/form';
-import {vehicles, getAllVehicles} from '~/state/vehicle';
+import {getAllVehicles, vehicles} from '~/state/vehicle';
 import type {Mileage} from '~/types';
 import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
 import BaseFormSelect from './BaseFormSelect.vue';
 
-defineProps<{
+const props = defineProps<{
   defaultValue?: Mileage;
 }>();
 
@@ -26,6 +26,10 @@ onMounted(async () => {
 
 const mileageInput = makeNumber('De kilometerstand moet hoger zijn dan 0.');
 const dateInput = makeDate('De datum is verplicht.');
+const dateDefaultValue = props.defaultValue
+  ? props.defaultValue.date.split(' ')[0]
+  : null;
+
 const vehicleInput = makeString('Het voertuig is verplicht.');
 const vehicleInputOptions = computed(() => {
   return pipe(
@@ -57,7 +61,7 @@ const vehicleInputOptions = computed(() => {
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="date" name="date" :default-value="defaultValue?.date" :validator="dateInput">
+        <BaseFormInput type="date" name="date" :default-value="dateDefaultValue" :validator="dateInput">
           Datum
         </BaseFormInput>
       </div>
@@ -65,7 +69,7 @@ const vehicleInputOptions = computed(() => {
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormSelect name="vehicle" :value="defaultValue?.vehicle.id" :validator="vehicleInput"
+        <BaseFormSelect name="vehicle" :default-value="defaultValue?.vehicle.id" :validator="vehicleInput"
           :options="vehicleInputOptions">
           Voertuig
         </BaseFormSelect>

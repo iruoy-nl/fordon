@@ -13,33 +13,21 @@ onMounted(async () => {
   )();
 });
 
-/**
- * Add a new vehicle.
- */
 function addVehicle(): void {
   openModal(
     () => import('~/components/VehicleForm.vue'),
     {},
     {
-      /**
-       * Close the modal on cancel.
-       */
       cancel: (): void => closeModal(),
-      /**
-       * Add the vehicle on save.
-       */
       save: async (data: FormData): Promise<void> => {
         await pipe(
           addOneVehicle(data),
-          TE.match(
+          TE.matchW(
             (e) => {
               // todo: display error to the user.
               console.error(e);
             },
-            () => {
-              // The vehicle was added sucessfully.
-              closeModal();
-            },
+            () => closeModal()
           ),
         )();
       }
@@ -61,7 +49,7 @@ function addVehicle(): void {
 
           <div class="col-auto my-auto">
             <button class="btn btn-primary" @click="addVehicle">
-              Nieuw voertuig
+              Nieuw
             </button>
           </div>
         </div>
