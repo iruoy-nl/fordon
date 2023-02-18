@@ -3,6 +3,7 @@ import App from '~/pages/App.vue';
 import AppGarage from '~/pages/AppGarage.vue';
 import AppGarageShow from '~/pages/AppGarageShow.vue';
 import AppMileages from '~/pages/AppMileages.vue';
+import AppParts from '~/pages/AppParts.vue';
 import OAuthPage from "~/pages/OAuth.vue";
 import {isAuthenticated} from "./middleware";
 
@@ -21,11 +22,6 @@ const router = createRouter({
       component: App,
       children: [
         {
-          path: 'kilometers',
-          name: 'mileages',
-          component: AppMileages,
-        },
-        {
           path: 'voertuigen',
           name: 'garage',
           component: AppGarage,
@@ -35,6 +31,16 @@ const router = createRouter({
           name: 'garage-show',
           component: AppGarageShow,
         },
+        {
+          path: 'kilometers',
+          name: 'mileages',
+          component: AppMileages,
+        },
+        {
+          path: 'onderdelen',
+          name: 'parts',
+          component: AppParts,
+        }
       ],
     }
   ],

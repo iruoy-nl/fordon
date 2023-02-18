@@ -12,8 +12,9 @@ const pages = ref([
   // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
   {icon: "signpost", title: "Kilometers", name: "mileages"},
   // {icon: "tools", title: "Onderhoud", name: "maintenance"},
+  {icon: 'gear', title: 'Onderdelen', name: 'parts'},
   {icon: "card-heading", title: "Garage", name: "garage"},
-  // {icon: "gear", title: "Instellingen", name: "settings"},
+  // {icon: "sliders", title: "Instellingen", name: "settings"},
 ]);
 
 const logout = () => {
