@@ -7,7 +7,7 @@ import {computed, onMounted} from 'vue';
 import {useRouter} from 'vue-router';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {editById, getById, removeById, vehicles} from '~/state/vehicle';
+import {editVehicleById, getVehicleById, removeVehicleById, vehicles} from '~/state/vehicle';
 
 const {currentRoute, push} = useRouter();
 
@@ -30,7 +30,7 @@ const vehicle = computed(() => {
 
 onMounted(async () => {
   await pipe(
-    getById(id.value)
+    getVehicleById(id.value)
   )();
 });
 
@@ -41,7 +41,7 @@ function editVehicle(): void {
   openModal(
     () => import('~/components/VehicleForm.vue'),
     {
-      vehicle: pipe(
+      defaultValue: pipe(
         vehicle.value,
         O.matchW(constUndefined, (a) => a)
       ),
@@ -56,7 +56,7 @@ function editVehicle(): void {
        */
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          editById(id.value, data),
+          editVehicleById(id.value, data),
           TE.match(
             (e) => {
               // todo: display error to the user.
@@ -93,7 +93,7 @@ function removeVehicle(): void {
        */
       confirm: async (): Promise<void> => {
         await pipe(
-          removeById(id.value),
+          removeVehicleById(id.value),
           TE.match(
             (e) => {
               // todo: display error to the user.
@@ -121,7 +121,7 @@ function removeVehicle(): void {
     <template v-else>
       <div class="row pt-5">
         <div class="col">
-          <h1>{{vehicle.value.model}}</h1>
+          <h1>{{ vehicle.value.model }}</h1>
         </div>
 
         <div class="w-100 my-2"></div>

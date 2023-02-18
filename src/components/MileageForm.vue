@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import * as A from 'fp-ts/lib/Array';
+import {pipe} from 'fp-ts/lib/function';
+import {computed, onMounted} from 'vue';
 import {makeDate, makeNumber, makeString} from '~/services/form';
+import {vehicles, getAllVehicles} from '~/state/vehicle';
 import type {Mileage} from '~/types';
 import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
@@ -14,9 +18,23 @@ defineEmits<{
   (event: 'cancel', value: never): void;
 }>();
 
+onMounted(async () => {
+  await pipe(
+    getAllVehicles()
+  )();
+});
+
 const mileageInput = makeNumber('De kilometerstand moet hoger zijn dan 0.');
 const dateInput = makeDate('De datum is verplicht.');
 const vehicleInput = makeString('Het voertuig is verplicht.');
+const vehicleInputOptions = computed(() => {
+  return pipe(
+    vehicles.value,
+    A.map((a) => {
+      return {label: a.model, value: a.id};
+    })
+  );
+});
 </script>
 
 <template>
@@ -47,7 +65,8 @@ const vehicleInput = makeString('Het voertuig is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormSelect name="vehicle" :value="defaultValue?.vehicle.id" :validator="vehicleInput" :options="[]">
+        <BaseFormSelect name="vehicle" :value="defaultValue?.vehicle.id" :validator="vehicleInput"
+          :options="vehicleInputOptions">
           Voertuig
         </BaseFormSelect>
       </div>

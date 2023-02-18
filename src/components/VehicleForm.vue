@@ -29,8 +29,7 @@ const photoInput = makeString('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="text" name="model" :value="defaultValue?.model" :validator="modelInput"
-          placeholder="Suzuki Gs500e">
+        <BaseFormInput type="text" name="model" :default-value="defaultValue?.model" :validator="modelInput">
           Model
         </BaseFormInput>
       </div>
@@ -38,7 +37,7 @@ const photoInput = makeString('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="file" name="photo" :value="null" :validator="photoInput">
+        <BaseFormInput type="file" name="photo" :validator="photoInput">
           Foto
         </BaseFormInput>
       </div>

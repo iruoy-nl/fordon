@@ -31,7 +31,7 @@ export function toMileage(
 /**
  * Get all mileages.
  */
-export function getAll(): TE.TaskEither<Error, void> {
+export function getAllMileages(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
       () => {
@@ -57,7 +57,7 @@ export function getAll(): TE.TaskEither<Error, void> {
 /**
  * Add one mileage.
  */
-export function addOne(
+export function addOneMileage(
   data: FormData,
   vehicleId: string,
 ): TE.TaskEither<Error, void> {

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import * as TE from 'fp-ts/lib/TaskEither';
 import {pipe} from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/lib/TaskEither';
 import {onMounted} from 'vue';
 import MileageList from '~/components/MileageList.vue';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {addOne, getAll, mileages} from '~/state/mileage';
+import {addOneMileage, getAllMileages, mileages} from '~/state/mileage';
 
 onMounted(async () => {
   await pipe(
-    getAll(),
+    getAllMileages(),
   )();
 });
 
@@ -30,7 +30,7 @@ function addMileage(): void {
        */
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          addOne(data, ''),
+          addOneMileage(data, ''),
           TE.match(
             (e) => {
               // todo: display error to the user.

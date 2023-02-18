@@ -38,7 +38,7 @@ export function toVehicle(
 /**
  * Get all vehicles.
  */
-export function getAll(): TE.TaskEither<Error, void> {
+export function getAllVehicles(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
       () => pb.collection(collection).getFullList(),
@@ -57,7 +57,7 @@ export function getAll(): TE.TaskEither<Error, void> {
 /**
  * Get one vehicle.
  */
-export function getById(
+export function getVehicleById(
   id: string,
 ): TE.TaskEither<Error, void> {
   // Quick exit when the vehicle has already been loaded.
@@ -92,7 +92,7 @@ export function getById(
 /**
  * Add one vehicle.
  */
-export function addOne(
+export function addOneVehicle(
   data: FormData,
 ): TE.TaskEither<Error, void> {
   // Associates this vehicle with the correct user.
@@ -122,7 +122,7 @@ export function addOne(
 /**
  * Edit a vehicle.
  */
-export function editById(
+export function editVehicleById(
   id: string,
   data: FormData,
 ): TE.TaskEither<Error, void> {
@@ -153,7 +153,7 @@ export function editById(
 /**
  * Remove a vehicle.
  */
-export function removeById(
+export function removeVehicleById(
   id: string,
 ): TE.TaskEither<Error, void> {
   return pipe(

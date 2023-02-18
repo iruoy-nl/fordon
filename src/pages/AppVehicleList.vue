@@ -5,11 +5,11 @@ import {onMounted} from 'vue';
 import VehicleList from '~/components/VehicleList.vue';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {addOne, getAll, vehicles} from '~/state/vehicle';
+import {addOneVehicle, getAllVehicles, vehicles} from '~/state/vehicle';
 
 onMounted(async () => {
   await pipe(
-    getAll(),
+    getAllVehicles(),
   )();
 });
 
@@ -30,7 +30,7 @@ function addVehicle(): void {
        */
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          addOne(data),
+          addOneVehicle(data),
           TE.match(
             (e) => {
               // todo: display error to the user.
