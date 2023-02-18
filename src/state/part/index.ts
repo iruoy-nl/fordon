@@ -5,25 +5,25 @@ import {ClientResponseError, Record} from "pocketbase";
 import {ref} from "vue";
 import {pb} from "~/di";
 import {toVehicle} from "~/state/vehicle";
-import {Mileage} from "~/types";
+import {Part} from "~/types";
 
-const collection = 'mileages';
+const collection = 'parts';
 
-export const mileages = ref<Mileage[]>([]);
+export const parts = ref<Part[]>([]);
 
-export function toMileage(
+export function toPart(
   record: Record,
-): Mileage {
-  const mileage = record.export() as Mileage;
+): Part {
+  const part = record.export() as Part;
 
   if ('vehicle' in record.expand) {
-    mileage.vehicle = toVehicle(record.expand.vehicle as Record);
+    part.vehicle = toVehicle(record.expand.vehicle as Record);
   }
 
-  return mileage;
+  return part;
 }
 
-export function getAllMileages(): TE.TaskEither<Error, void> {
+export function getAllParts(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
       () => {
@@ -31,21 +31,21 @@ export function getAllMileages(): TE.TaskEither<Error, void> {
           .collection(collection)
           .getFullList(undefined, {
             expand: 'vehicle',
-            sort: '-date'
+            sort: 'title'
           });
       },
       (a) => a as ClientResponseError,
     ),
     TE.map((b) => {
-      return b.map(toMileage);
+      return b.map(toPart);
     }),
     TE.map((c) => {
-      mileages.value = c;
+      parts.value = c;
     }),
   );
 };
 
-export function insertOneMileage(
+export function insertOnePart(
   data: FormData,
 ): TE.TaskEither<Error, void> {
   return pipe(
@@ -60,19 +60,19 @@ export function insertOneMileage(
       (a) => a as ClientResponseError,
     ),
     TE.map((b) => {
-      return toMileage(b);
+      return toPart(b);
     }),
     TE.map((c) => {
-      mileages.value = pipe(
-        mileages.value,
+      parts.value = pipe(
+        parts.value,
         A.prepend(c)
       );
     }),
   );
 }
 
-export function updateMileageById(
-  mileageId: string,
+export function updatePartById(
+  partId: string,
   data: FormData,
 ): TE.TaskEither<Error, void> {
   return pipe(
@@ -80,36 +80,36 @@ export function updateMileageById(
       () => {
         return pb
           .collection(collection)
-          .update(mileageId, data, {
+          .update(partId, data, {
             expand: 'vehicle'
           });
       },
       (a) => a as ClientResponseError,
     ),
     TE.map((b) => {
-      return toMileage(b);
+      return toPart(b);
     }),
     TE.map((c) => {
-      mileages.value = pipe(
-        mileages.value,
+      parts.value = pipe(
+        parts.value,
         A.map((d) => c.id === d.id ? c : d),
       );
     }),
   );
 }
 
-export function deleteMileageById(
-  mileageId: string,
+export function deletePartById(
+  partId: string,
 ): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
-      () => pb.collection(collection).delete(mileageId),
+      () => pb.collection(collection).delete(partId),
       (a) => a as ClientResponseError,
     ),
     TE.map(() => {
-      mileages.value = pipe(
-        mileages.value,
-        A.filter((a) => a.id !== mileageId)
+      parts.value = pipe(
+        parts.value,
+        A.filter((a) => a.id !== partId)
       );
     })
   );

@@ -4,7 +4,7 @@ import {FormInputValidator} from '~/types';
 
 const props = defineProps<{
   name: string;
-  type: 'text' | 'file' | 'number' | 'date';
+  type: 'text' | 'file' | 'number' | 'date' | 'url';
   defaultValue?: unknown;
   validator?: FormInputValidator;
 }>();
