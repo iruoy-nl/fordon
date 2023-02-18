@@ -6,15 +6,9 @@ import {pb, redirectUrl} from "~/di";
 import {getItem, putItem} from "~/services/storage";
 import {Provider} from "~/types";
 
-/**
- * The state
- */
 export const providers = ref<Provider[]>([]);
 
-/**
- * List providers
- */
-export const listProviders = (): TE.TaskEither<Error, void> => {
+export function getAllProviders(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
       () => pb.collection("users").listAuthMethods(),
@@ -31,35 +25,25 @@ export const listProviders = (): TE.TaskEither<Error, void> => {
   );
 };
 
-/**
- * Initiate the authentication process with a provider.
- *
- * @param provider The provider to use.
- */
-export const challenge = (provider: Provider): void => {
+export function challenge(
+  provider: Provider,
+): void {
   // We need this when we verify.
   putItem("provider", provider);
 
   window.location.href = `${provider.authUrl}${redirectUrl}`;
 };
 
-/**
- * Verify the request incoming from the selected provider.
- *
- * @param code The code received by the provider.
- * @param state The current state.
- */
-export const verify = (
+export function verify(
   code: string,
   state: string
-): TE.TaskEither<Error, void> => {
+): TE.TaskEither<Error, void> {
   const provider = getItem<Provider>("provider");
 
   return pipe(
     provider,
     TE.fromOption(() => new Error('Het authenticatieproces is nog niet gestart.')),
     TE.chain((provider) => {
-      // We have a valid provider.
       return pipe(
         provider.state,
         TE.fromPredicate(
@@ -67,7 +51,6 @@ export const verify = (
           () => new Error(`De communicatie met ${provider.name} is mislukt.`),
         ),
         TE.chain(() => {
-          // We have a valid state.
           const {name, codeVerifier} = provider;
 
           return pipe(
@@ -79,7 +62,6 @@ export const verify = (
               () => new Error('Er is een onbekende fout opgetreden.'),
             ),
             TE.chain((u) => {
-              // The authentication was successfull, update user data.
               const name = u.meta?.name;
               const avatarUrl = u.meta?.avatarUrl;
 
@@ -101,9 +83,6 @@ export const verify = (
   );
 };
 
-/**
- * Clears the local authentication store.
- */
-export const clear = (): void => {
+export function clear(): void {
   pb.authStore.clear();
 };

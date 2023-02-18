@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import {Vehicle} from '~/types';
 
-type Props = {
+defineProps<{
   vehicles: Vehicle[];
-};
-
-defineProps<Props>();
+}>();
 </script>
 
 <template>

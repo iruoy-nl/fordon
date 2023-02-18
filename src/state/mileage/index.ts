@@ -11,11 +11,6 @@ const collection = 'mileages';
 
 export const mileages = ref<Mileage[]>([]);
 
-/**
- * Convert a Pocketbase record to a Mileage object.
- * 
- * @param record The record from Pocketbase.
- */
 export function toMileage(
   record: Record,
 ): Mileage {
@@ -28,9 +23,6 @@ export function toMileage(
   return mileage;
 }
 
-/**
- * Get all mileages.
- */
 export function getAllMileages(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
@@ -48,16 +40,12 @@ export function getAllMileages(): TE.TaskEither<Error, void> {
       return b.map(toMileage);
     }),
     TE.map((c) => {
-      // Set the state.
       mileages.value = c;
     }),
   );
 };
 
-/**
- * Add one mileage.
- */
-export function addOneMileage(
+export function insertOneMileage(
   data: FormData,
 ): TE.TaskEither<Error, void> {
   return pipe(
@@ -75,7 +63,6 @@ export function addOneMileage(
       return toMileage(b);
     }),
     TE.map((c) => {
-      // Set the state.
       mileages.value = pipe(
         mileages.value,
         A.prepend(c)
@@ -84,7 +71,7 @@ export function addOneMileage(
   );
 }
 
-export function editMileageById(
+export function updateMileageById(
   mileageId: string,
   data: FormData,
 ): TE.TaskEither<Error, void> {
@@ -103,7 +90,6 @@ export function editMileageById(
       return toMileage(b);
     }),
     TE.map((c) => {
-      // Set the state.
       mileages.value = pipe(
         mileages.value,
         A.map((d) => c.id === d.id ? c : d),
@@ -112,7 +98,7 @@ export function editMileageById(
   );
 }
 
-export function removeMileageById(
+export function deleteMileageById(
   mileageId: string,
 ): TE.TaskEither<Error, void> {
   return pipe(
@@ -121,7 +107,6 @@ export function removeMileageById(
       (a) => a as ClientResponseError,
     ),
     TE.map(() => {
-      // Set the state.
       mileages.value = pipe(
         mileages.value,
         A.filter((a) => a.id !== mileageId)

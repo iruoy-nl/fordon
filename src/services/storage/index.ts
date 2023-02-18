@@ -6,7 +6,7 @@ import * as O from "fp-ts/lib/Option";
  *
  * @param key The key to retrieve the item for.
  */
-export const getItem = <A>(key: string): O.Option<A> => {
+export function getItem<A>(key: string): O.Option<A> {
   return pipe(
     localStorage.getItem(key),
     O.fromNullable,
@@ -26,7 +26,7 @@ export const getItem = <A>(key: string): O.Option<A> => {
  * @param key The key to store the value under.
  * @param value The value to store.
  */
-export const putItem = <A>(key: string, value: A): void => {
+export function putItem<A>(key: string, value: A): void {
   return pipe(
     value,
     (v) => {
@@ -44,6 +44,6 @@ export const putItem = <A>(key: string, value: A): void => {
  *
  * @param key The key to remove the value for.
  */
-export const removeItem = (key: string): void => {
+export function removeItem(key: string): void {
   return pipe(key, localStorage.removeItem);
 };

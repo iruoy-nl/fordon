@@ -4,6 +4,6 @@ import Router from "./router";
 
 import "./style.scss";
 
-createApp(App) //
+createApp(App)
   .use(Router)
   .mount("#app");

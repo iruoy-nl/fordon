@@ -14,10 +14,9 @@ const {isValid, submit} = useForm(formRef);
 function onSubmit(): void {
   const data = submit();
 
-  // We only emit when the form is valid.
-  if (!isValid) return;
-
-  emits('save', data);
+  if (isValid) {
+    emits('save', data);
+  }
 }
 </script>
 

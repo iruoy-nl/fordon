@@ -4,14 +4,8 @@ import {ref} from "vue";
 import {pb} from "~/di";
 import {User} from "~/types";
 
-/**
- * The state.
- */
 export const user = ref<O.Option<User>>(O.none);
 
-/**
- * Watch for updates on the user's authentication status.
- */
 pb.authStore.onChange((_, model) => {
   user.value = pipe(
     model,

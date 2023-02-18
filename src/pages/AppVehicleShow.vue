@@ -1,26 +1,21 @@
 <script setup lang="ts">
 import * as A from 'fp-ts/lib/Array';
-import {constUndefined, pipe} from 'fp-ts/lib/function';
+import {pipe} from 'fp-ts/lib/function';
 import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
 import {computed, onMounted} from 'vue';
 import {useRouter} from 'vue-router';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {editVehicleById, getVehicleById, removeVehicleById, vehicles} from '~/state/vehicle';
+import {updateVehicleById, getVehicleById, deleteVehicleById, vehicles} from '~/state/vehicle';
+import {Vehicle} from '~/types';
 
 const {currentRoute, push} = useRouter();
 
-/**
- * The id of the selected vehicle.
- */
 const id = computed(() => {
   return pipe(currentRoute.value.params.id, String);
 });
 
-/**
- * The selected vehicle.
- */
 const vehicle = computed(() => {
   return pipe(
     vehicles.value,
@@ -34,38 +29,27 @@ onMounted(async () => {
   )();
 });
 
-/**
- * Edit an existing vehicle.
- */
-function editVehicle(): void {
+function editVehicle(
+  vehicle: O.Option<Vehicle>,
+): void {
+  if (O.isNone(vehicle)) return;
+
   openModal(
     () => import('~/components/VehicleForm.vue'),
     {
-      defaultValue: pipe(
-        vehicle.value,
-        O.matchW(constUndefined, (a) => a)
-      ),
+      defaultValue: vehicle.value,
     },
     {
-      /**
-       * Close the modal on cancel.
-       */
       cancel: (): void => closeModal(),
-      /**
-       * Edit the vehicle on save.
-       */
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          editVehicleById(id.value, data),
+          updateVehicleById(vehicle.value.id, data),
           TE.match(
             (e) => {
               // todo: display error to the user.
               console.error(e);
             },
-            () => {
-              // The vehicle was added sucessfully.
-              closeModal();
-            },
+            () => closeModal()
           ),
         )();
       }
@@ -73,34 +57,31 @@ function editVehicle(): void {
   );
 }
 
-/**
- * Remove an existing vehicle.
- */
-function removeVehicle(): void {
+function removeVehicle(
+  vehicle: O.Option<Vehicle>,
+): void {
+  if (O.isNone(vehicle)) return;
+
   openModal(
     () => import('~/components/ModalConfirm.vue'),
     {
       title: 'Weet je het zeker?',
-      body: 'Deze actie kan niet ongedaan worden gemaakt.',
+      body: `
+        Als je het voertuig ${vehicle.value.model} verwijdert worden ook alle
+        bijbehorende kilometers verwijderd.
+      `,
     },
     {
-      /**
-       * Close the modal on cancel.
-       */
       cancel: (): void => closeModal(),
-      /**
-       * Remove the vehicle on confirm.
-       */
       confirm: async (): Promise<void> => {
         await pipe(
-          removeVehicleById(id.value),
+          deleteVehicleById(vehicle.value.id),
           TE.match(
             (e) => {
               // todo: display error to the user.
               console.error(e);
             },
             () => {
-              // The vehicle was removed sucessfully.
               closeModal();
               push({name: 'vehicle-list'});
             },
@@ -135,11 +116,11 @@ function removeVehicle(): void {
         <div class="col">
           <div class="row">
             <div class="col-auto">
-              <button class="btn btn-primary" @click="editVehicle">Wijzigen</button>
+              <button class="btn btn-primary" @click="editVehicle(vehicle)">Wijzigen</button>
             </div>
 
             <div class="col-auto">
-              <button class="btn btn-danger" @click="removeVehicle">Verwijderen</button>
+              <button class="btn btn-danger" @click="removeVehicle(vehicle)">Verwijderen</button>
             </div>
           </div>
         </div>

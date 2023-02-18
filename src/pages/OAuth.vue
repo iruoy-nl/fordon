@@ -1,3 +1,44 @@
+<script setup lang="ts">
+import {pipe} from "fp-ts/lib/function";
+import * as TE from 'fp-ts/lib/TaskEither';
+import {onMounted, watch} from "vue";
+import {useRouter} from "vue-router";
+import BaseLogo from "~/components/BaseLogo.vue";
+import HalfHalf from "~/layouts/HalfHalf.vue";
+import {challenge, getAllProviders, providers, verify} from "~/state/oauth";
+
+const {currentRoute, push} = useRouter();
+
+onMounted(onLoad);
+watch(currentRoute, onLoad);
+
+async function onLoad() {
+  const {code, state} = currentRoute.value.query;
+
+  if (code && state) {
+    await handleRedirect(code as string, state as string);
+  } else {
+    await pipe(
+      getAllProviders(),
+    )();
+  }
+}
+
+async function handleRedirect(code: string, state: string) {
+  await pipe(
+    verify(code, state),
+    TE.match(
+      () => {
+        push({name: 'oauth'});
+      },
+      () => {
+        push({name: 'app'});
+      },
+    ),
+  )();
+}
+</script>
+
 <template>
   <HalfHalf>
     <template #left>
@@ -30,7 +71,7 @@
 
                   Login met
                   <span class="text-capitalize">
-                    {{provider.name}}
+                    {{ provider.name }}
                   </span>
                 </button>
               </div>
@@ -51,53 +92,3 @@
     </template>
   </HalfHalf>
 </template>
-
-<script setup lang="ts">
-import {pipe} from "fp-ts/lib/function";
-import * as TE from 'fp-ts/lib/TaskEither';
-import {onMounted, watch} from "vue";
-import {useRouter} from "vue-router";
-import BaseLogo from "~/components/BaseLogo.vue";
-import HalfHalf from "~/layouts/HalfHalf.vue";
-import {challenge, listProviders, providers, verify} from "~/state/oauth";
-
-const {currentRoute, push} = useRouter();
-
-onMounted(onLoad);
-watch(currentRoute, onLoad);
-
-/**
- * Determines which step the user is currently in.
- */
-async function onLoad() {
-  const {code, state} = currentRoute.value.query;
-
-  if (code && state) {
-    await handleRedirect(code as string, state as string);
-  } else {
-    await pipe(
-      listProviders(),
-    )();
-  }
-}
-
-/**
- * Verifies the provided details.
- *
- * @param code The incoming code,
- * @param state The incoming state.
- */
-async function handleRedirect(code: string, state: string) {
-  await pipe(
-    verify(code, state),
-    TE.match(
-      () => {
-        push({name: 'oauth'});
-      },
-      () => {
-        push({name: 'app'});
-      },
-    ),
-  )();
-}
-</script>

@@ -5,7 +5,7 @@ import {onMounted} from 'vue';
 import MileageList from '~/components/MileageList.vue';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {addOneMileage, getAllMileages, mileages} from '~/state/mileage';
+import {insertOneMileage, getAllMileages, mileages} from '~/state/mileage';
 
 onMounted(async () => {
   await pipe(
@@ -21,7 +21,7 @@ function addMileage(): void {
       cancel: (): void => closeModal(),
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          addOneMileage(data),
+          insertOneMileage(data),
           TE.matchW(
             (e) => {
               // todo: display error to the user.

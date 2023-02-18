@@ -1,8 +1,5 @@
 <script setup lang="ts">
 defineEmits<{
-  /**
-   * Indicate that the modal should be closed.
-   */
   (event: 'close', value: never): void;
 }>();
 </script>

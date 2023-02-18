@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import * as O from "fp-ts/lib/Option";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+import BaseLogo from "~/components/BaseLogo.vue";
+import {clear} from "~/state/oauth";
+import {user} from "~/state/user";
+
+const {push} = useRouter();
+
+const pages = ref([
+  // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
+  {icon: "signpost", title: "Kilometers", name: "mileage-list"},
+  // {icon: "tools", title: "Onderhoud", name: "maintenance"},
+  {icon: "card-heading", title: "Voertuigen", name: "vehicle-list"},
+  // {icon: "gear", title: "Instellingen", name: "settings"},
+]);
+
+const logout = () => {
+  clear();
+  push({name: "oauth"});
+};
+</script>
+
 <template>
   <div class="row h-100 justify-content-between border-end p-4">
     <div class="col">
@@ -11,7 +35,7 @@
         <template v-for="{icon, title, name} in pages" :key="name">
           <router-link class="list-group-item rounded border-0 p-3" :to="{name}">
             <i :class="`bi bi-${icon} me-2`"></i>
-            {{title}}
+            {{ title }}
           </router-link>
         </template>
       </ul>
@@ -26,10 +50,10 @@
         <div class="w-100 my-2"></div>
 
         <h6 class="text-primary">
-          {{user.value.name}}
+          {{ user.value.name }}
         </h6>
         <small class="text-muted">
-          {{user.value.email}}
+          {{ user.value.email }}
         </small>
 
         <div class="w-100 my-2"></div>
@@ -42,33 +66,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import * as O from "fp-ts/lib/Option";
-import {ref} from "vue";
-import {useRouter} from "vue-router";
-import BaseLogo from "~/components/BaseLogo.vue";
-import {clear} from "~/state/oauth";
-import {user} from "~/state/user";
-
-const {push} = useRouter();
-
-/**
- * The pages the navigation should display.
- */
-const pages = ref([
-  // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
-  {icon: "signpost", title: "Kilometers", name: "mileage-list"},
-  // {icon: "tools", title: "Onderhoud", name: "maintenance"},
-  {icon: "card-heading", title: "Voertuigen", name: "vehicle-list"},
-  // {icon: "gear", title: "Instellingen", name: "settings"},
-]);
-
-/**
- * Logs out the user.
- */
-const logout = () => {
-  clear();
-  push({name: "oauth"});
-};
-</script>

@@ -13,19 +13,11 @@ const collection = "vehicles";
 
 export const vehicles = ref<Vehicle[]>([]);
 
-export const selected = ref<O.Option<Vehicle>>(O.none);
-
-/**
- * Convert a Pocketbase record to a Vehicle object.
- * 
- * @param record The record from Pocketbase.
- */
 export function toVehicle(
   record: Record,
 ): Vehicle {
   const vehicle = record.export() as Vehicle;
 
-  // Correctly associate the url of the photo.
   vehicle.photoUrl = getFileUrl(
     collection,
     vehicle.id,
@@ -35,9 +27,6 @@ export function toVehicle(
   return vehicle;
 }
 
-/**
- * Get all vehicles.
- */
 export function getAllVehicles(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
@@ -48,22 +37,17 @@ export function getAllVehicles(): TE.TaskEither<Error, void> {
       return b.map(toVehicle);
     }),
     TE.map((c) => {
-      // Set the state.
       vehicles.value = c;
     }),
   );
 };
 
-/**
- * Get one vehicle.
- */
 export function getVehicleById(
-  id: string,
+  vehicleId: string,
 ): TE.TaskEither<Error, void> {
-  // Quick exit when the vehicle has already been loaded.
   const exists = pipe(
     vehicles.value,
-    A.exists((a) => a.id === id),
+    A.exists((a) => a.id === vehicleId),
   );
 
   if (exists) {
@@ -72,15 +56,13 @@ export function getVehicleById(
 
   return pipe(
     TE.tryCatch(
-      () => pb.collection(collection).getOne(id),
+      () => pb.collection(collection).getOne(vehicleId),
       (a) => a as ClientResponseError,
     ),
     TE.map((b) => {
       return toVehicle(b);
     }),
     TE.map((c) => {
-      // Set the state.
-
       vehicles.value = pipe(
         vehicles.value,
         A.append(c),
@@ -89,10 +71,7 @@ export function getVehicleById(
   );
 }
 
-/**
- * Add one vehicle.
- */
-export function addOneVehicle(
+export function insertOneVehicle(
   data: FormData,
 ): TE.TaskEither<Error, void> {
   // Associates this vehicle with the correct user.
@@ -110,7 +89,6 @@ export function addOneVehicle(
       return toVehicle(b);
     }),
     TE.map((c) => {
-      // Set the state.
       vehicles.value = pipe(
         vehicles.value,
         A.append(c),
@@ -119,11 +97,8 @@ export function addOneVehicle(
   );
 }
 
-/**
- * Edit a vehicle.
- */
-export function editVehicleById(
-  id: string,
+export function updateVehicleById(
+  vehicleId: string,
   data: FormData,
 ): TE.TaskEither<Error, void> {
   // Associates this vehicle with the correct user.
@@ -134,14 +109,13 @@ export function editVehicleById(
 
   return pipe(
     TE.tryCatch(
-      () => pb.collection(collection).update(id, data),
+      () => pb.collection(collection).update(vehicleId, data),
       (a) => a as ClientResponseError,
     ),
     TE.map((b) => {
       return toVehicle(b);
     }),
     TE.map((c) => {
-      // Set the state.
       vehicles.value = pipe(
         vehicles.value,
         A.map((d) => c.id === d.id ? c : d),
@@ -150,22 +124,18 @@ export function editVehicleById(
   );
 }
 
-/**
- * Remove a vehicle.
- */
-export function removeVehicleById(
-  id: string,
+export function deleteVehicleById(
+  vehicleId: string,
 ): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
-      () => pb.collection(collection).delete(id),
+      () => pb.collection(collection).delete(vehicleId),
       (a) => a as ClientResponseError,
     ),
     TE.map(() => {
-      // Set the state.
       vehicles.value = pipe(
         vehicles.value,
-        A.filter((a) => a.id !== id)
+        A.filter((a) => a.id !== vehicleId)
       );
     })
   );

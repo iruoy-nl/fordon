@@ -9,15 +9,12 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  /**
-   * The width of the content in bootstrap columns.
-   */
-  columns?: number;
-}
-
 withDefaults(
-  defineProps<Props>(),
-  {columns: () => 8},
+  defineProps<{
+    columns?: number;
+  }>(),
+  {
+    columns: () => 8
+  },
 );
 </script>

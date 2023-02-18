@@ -4,7 +4,7 @@ import {parseAndFormat} from '~/services/date';
 import {closeModal, openModal} from '~/services/modal';
 import type {Mileage} from '~/types';
 import * as TE from 'fp-ts/lib/TaskEither';
-import {editMileageById, removeMileageById} from '~/state/mileage';
+import {updateMileageById, deleteMileageById} from '~/state/mileage';
 import {useRouter} from 'vue-router';
 
 defineProps<{
@@ -25,9 +25,10 @@ function editMileage(
       cancel: (): void => closeModal(),
       save: async (data: FormData): Promise<void> => {
         await pipe(
-          editMileageById(mileage.id, data),
+          updateMileageById(mileage.id, data),
           TE.match(
             (e) => {
+              // todo: display the error to the user
               console.error(e);
             },
             () => {
@@ -52,7 +53,7 @@ function deleteMileage(
       cancel: (): void => closeModal(),
       confirm: async (): Promise<void> => {
         await pipe(
-          removeMileageById(mileage.id),
+          deleteMileageById(mileage.id),
           TE.match(
             (e) => {
               console.error(e);

@@ -8,11 +8,11 @@ import {pbUrl} from "~/di";
  * @param id The id of the associated record.
  * @param filename The name of the files.
  */
-export const getFileUrl = (
+export function getFileUrl(
   collection: string,
   id: string,
   filename: string
-): string => {
+): string {
   return pipe(
     //
     pbUrl,
