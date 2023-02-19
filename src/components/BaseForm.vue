@@ -21,7 +21,12 @@ function onSubmit(): void {
 </script>
 
 <template>
-  <form method="post" @submit.prevent="onSubmit" @reset.prevent="$emit('cancel')" ref="formRef">
+  <form
+    ref="formRef"
+    method="post"
+    @submit.prevent="onSubmit"
+    @reset.prevent="$emit('cancel')"
+  >
     <slot />
   </form>
 </template>

@@ -13,7 +13,10 @@ defineEmits<{
     </div>
   </div>
 
-  <div class="modal-backdrop show" @click="$emit('close')"></div>
+  <div
+    class="modal-backdrop show"
+    @click="$emit('close')"
+  />
 </template>
 
 <style scoped lang="scss">

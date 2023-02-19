@@ -14,7 +14,7 @@ defineProps<{
 const {push} = useRouter();
 
 function editMileage(
-  mileage: Mileage,
+  mileage: Mileage
 ): void {
   openModal(
     () => import('~/components/MileageForm.vue'),
@@ -33,21 +33,21 @@ function editMileage(
             },
             () => {
               closeModal();
-            },
-          ),
+            }
+          )
         )();
       }
     });
 }
 
 function deleteMileage(
-  mileage: Mileage,
+  mileage: Mileage
 ): void {
   openModal(
     () => import('~/components/ModalConfirm.vue'),
     {
       title: 'Weet je het zeker?',
-      body: 'Deze actie kan niet ongedaan worden gemaakt.',
+      body: 'Deze actie kan niet ongedaan worden gemaakt.'
     },
     {
       cancel: (): void => closeModal(),
@@ -61,10 +61,10 @@ function deleteMileage(
             () => {
               closeModal();
               push({name: 'mileages'});
-            },
-          ),
+            }
+          )
         )();
-      },
+      }
     }
   );
 }
@@ -75,21 +75,34 @@ function deleteMileage(
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th class="w-25">Kilometers</th>
-          <th class="w-50">Voertuig</th>
-          <th class="w-25">Datum</th>
-          <th class="w-25"></th>
+          <th class="w-25">
+            Kilometers
+          </th>
+          <th class="w-50">
+            Voertuig
+          </th>
+          <th class="w-25">
+            Datum
+          </th>
+          <th class="w-25" />
         </tr>
       </thead>
       <tbody>
-        <template v-for="mileage in mileages" :key="mileage.id">
+        <template
+          v-for="mileage in mileages"
+          :key="mileage.id"
+        >
           <tr>
             <td>
               <span>{{ mileage.mileage }}</span>
               <small>km</small>
             </td>
             <td>
-              <img :src="mileage.vehicle.photoUrl" style="height: 24px; width: 24px;" class="rounded">
+              <img
+                :src="mileage.vehicle.photoUrl"
+                style="height: 24px; width: 24px;"
+                class="rounded"
+              >
               {{ mileage.vehicle.model }}
             </td>
             <td>
@@ -98,13 +111,19 @@ function deleteMileage(
             <td>
               <div class="row g-1 flex-nowrap">
                 <div class="col-auto">
-                  <button class="btn btn-sm btn-primary" @click="editMileage(mileage)">
-                    <i class="bi bi-pen"></i>
+                  <button
+                    class="btn btn-sm btn-primary"
+                    @click="editMileage(mileage)"
+                  >
+                    <i class="bi bi-pen" />
                   </button>
                 </div>
                 <div class="col-auto">
-                  <button class="btn btn-sm btn-danger" @click="deleteMileage(mileage)">
-                    <i class="bi bi-trash"></i>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    @click="deleteMileage(mileage)"
+                  >
+                    <i class="bi bi-trash" />
                   </button>
                 </div>
               </div>

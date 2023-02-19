@@ -30,14 +30,14 @@ onMounted(async () => {
 });
 
 function editVehicle(
-  vehicle: O.Option<Vehicle>,
+  vehicle: O.Option<Vehicle>
 ): void {
   if (O.isNone(vehicle)) return;
 
   openModal(
     () => import('~/components/VehicleForm.vue'),
     {
-      defaultValue: vehicle.value,
+      defaultValue: vehicle.value
     },
     {
       cancel: (): void => closeModal(),
@@ -50,7 +50,7 @@ function editVehicle(
               console.error(e);
             },
             () => closeModal()
-          ),
+          )
         )();
       }
     }
@@ -58,7 +58,7 @@ function editVehicle(
 }
 
 function removeVehicle(
-  vehicle: O.Option<Vehicle>,
+  vehicle: O.Option<Vehicle>
 ): void {
   if (O.isNone(vehicle)) return;
 
@@ -66,10 +66,7 @@ function removeVehicle(
     () => import('~/components/ModalConfirm.vue'),
     {
       title: 'Weet je het zeker?',
-      body: `
-        Als je het voertuig ${vehicle.value.model} verwijdert worden ook alle
-        bijbehorende kilometers verwijderd.
-      `,
+      body: `Als je het voertuig ${vehicle.value.model} verwijdert worden ook alle bijbehorende kilometers verwijderd.`
     },
     {
       cancel: (): void => closeModal(),
@@ -84,10 +81,10 @@ function removeVehicle(
             () => {
               closeModal();
               push({name: 'garage'});
-            },
-          ),
+            }
+          )
         )();
-      },
+      }
     }
   );
 }
@@ -105,22 +102,35 @@ function removeVehicle(
           <h1>{{ vehicle.value.model }}</h1>
         </div>
 
-        <div class="w-100 my-2"></div>
+        <div class="w-100 my-2" />
 
         <div class="col">
-          <img :src="vehicle.value.photoUrl" class="w-100 rounded">
+          <img
+            :src="vehicle.value.photoUrl"
+            class="w-100 rounded"
+          >
         </div>
 
-        <div class="w-100 my-2"></div>
+        <div class="w-100 my-2" />
 
         <div class="col">
           <div class="row">
             <div class="col-auto">
-              <button class="btn btn-primary" @click="editVehicle(vehicle)">Wijzigen</button>
+              <button
+                class="btn btn-primary"
+                @click="editVehicle(vehicle)"
+              >
+                Wijzigen
+              </button>
             </div>
 
             <div class="col-auto">
-              <button class="btn btn-danger" @click="removeVehicle(vehicle)">Verwijderen</button>
+              <button
+                class="btn btn-danger"
+                @click="removeVehicle(vehicle)"
+              >
+                Verwijderen
+              </button>
             </div>
           </div>
         </div>

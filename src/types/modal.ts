@@ -1,7 +1,7 @@
-import {Component} from "vue";
+import {Component} from 'vue';
 
 export type Modal = {
   slot: Component;
   bind: Record<string, unknown>;
-  on: Record<string, (data: any) => void>;
+  on: Record<string, (data: unknown) => void>;
 };

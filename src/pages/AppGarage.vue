@@ -5,11 +5,11 @@ import {onMounted} from 'vue';
 import VehicleList from '~/components/VehicleList.vue';
 import Centered from '~/layouts/Centered.vue';
 import {closeModal, openModal} from '~/services/modal';
-import {insertOneVehicle, getAllVehicles, vehicles} from '~/state/vehicle';
+import {getAllVehicles, insertOneVehicle, vehicles} from '~/state/vehicle';
 
 onMounted(async () => {
   await pipe(
-    getAllVehicles(),
+    getAllVehicles()
   )();
 });
 
@@ -28,7 +28,7 @@ function addVehicle(): void {
               console.error(e);
             },
             () => closeModal()
-          ),
+          )
         )();
       }
     });
@@ -38,7 +38,7 @@ function addVehicle(): void {
 <template>
   <Centered>
     <div class="row">
-      <div class="w-100 my-3"></div>
+      <div class="w-100 my-3" />
 
       <div class="col">
         <div class="row justify-content-between">
@@ -48,14 +48,17 @@ function addVehicle(): void {
           </div>
 
           <div class="col-auto my-auto">
-            <button class="btn btn-primary" @click="addVehicle">
+            <button
+              class="btn btn-primary"
+              @click="addVehicle"
+            >
               Nieuw
             </button>
           </div>
         </div>
       </div>
 
-      <div class="w-100 my-3"></div>
+      <div class="w-100 my-3" />
 
       <div class="col">
         <VehicleList :vehicles="vehicles" />

@@ -1,5 +1,5 @@
-import {pipe} from "fp-ts/lib/function";
-import * as O from "fp-ts/lib/Option";
+import {pipe} from 'fp-ts/lib/function';
+import * as O from 'fp-ts/lib/Option';
 
 /**
  * Get a value from local storage.
@@ -18,7 +18,7 @@ export function getItem<A>(key: string): O.Option<A> {
       );
     })
   );
-};
+}
 
 /**
  * Put a value by its key.
@@ -31,13 +31,13 @@ export function putItem<A>(key: string, value: A): void {
     value,
     (v) => {
       // When the value is not a string, stringify it.
-      return typeof v !== "string" //
+      return typeof v !== 'string' //
         ? JSON.stringify(v)
         : v;
     },
     (v) => localStorage.setItem(key, v)
   );
-};
+}
 
 /**
  * Remove a value by it's key.
@@ -46,4 +46,4 @@ export function putItem<A>(key: string, value: A): void {
  */
 export function removeItem(key: string): void {
   return pipe(key, localStorage.removeItem);
-};
+}

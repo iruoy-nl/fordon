@@ -12,8 +12,8 @@ export function parseAndFormat(value: string): string {
     parse,
     O.match(
       () => 'Ongeldige datum',
-      format,
-    ),
+      format
+    )
   );
 }
 
@@ -25,7 +25,7 @@ export function parseAndFormat(value: string): string {
 export function parse(value: string): O.Option<Date> {
   return pipe(
     new Date(value),
-    O.fromNullable,
+    O.fromNullable
   );
 }
 
@@ -40,7 +40,7 @@ export function format(date: Date): string {
     {
       day: 'numeric',
       month: 'long',
-      year: 'numeric',
+      year: 'numeric'
     }
   );
 }

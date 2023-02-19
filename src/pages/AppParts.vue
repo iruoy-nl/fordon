@@ -9,7 +9,7 @@ import {getAllParts, insertOnePart, parts} from '~/state/part';
 
 onMounted(async () => {
   await pipe(
-    getAllParts(),
+    getAllParts()
   )();
 });
 
@@ -28,7 +28,7 @@ function addPart(): void {
               console.error(e);
             },
             () => closeModal()
-          ),
+          )
         )();
       }
     }
@@ -39,7 +39,7 @@ function addPart(): void {
 <template>
   <Centered>
     <div class="row">
-      <div class="w-100 my-3"></div>
+      <div class="w-100 my-3" />
 
       <div class="col">
         <div class="row justify-content-between">
@@ -49,15 +49,17 @@ function addPart(): void {
           </div>
 
           <div class="col-auto my-auto">
-            <button class="btn btn-primary" @click="addPart">
+            <button
+              class="btn btn-primary"
+              @click="addPart"
+            >
               Nieuw
             </button>
           </div>
         </div>
-
       </div>
 
-      <div class="w-100 my-3"></div>
+      <div class="w-100 my-3" />
 
       <div class="col">
         <PartList :parts="parts" />

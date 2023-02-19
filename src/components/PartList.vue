@@ -8,16 +8,27 @@ defineProps<{
 
 <template>
   <div class="row g-2">
-    <template v-for="part of parts">
+    <template
+      v-for="part of parts"
+      :key="part.id"
+    >
       <div class="col-3">
         <div class="card">
           <div class="card-body">
-            <a :href="part.url" target="_blank" class="btn btn-link p-0">
+            <a
+              :href="part.url"
+              target="_blank"
+              class="btn btn-link p-0"
+            >
               {{ part.title }}
             </a>
 
             <p class="card-text mt-2">
-              <img :src="part.vehicle.photoUrl" style="height: 24px; width: 24px;" class="rounded">
+              <img
+                :src="part.vehicle.photoUrl"
+                style="height: 24px; width: 24px;"
+                class="rounded"
+              >
               {{ part.vehicle.model }}
             </p>
           </div>

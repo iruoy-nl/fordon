@@ -1,44 +1,44 @@
-import {constVoid, pipe} from "fp-ts/lib/function";
-import * as TE from "fp-ts/lib/TaskEither";
-import {ClientResponseError} from "pocketbase";
-import {ref} from "vue";
-import {pb, redirectUrl} from "~/di";
-import {getItem, putItem} from "~/services/storage";
-import {Provider} from "~/types";
+import {constVoid, pipe} from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/lib/TaskEither';
+import {ClientResponseError} from 'pocketbase';
+import {ref} from 'vue';
+import {pb, redirectUrl} from '~/di';
+import {getItem, putItem} from '~/services/storage';
+import {Provider} from '~/types';
 
 export const providers = ref<Provider[]>([]);
 
 export function getAllProviders(): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
-      () => pb.collection("users").listAuthMethods(),
+      () => pb.collection('users').listAuthMethods(),
       (a) => {
         const error = a as ClientResponseError;
 
         return new Error(error.message);
-      },
+      }
     ),
     TE.map((b) => {
       // Set the state
       providers.value = b.authProviders;
     })
   );
-};
+}
 
 export function challenge(
-  provider: Provider,
+  provider: Provider
 ): void {
   // We need this when we verify.
-  putItem("provider", provider);
+  putItem('provider', provider);
 
   window.location.href = `${provider.authUrl}${redirectUrl}`;
-};
+}
 
 export function verify(
   code: string,
   state: string
 ): TE.TaskEither<Error, void> {
-  const provider = getItem<Provider>("provider");
+  const provider = getItem<Provider>('provider');
 
   return pipe(
     provider,
@@ -48,7 +48,7 @@ export function verify(
         provider.state,
         TE.fromPredicate(
           (v) => v === state,
-          () => new Error(`De communicatie met ${provider.name} is mislukt.`),
+          () => new Error(`De communicatie met ${provider.name} is mislukt.`)
         ),
         TE.chain(() => {
           const {name, codeVerifier} = provider;
@@ -57,9 +57,9 @@ export function verify(
             TE.tryCatch(
               () =>
                 pb //
-                  .collection("users")
+                  .collection('users')
                   .authWithOAuth2(name, code, codeVerifier, redirectUrl),
-              () => new Error('Er is een onbekende fout opgetreden.'),
+              () => new Error('Er is een onbekende fout opgetreden.')
             ),
             TE.chain((u) => {
               const name = u.meta?.name;
@@ -69,11 +69,11 @@ export function verify(
                 TE.tryCatch(
                   () =>
                     pb //
-                      .collection("users")
+                      .collection('users')
                       .update(u.record.id, {name, avatarUrl}),
-                  () => new Error('Er is iets misgegaan tijdens het wijzigen van de profielgegevens.'),
+                  () => new Error('Er is iets misgegaan tijdens het wijzigen van de profielgegevens.')
                 ),
-                TE.map(constVoid),
+                TE.map(constVoid)
               );
             })
           );
@@ -81,8 +81,8 @@ export function verify(
       );
     })
   );
-};
+}
 
 export function clear(): void {
   pb.authStore.clear();
-};
+}

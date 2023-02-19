@@ -13,6 +13,11 @@ defineProps<{
   defaultValue?: Part;
 }>();
 
+defineEmits<{
+  (event: 'save', value: FormData): void;
+  (event: 'cancel', value: never): void;
+}>();
+
 onMounted(async () => {
   await pipe(
     getAllVehicles()
@@ -40,7 +45,10 @@ const vehicleInputOptions = computed(() => {
 </script>
 
 <template>
-  <BaseForm @save="$emit('save', $event)" @cancel="$emit('cancel')">
+  <BaseForm
+    @save="$emit('save', $event)"
+    @cancel="$emit('cancel')"
+  >
     <div class="row">
       <div class="col mb-3">
         <h1>
@@ -48,43 +56,63 @@ const vehicleInputOptions = computed(() => {
         </h1>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormInput type="text" name="title" :default-value="defaultValue?.title" :validator="titleInput">
+        <BaseFormInput
+          type="text"
+          name="title"
+          :default-value="defaultValue?.title"
+          :validator="titleInput"
+        >
           Onderdeel
         </BaseFormInput>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormInput type="url" name="url" :default-value="defaultValue?.url" :validator="urlInput">
+        <BaseFormInput
+          type="url"
+          name="url"
+          :default-value="defaultValue?.url"
+          :validator="urlInput"
+        >
           Link naar de website
         </BaseFormInput>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormSelect name="vehicle" :default-value="defaultValue?.vehicle.id" :validator="vehicleInput"
-          :options="vehicleInputOptions">
+        <BaseFormSelect
+          name="vehicle"
+          :default-value="defaultValue?.vehicle.id"
+          :validator="vehicleInput"
+          :options="vehicleInputOptions"
+        >
           Voertuig
         </BaseFormSelect>
       </div>
 
-      <div class="w-100 my-2"></div>
+      <div class="w-100 my-2" />
 
       <div class="col">
         <div class="row justify-content-end">
           <div class="col-auto">
-            <button class="btn" type="reset">
+            <button
+              class="btn"
+              type="reset"
+            >
               Annuleren
             </button>
           </div>
 
           <div class="col-auto">
-            <button class="btn btn-primary" type="submit">
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
               Opslaan
             </button>
           </div>

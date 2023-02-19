@@ -2,12 +2,12 @@
   <div class="container-fluid">
     <div class="row vh-100">
       <div class="col-6 p-0">
-        <slot name="left"></slot>
+        <slot name="left" />
       </div>
 
       <div class="col-6 p-0">
         <slot name="right">
-          <div class="image"></div>
+          <div class="image" />
         </slot>
       </div>
     </div>

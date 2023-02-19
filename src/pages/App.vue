@@ -10,7 +10,7 @@ import TheSidebar from '~/components/TheSidebar.vue';
       </div>
 
       <div class="col-10 h-100 overflow-auto">
-        <router-view></router-view>
+        <router-view />
       </div>
     </div>
   </div>

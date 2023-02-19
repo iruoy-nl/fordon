@@ -47,7 +47,10 @@ const vehicleInputOptions = computed(() => {
 </script>
 
 <template>
-  <BaseForm @save="$emit('save', $event)" @cancel="$emit('cancel')">
+  <BaseForm
+    @save="$emit('save', $event)"
+    @cancel="$emit('cancel')"
+  >
     <div class="row">
       <div class="col mb-3">
         <h1>
@@ -55,43 +58,63 @@ const vehicleInputOptions = computed(() => {
         </h1>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormInput type="number" name="mileage" :default-value="defaultValue?.mileage" :validator="mileageInput">
+        <BaseFormInput
+          type="number"
+          name="mileage"
+          :default-value="defaultValue?.mileage"
+          :validator="mileageInput"
+        >
           Kilometerstand
         </BaseFormInput>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormInput type="date" name="date" :default-value="dateDefaultValue" :validator="dateInput">
+        <BaseFormInput
+          type="date"
+          name="date"
+          :default-value="dateDefaultValue"
+          :validator="dateInput"
+        >
           Datum
         </BaseFormInput>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormSelect name="vehicle" :default-value="defaultValue?.vehicle.id" :validator="vehicleInput"
-          :options="vehicleInputOptions">
+        <BaseFormSelect
+          name="vehicle"
+          :default-value="defaultValue?.vehicle.id"
+          :validator="vehicleInput"
+          :options="vehicleInputOptions"
+        >
           Voertuig
         </BaseFormSelect>
       </div>
 
-      <div class="w-100 my-2"></div>
+      <div class="w-100 my-2" />
 
       <div class="col">
         <div class="row justify-content-end">
           <div class="col-auto">
-            <button class="btn" type="reset">
+            <button
+              class="btn"
+              type="reset"
+            >
               Annuleren
             </button>
           </div>
 
           <div class="col-auto">
-            <button class="btn btn-primary" type="submit">
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
               Opslaan
             </button>
           </div>

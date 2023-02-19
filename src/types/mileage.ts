@@ -1,4 +1,4 @@
-import {Vehicle} from "~/types";
+import {Vehicle} from '~/types';
 
 export type Mileage = {
   id: string;

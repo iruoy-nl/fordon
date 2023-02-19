@@ -4,5 +4,5 @@ import BaseModalContainer from './components/BaseModalContainer.vue';
 
 <template>
   <BaseModalContainer />
-  <router-view></router-view>
+  <router-view />
 </template>

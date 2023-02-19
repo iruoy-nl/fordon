@@ -16,19 +16,35 @@ const {current, error, touch} = useFormField(props.defaultValue, props.validator
 </script>
 
 <template>
-  <label :for="`${name}-input`" class="form-label">
+  <label
+    :for="`${name}-input`"
+    class="form-label"
+  >
     <slot />
   </label>
 
   <div class="input-group has-validation">
-    <select :name="name" :id="`${name}-input`" v-model="current" :class="{'form-select': true, 'is-invalid': error}"
-      @focusout="touch">
-      <template v-for="option in options">
-        <option :value="option.value">{{ option.label }}</option>
+    <select
+      :id="`${name}-input`"
+      v-model="current"
+      :name="name"
+      :class="{'form-select': true, 'is-invalid': error}"
+      @focusout="touch"
+    >
+      <template
+        v-for="option in options"
+        :key="option.value"
+      >
+        <option :value="option.value">
+          {{ option.label }}
+        </option>
       </template>
     </select>
 
-    <div v-if="error" class="invalid-feedback">
+    <div
+      v-if="error"
+      class="invalid-feedback"
+    >
       {{ error.message }}
     </div>
   </div>

@@ -1,15 +1,15 @@
 import * as A from 'fp-ts/lib/Array';
 import * as E from 'fp-ts/lib/Either';
-import {constVoid, pipe} from "fp-ts/lib/function";
+import {constVoid, pipe} from 'fp-ts/lib/function';
 import * as O from 'fp-ts/lib/Option';
 import {computed, Ref, ref} from 'vue';
 import {ZodError, ZodType} from 'zod';
-import {FormInput} from "~/types";
+import {FormInput} from '~/types';
 
 const inputs = ref<FormInput[]>([]);
 
 export function useForm(
-  form: Ref<HTMLFormElement | undefined>,
+  form: Ref<HTMLFormElement | undefined>
 ) {
   inputs.value = [];
 
@@ -27,13 +27,13 @@ export function useForm(
       )
 
       return new FormData(form.value);
-    },
+    }
   };
 }
 
 export function useFormField(
   defaultValue?: unknown,
-  validator?: ZodType,
+  validator?: ZodType
 ) {
   const current = ref<unknown>(defaultValue);
 
@@ -81,6 +81,6 @@ export function useFormField(
       }
 
       return null;
-    }),
+    })
   };
 }

@@ -1,19 +1,19 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHistory} from 'vue-router';
 import App from '~/pages/App.vue';
 import AppGarage from '~/pages/AppGarage.vue';
 import AppGarageShow from '~/pages/AppGarageShow.vue';
 import AppMileages from '~/pages/AppMileages.vue';
 import AppParts from '~/pages/AppParts.vue';
-import OAuthPage from "~/pages/OAuth.vue";
-import {isAuthenticated} from "./middleware";
+import OAuthPage from '~/pages/OAuth.vue';
+import {isAuthenticated} from './middleware';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/oauth",
-      name: "oauth",
-      component: OAuthPage,
+      path: '/oauth',
+      name: 'oauth',
+      component: OAuthPage
     },
     {
       path: '/app',
@@ -24,27 +24,27 @@ const router = createRouter({
         {
           path: 'voertuigen',
           name: 'garage',
-          component: AppGarage,
+          component: AppGarage
         },
         {
           path: 'voertuigen/:id',
           name: 'garage-show',
-          component: AppGarageShow,
+          component: AppGarageShow
         },
         {
           path: 'kilometers',
           name: 'mileages',
-          component: AppMileages,
+          component: AppMileages
         },
         {
           path: 'onderdelen',
           name: 'parts',
-          component: AppParts,
+          component: AppParts
         }
-      ],
+      ]
     }
   ],
-  linkActiveClass: "active",
+  linkActiveClass: 'active'
 });
 
 router.beforeEach((to, from, next) => {

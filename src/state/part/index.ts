@@ -1,18 +1,18 @@
 import * as A from 'fp-ts/lib/Array';
-import {pipe} from "fp-ts/lib/function";
+import {pipe} from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
-import {ClientResponseError, Record} from "pocketbase";
-import {ref} from "vue";
-import {pb} from "~/di";
-import {toVehicle} from "~/state/vehicle";
-import {Part} from "~/types";
+import {ClientResponseError, Record} from 'pocketbase';
+import {ref} from 'vue';
+import {pb} from '~/di';
+import {toVehicle} from '~/state/vehicle';
+import {Part} from '~/types';
 
 const collection = 'parts';
 
 export const parts = ref<Part[]>([]);
 
 export function toPart(
-  record: Record,
+  record: Record
 ): Part {
   const part = record.export() as Part;
 
@@ -34,19 +34,19 @@ export function getAllParts(): TE.TaskEither<Error, void> {
             sort: 'title'
           });
       },
-      (a) => a as ClientResponseError,
+      (a) => a as ClientResponseError
     ),
     TE.map((b) => {
       return b.map(toPart);
     }),
     TE.map((c) => {
       parts.value = c;
-    }),
+    })
   );
-};
+}
 
 export function insertOnePart(
-  data: FormData,
+  data: FormData
 ): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
@@ -57,7 +57,7 @@ export function insertOnePart(
             expand: 'vehicle'
           });
       },
-      (a) => a as ClientResponseError,
+      (a) => a as ClientResponseError
     ),
     TE.map((b) => {
       return toPart(b);
@@ -67,13 +67,13 @@ export function insertOnePart(
         parts.value,
         A.prepend(c)
       );
-    }),
+    })
   );
 }
 
 export function updatePartById(
   partId: string,
-  data: FormData,
+  data: FormData
 ): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
@@ -84,7 +84,7 @@ export function updatePartById(
             expand: 'vehicle'
           });
       },
-      (a) => a as ClientResponseError,
+      (a) => a as ClientResponseError
     ),
     TE.map((b) => {
       return toPart(b);
@@ -92,19 +92,19 @@ export function updatePartById(
     TE.map((c) => {
       parts.value = pipe(
         parts.value,
-        A.map((d) => c.id === d.id ? c : d),
+        A.map((d) => c.id === d.id ? c : d)
       );
-    }),
+    })
   );
 }
 
 export function deletePartById(
-  partId: string,
+  partId: string
 ): TE.TaskEither<Error, void> {
   return pipe(
     TE.tryCatch(
       () => pb.collection(collection).delete(partId),
-      (a) => a as ClientResponseError,
+      (a) => a as ClientResponseError
     ),
     TE.map(() => {
       parts.value = pipe(

@@ -1,8 +1,8 @@
-import {pipe} from "fp-ts/lib/function";
-import * as O from "fp-ts/lib/Option";
-import {ref} from "vue";
-import {pb} from "~/di";
-import {User} from "~/types";
+import {pipe} from 'fp-ts/lib/function';
+import * as O from 'fp-ts/lib/Option';
+import {ref} from 'vue';
+import {pb} from '~/di';
+import {User} from '~/types';
 
 export const user = ref<O.Option<User>>(O.none);
 

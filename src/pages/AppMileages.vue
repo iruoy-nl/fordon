@@ -9,7 +9,7 @@ import {insertOneMileage, getAllMileages, mileages} from '~/state/mileage';
 
 onMounted(async () => {
   await pipe(
-    getAllMileages(),
+    getAllMileages()
   )();
 });
 
@@ -28,7 +28,7 @@ function addMileage(): void {
               console.error(e);
             },
             () => closeModal()
-          ),
+          )
         )();
       }
     });
@@ -38,7 +38,7 @@ function addMileage(): void {
 <template>
   <Centered>
     <div class="row">
-      <div class="w-100 my-3"></div>
+      <div class="w-100 my-3" />
 
       <div class="col">
         <div class="row justify-content-between">
@@ -48,15 +48,17 @@ function addMileage(): void {
           </div>
 
           <div class="col-auto my-auto">
-            <button class="btn btn-primary" @click="addMileage">
+            <button
+              class="btn btn-primary"
+              @click="addMileage"
+            >
               Nieuw
             </button>
           </div>
         </div>
-
       </div>
 
-      <div class="w-100 my-3"></div>
+      <div class="w-100 my-3" />
 
       <div class="col">
         <MileageList :mileages="mileages" />

@@ -21,7 +21,10 @@ const parsePhoto = string({required_error: 'De foto is verplicht.'})
 </script>
 
 <template>
-  <BaseForm @save="a => $emit('save', a)" @cancel="$emit('cancel')">
+  <BaseForm
+    @save="a => $emit('save', a)"
+    @cancel="$emit('cancel')"
+  >
     <div class="row">
       <div class="col mb-3">
         <h1>
@@ -29,34 +32,49 @@ const parsePhoto = string({required_error: 'De foto is verplicht.'})
         </h1>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormInput type="text" name="model" :default-value="defaultValue?.model" :validator="parseModel">
+        <BaseFormInput
+          type="text"
+          name="model"
+          :default-value="defaultValue?.model"
+          :validator="parseModel"
+        >
           Model
         </BaseFormInput>
       </div>
 
-      <div class="w-100"></div>
+      <div class="w-100" />
 
       <div class="col mb-3">
-        <BaseFormInput type="file" name="photo" :validator="parsePhoto">
+        <BaseFormInput
+          type="file"
+          name="photo"
+          :validator="parsePhoto"
+        >
           Foto
         </BaseFormInput>
       </div>
 
-      <div class="w-100 my-2"></div>
+      <div class="w-100 my-2" />
 
       <div class="col">
         <div class="row justify-content-end">
           <div class="col-auto">
-            <button class="btn" type="reset">
+            <button
+              class="btn"
+              type="reset"
+            >
               Annuleren
             </button>
           </div>
 
           <div class="col-auto">
-            <button class="btn btn-primary" type="submit">
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
               Opslaan
             </button>
           </div>

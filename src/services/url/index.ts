@@ -1,5 +1,5 @@
-import {pipe} from "fp-ts/lib/function";
-import {pbUrl} from "~/di";
+import {pipe} from 'fp-ts/lib/function';
+import {pbUrl} from '~/di';
 
 /**
  * Constructs an absolute file url.
@@ -18,4 +18,4 @@ export function getFileUrl(
     pbUrl,
     (v) => `${v}/api/files/${collection}/${id}/${filename}`
   );
-};
+}
