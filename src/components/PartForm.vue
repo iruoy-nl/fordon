@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
-import {computed, onMounted} from 'vue';
+import {onMounted} from 'vue';
 import {string} from 'zod';
 import {getAllVehicles, vehicles} from '~/state/vehicle';
 import {Part} from '~/types';
@@ -33,15 +32,6 @@ const urlInput = string({required_error: 'De url is verplicht'})
 
 const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
   .min(1, {message: 'Het voertuig is verplicht.'});
-
-const vehicleInputOptions = computed(() => {
-  return pipe(
-    vehicles.value,
-    A.map((a) => {
-      return {label: a.model, value: a.id};
-    })
-  );
-});
 </script>
 
 <template>
@@ -89,7 +79,8 @@ const vehicleInputOptions = computed(() => {
           name="vehicle"
           :default-value="defaultValue?.vehicle.id"
           :validator="vehicleInput"
-          :options="vehicleInputOptions"
+          :options="vehicles"
+          :label="(a) => vehicles.find((b) => a.id === b.id)?.model"
         >
           Voertuig
         </BaseFormSelect>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
-import {computed, onMounted} from 'vue';
+import {onMounted} from 'vue';
 import {date, number, string} from 'zod';
 import {getAllVehicles, vehicles} from '~/state/vehicle';
 import type {Mileage} from '~/types';
@@ -9,7 +8,7 @@ import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
 import BaseFormSelect from './BaseFormSelect.vue';
 
-const props = defineProps<{
+defineProps<{
   defaultValue?: Mileage;
 }>();
 
@@ -31,19 +30,6 @@ const dateInput = date({required_error: 'De datum is verplicht'});
 
 const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
   .min(1, {message: 'Het voertuig is verplicht.'});
-
-const dateDefaultValue = props.defaultValue
-  ? props.defaultValue.date.split(' ')[0]
-  : null;
-
-const vehicleInputOptions = computed(() => {
-  return pipe(
-    vehicles.value,
-    A.map((a) => {
-      return {label: a.model, value: a.id};
-    })
-  );
-});
 </script>
 
 <template>
@@ -77,7 +63,7 @@ const vehicleInputOptions = computed(() => {
         <BaseFormInput
           type="date"
           name="date"
-          :default-value="dateDefaultValue"
+          :default-value="defaultValue?.date"
           :validator="dateInput"
         >
           Datum
@@ -91,7 +77,8 @@ const vehicleInputOptions = computed(() => {
           name="vehicle"
           :default-value="defaultValue?.vehicle.id"
           :validator="vehicleInput"
-          :options="vehicleInputOptions"
+          :options="vehicles"
+          :label="(a) => vehicles.find((b) => a.id === b.id)?.model"
         >
           Voertuig
         </BaseFormSelect>

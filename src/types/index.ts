@@ -6,3 +6,6 @@ export * from '~/types/provider';
 export * from '~/types/user';
 export * from '~/types/vehicle';
 
+export type Item<T> = T & {
+  id: string;
+}

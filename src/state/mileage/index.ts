@@ -20,6 +20,12 @@ export function toMileage(
     mileage.vehicle = toVehicle(record.expand.vehicle as Record);
   }
 
+  // Remove the time from the date.
+  const date = mileage.date.split(' ').at(0);
+  if (date) {
+    mileage.date = date;
+  }
+
   return mileage;
 }
 
