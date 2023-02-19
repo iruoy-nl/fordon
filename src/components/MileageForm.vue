@@ -26,7 +26,8 @@ onMounted(async () => {
 const mileageInput = number({required_error: 'De kilometerstand is verplicht'})
   .min(0, {message: 'De kilometerstand moet gelijk of hoger zijn dan 0.'});
 
-const dateInput = date({required_error: 'De datum is verplicht'});
+const dateInput = string({required_error: 'De datum is verplicht'})
+  .min(1, {message: 'De datum is verplicht.'});
 
 const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
   .min(1, {message: 'Het voertuig is verplicht.'});
