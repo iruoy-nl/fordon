@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import {ZodType} from 'zod';
 import {useFormField} from '~/services/form';
-import {FormInputValidator} from '~/types';
 
 const props = defineProps<{
   name: string;
@@ -9,7 +9,7 @@ const props = defineProps<{
     label: string,
     value: unknown
   }[];
-  validator?: FormInputValidator;
+  validator?: ZodType;
 }>();
 
 const {current, error, touch} = useFormField(props.defaultValue, props.validator);

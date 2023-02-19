@@ -14,7 +14,7 @@ const {isValid, submit} = useForm(formRef);
 function onSubmit(): void {
   const data = submit();
 
-  if (isValid) {
+  if (isValid.value) {
     emits('save', data);
   }
 }

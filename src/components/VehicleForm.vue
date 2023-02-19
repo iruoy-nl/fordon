@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {makeString} from '~/services/form';
+import {string} from 'zod';
 import type {Vehicle} from '~/types';
 import BaseForm from './BaseForm.vue';
 import BaseFormInput from './BaseFormInput.vue';
@@ -13,8 +13,11 @@ defineEmits<{
   (event: 'cancel', value: never): void;
 }>();
 
-const modelInput = makeString('Het model is verplicht.');
-const photoInput = makeString('De foto is verplicht.');
+const parseModel = string({required_error: 'Het model is verplicht.'})
+  .min(1, {message: 'Het model is verplicht.'});
+
+const parsePhoto = string({required_error: 'De foto is verplicht.'})
+  .min(1, {message: 'De foto is verplicht.'});
 </script>
 
 <template>
@@ -29,7 +32,7 @@ const photoInput = makeString('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="text" name="model" :default-value="defaultValue?.model" :validator="modelInput">
+        <BaseFormInput type="text" name="model" :default-value="defaultValue?.model" :validator="parseModel">
           Model
         </BaseFormInput>
       </div>
@@ -37,7 +40,7 @@ const photoInput = makeString('De foto is verplicht.');
       <div class="w-100"></div>
 
       <div class="col mb-3">
-        <BaseFormInput type="file" name="photo" :validator="photoInput">
+        <BaseFormInput type="file" name="photo" :validator="parsePhoto">
           Foto
         </BaseFormInput>
       </div>

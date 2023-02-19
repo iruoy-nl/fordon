@@ -2,9 +2,9 @@ import * as A from 'fp-ts/lib/Array';
 import * as E from 'fp-ts/lib/Either';
 import {constVoid, pipe} from "fp-ts/lib/function";
 import * as O from 'fp-ts/lib/Option';
-import {computed, readonly, Ref, ref} from 'vue';
-import {parse} from '~/services/date';
-import {FormInput, FormInputValidator, FormValidationError} from "~/types";
+import {computed, Ref, ref} from 'vue';
+import {ZodError, ZodType} from 'zod';
+import {FormInput} from "~/types";
 
 const inputs = ref<FormInput[]>([]);
 
@@ -33,7 +33,7 @@ export function useForm(
 
 export function useFormField(
   defaultValue?: unknown,
-  validator?: FormInputValidator,
+  validator?: ZodType,
 ) {
   const current = ref<unknown>(defaultValue);
 
@@ -41,7 +41,18 @@ export function useFormField(
     O.fromNullable(validator),
     O.match(
       () => E.right(constVoid()),
-      (a) => a(current.value)
+      (a) => {
+        return pipe(
+          E.tryCatch(
+            () => a.parse(current.value),
+            (b) => {
+              const error = b as ZodError;
+
+              return new Error(error.issues.at(0)?.message);
+            }
+          )
+        );
+      }
     )
   ));
 
@@ -71,41 +82,5 @@ export function useFormField(
 
       return null;
     }),
-  };
-}
-
-export function makeString(
-  message: string,
-): FormInputValidator {
-  return (i) => {
-    if (typeof i !== 'string' || i.length === 0) {
-      return E.left(new Error(message));
-    }
-
-    return E.right(constVoid());
-  };
-}
-
-export function makeNumber(
-  message: string,
-): FormInputValidator {
-  return (i) => {
-    if (typeof i !== 'number' || i <= 0) {
-      return E.left(new Error(message));
-    }
-
-    return E.right(constVoid());
-  };
-}
-
-export function makeDate(
-  message: string,
-): FormInputValidator {
-  return (i) => {
-    if (typeof i !== 'string' || O.isNone(parse(i))) {
-      return E.left(new Error(message));
-    }
-
-    return E.right(constVoid());
   };
 }

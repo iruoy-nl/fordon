@@ -2,7 +2,7 @@
 import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
 import {computed, onMounted} from 'vue';
-import {makeDate, makeNumber, makeString} from '~/services/form';
+import {date, number, string} from 'zod';
 import {getAllVehicles, vehicles} from '~/state/vehicle';
 import type {Mileage} from '~/types';
 import BaseForm from './BaseForm.vue';
@@ -24,13 +24,18 @@ onMounted(async () => {
   )();
 });
 
-const mileageInput = makeNumber('De kilometerstand moet hoger zijn dan 0.');
-const dateInput = makeDate('De datum is verplicht.');
+const mileageInput = number({required_error: 'De kilometerstand is verplicht'})
+  .min(0, {message: 'De kilometerstand moet gelijk of hoger zijn dan 0.'});
+
+const dateInput = date({required_error: 'De datum is verplicht'});
+
+const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
+  .min(1, {message: 'Het voertuig is verplicht.'});
+
 const dateDefaultValue = props.defaultValue
   ? props.defaultValue.date.split(' ')[0]
   : null;
 
-const vehicleInput = makeString('Het voertuig is verplicht.');
 const vehicleInputOptions = computed(() => {
   return pipe(
     vehicles.value,

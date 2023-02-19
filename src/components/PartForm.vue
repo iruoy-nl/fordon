@@ -2,7 +2,7 @@
 import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
 import {computed, onMounted} from 'vue';
-import {makeString} from '~/services/form';
+import {string} from 'zod';
 import {getAllVehicles, vehicles} from '~/state/vehicle';
 import {Part} from '~/types';
 import BaseForm from './BaseForm.vue';
@@ -19,9 +19,16 @@ onMounted(async () => {
   )();
 });
 
-const titleInput = makeString('De titel is verplicht.');
-const urlInput = makeString('De url is verplicht.');
-const vehicleInput = makeString('het voertuig is verplicht.');
+const titleInput = string({required_error: 'Het onderdeel is verplicht'})
+  .min(1, {message: 'Het onderdeel is verplicht.'});
+
+const urlInput = string({required_error: 'De url is verplicht'})
+  .min(1, {message: 'De url is verplicht'})
+  .url({message: 'Het moet een geldige url zijn.'});
+
+const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
+  .min(1, {message: 'Het voertuig is verplicht.'});
+
 const vehicleInputOptions = computed(() => {
   return pipe(
     vehicles.value,
