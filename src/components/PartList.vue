@@ -3,8 +3,11 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th class="w-50">
+          <th class="w-25">
             Onderdeel
+          </th>
+          <th class="w-25">
+            Kosten
           </th>
           <th class="w-50">
             Voertuig
@@ -25,6 +28,9 @@
               >
                 {{ part.title }}
               </a>
+            </td>
+            <td>
+              {{ formatCurrency(part.cost) }}
             </td>
             <td>
               <img
@@ -48,6 +54,7 @@ import {defineAsyncComponent} from 'vue';
 import {closePopUp, openMenu, openModal} from '~/services/pop-up';
 import {deletePartById, updatePartById} from '~/state/part';
 import {Part} from '~/types';
+import {formatCurrency} from '~/services/format';
 
 defineProps<{
   parts: Part[];

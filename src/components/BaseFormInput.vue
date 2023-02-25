@@ -13,6 +13,7 @@
       :type="type"
       :name="name"
       :class="{'form-control': true, 'is-invalid': error}"
+      step="any"
       @focusout="touch"
     >
 
