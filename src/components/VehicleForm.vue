@@ -49,6 +49,8 @@
         </BaseFormInput>
       </div>
 
+      <small>* Verplicht</small>
+
       <div class="w-100 my-2" />
 
       <div class="col">
