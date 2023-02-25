@@ -13,11 +13,15 @@
 
           <div class="card-body">
             <router-link
-              class="btn btn-link p-0"
+              class="btn btn-link p-0 text-primary"
               :to="{name: 'garage-show', params: {id: vehicle.id}}"
             >
               {{ vehicle.model }}
             </router-link>
+
+            <p class="card-text">
+              {{ vehicle.licensePlate }}
+            </p>
           </div>
         </div>
       </div>

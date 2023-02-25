@@ -39,6 +39,19 @@
       <div class="w-100" />
 
       <div class="col mb-3">
+        <BaseFormInput
+          type="number"
+          name="cost"
+          :default-value="defaultValue?.cost"
+          :validator="costInput"
+        >
+          Kosten
+        </BaseFormInput>
+      </div>
+
+      <div class="w-100" />
+
+      <div class="col mb-3">
         <BaseFormSelect
           name="vehicle"
           :default-value="defaultValue?.vehicle.id"
@@ -80,7 +93,7 @@
 <script setup lang="ts">
 import {pipe} from 'fp-ts/lib/function';
 import {onMounted} from 'vue';
-import {string} from 'zod';
+import {number, string} from 'zod';
 import {getAllVehicles, vehicles} from '~/state/vehicle';
 import {Part} from '~/types';
 import BaseForm from './BaseForm.vue';
@@ -111,4 +124,8 @@ const urlInput = string({required_error: 'De url is verplicht'})
 
 const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
   .min(1, {message: 'Het voertuig is verplicht.'});
+
+const costInput = number({})
+  .min(0, {message: 'De kosten mogen niet negatief zijn.'})
+  .nullable()
 </script>

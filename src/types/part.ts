@@ -5,4 +5,5 @@ export type Part = {
   title: string;
   url: string;
   vehicle: Vehicle;
+  cost: number;
 };
