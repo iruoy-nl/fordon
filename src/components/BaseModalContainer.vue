@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import BaseModal from '~/components/BaseModal.vue';
 import {closeModal, modals} from '~/services/modal';
-import BaseModal from './BaseModal.vue';
 </script>
 
 <template>

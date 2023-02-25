@@ -1,3 +1,4 @@
+export * from '~/types/context-menu';
 export * from '~/types/form';
 export * from '~/types/mileage';
 export * from '~/types/modal';

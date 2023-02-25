@@ -6,12 +6,26 @@ import type {Mileage} from '~/types';
 import * as TE from 'fp-ts/lib/TaskEither';
 import {updateMileageById, deleteMileageById} from '~/state/mileage';
 import {useRouter} from 'vue-router';
+import {openContextMenu} from '~/services/context-menu';
+import {defineAsyncComponent} from 'vue';
 
 defineProps<{
   mileages: Mileage[],
 }>();
 
 const {push} = useRouter();
+
+function openOptions(
+  mileage: Mileage
+): void {
+  openContextMenu(
+    defineAsyncComponent(() => import('~/components/ContextMenuOptions.vue')),
+    {
+      onEdit: (): void => editMileage(mileage),
+      onDelete: (): void => deleteMileage(mileage)
+    }
+  );
+}
 
 function editMileage(
   mileage: Mileage
@@ -23,9 +37,9 @@ function editMileage(
     },
     {
       cancel: (): void => closeModal(),
-      save: async (data: FormData): Promise<void> => {
+      save: async (data: unknown): Promise<void> => {
         await pipe(
-          updateMileageById(mileage.id, data),
+          updateMileageById(mileage.id, data as FormData),
           TE.match(
             (e) => {
               // todo: display the error to the user
@@ -84,7 +98,6 @@ function deleteMileage(
           <th class="w-25">
             Datum
           </th>
-          <th class="w-25" />
         </tr>
       </thead>
       <tbody>
@@ -92,7 +105,7 @@ function deleteMileage(
           v-for="mileage in mileages"
           :key="mileage.id"
         >
-          <tr>
+          <tr @contextmenu.prevent="openOptions(mileage)">
             <td>
               <span>{{ mileage.mileage }}</span>
               <small>km</small>
@@ -107,26 +120,6 @@ function deleteMileage(
             </td>
             <td>
               {{ parseAndFormat(mileage.date) }}
-            </td>
-            <td>
-              <div class="row g-1 flex-nowrap">
-                <div class="col-auto">
-                  <button
-                    class="btn btn-sm btn-primary"
-                    @click="editMileage(mileage)"
-                  >
-                    <i class="bi bi-pen" />
-                  </button>
-                </div>
-                <div class="col-auto">
-                  <button
-                    class="btn btn-sm btn-danger"
-                    @click="deleteMileage(mileage)"
-                  >
-                    <i class="bi bi-trash" />
-                  </button>
-                </div>
-              </div>
             </td>
           </tr>
         </template>
