@@ -35,6 +35,18 @@
         </BaseFormInput>
       </div>
 
+      <div class="w-100" />
+
+      <div class="col mb-3">
+        <BaseFormInput
+          type="text"
+          name="licensePlate"
+          :default-value="defaultValue?.licensePlate"
+        >
+          Kenteken
+        </BaseFormInput>
+      </div>
+
       <div class="w-100 my-2" />
 
       <div class="col">

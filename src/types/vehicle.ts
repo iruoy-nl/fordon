@@ -3,4 +3,5 @@ export type Vehicle = {
   model: string;
   photo: string;
   photoUrl: string;
+  licensePlate: string;
 };
