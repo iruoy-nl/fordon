@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import {pipe} from 'fp-ts/lib/function';
-import {onMounted} from 'vue';
-import PartList from '~/components/PartList.vue';
-import Centered from '~/layouts/Centered.vue';
-import * as TE from 'fp-ts/lib/TaskEither';
-import {closeModal, openModal} from '~/services/modal';
-import {getAllParts, insertOnePart, parts} from '~/state/part';
-
-onMounted(async () => {
-  await pipe(
-    getAllParts()
-  )();
-});
-
-function addPart(): void {
-  openModal(
-    () => import('~/components/PartForm.vue'),
-    {},
-    {
-      cancel: () => closeModal(),
-      save: async (data: FormData): Promise<void> => {
-        await pipe(
-          insertOnePart(data),
-          TE.matchW(
-            (e) => {
-              // todo: display error to the user.
-              console.error(e);
-            },
-            () => closeModal()
-          )
-        )();
-      }
-    }
-  );
-}
-</script>
-
 <template>
   <Centered>
     <div class="row">
@@ -67,3 +29,43 @@ function addPart(): void {
     </div>
   </Centered>
 </template>
+
+<script setup lang="ts">
+import {pipe} from 'fp-ts/lib/function';
+import {defineAsyncComponent, onMounted} from 'vue';
+import PartList from '~/components/PartList.vue';
+import Centered from '~/layouts/Centered.vue';
+import * as TE from 'fp-ts/lib/TaskEither';
+import {closePopUp, openModal} from '~/services/pop-up';
+import {getAllParts, insertOnePart, parts} from '~/state/part';
+
+onMounted(async () => {
+  await pipe(
+    getAllParts()
+  )();
+});
+
+function addPart(): void {
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/PartForm.vue')),
+    emits: {
+      cancel: () => {
+        closePopUp();
+      },
+      save: async (data: FormData): Promise<void> => {
+        await pipe(
+          insertOnePart(data),
+          TE.matchW(
+            (e) => {
+              console.error(e);
+            },
+            () => {
+              closePopUp();
+            }
+          )
+        )();
+      }
+    }
+  });
+}
+</script>

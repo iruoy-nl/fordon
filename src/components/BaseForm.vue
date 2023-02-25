@@ -1,3 +1,14 @@
+<template>
+  <form
+    ref="formRef"
+    method="post"
+    @submit.prevent="onSubmit"
+    @reset.prevent="$emit('cancel')"
+  >
+    <slot />
+  </form>
+</template>
+
 <script setup lang="ts">
 import {ref} from 'vue';
 import {useForm} from '~/services/form';
@@ -19,14 +30,3 @@ function onSubmit(): void {
   }
 }
 </script>
-
-<template>
-  <form
-    ref="formRef"
-    method="post"
-    @submit.prevent="onSubmit"
-    @reset.prevent="$emit('cancel')"
-  >
-    <slot />
-  </form>
-</template>

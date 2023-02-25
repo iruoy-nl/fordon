@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import {Part} from '~/types';
-
-defineProps<{
-  parts: Part[];
-}>();
-</script>
-
 <template>
   <div class="row g-2">
     <template
@@ -37,3 +29,11 @@ defineProps<{
     </template>
   </div>
 </template>
+
+<script setup lang="ts">
+import {Part} from '~/types';
+
+defineProps<{
+  parts: Part[];
+}>();
+</script>

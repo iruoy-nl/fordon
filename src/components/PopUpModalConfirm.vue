@@ -1,15 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  title: string;
-  body: string;
-}>();
-
-defineEmits<{
-  (event: 'confirm', data: never): void;
-  (event: 'cancel', data: never): void;
-}>();
-</script>
-
 <template>
   <div class="row">
     <div class="col mb-3">
@@ -46,3 +34,15 @@ defineEmits<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  title: string;
+  body: string;
+}>();
+
+defineEmits<{
+  (event: 'confirm', data: never): void;
+  (event: 'cancel', data: never): void;
+}>();
+</script>

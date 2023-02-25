@@ -1,39 +1,3 @@
-<script setup lang="ts">
-import {pipe} from 'fp-ts/lib/function';
-import {onMounted} from 'vue';
-import {string} from 'zod';
-import {getAllVehicles, vehicles} from '~/state/vehicle';
-import {Part} from '~/types';
-import BaseForm from './BaseForm.vue';
-import BaseFormInput from './BaseFormInput.vue';
-import BaseFormSelect from './BaseFormSelect.vue';
-
-defineProps<{
-  defaultValue?: Part;
-}>();
-
-defineEmits<{
-  (event: 'save', value: FormData): void;
-  (event: 'cancel', value: never): void;
-}>();
-
-onMounted(async () => {
-  await pipe(
-    getAllVehicles()
-  )();
-});
-
-const titleInput = string({required_error: 'Het onderdeel is verplicht'})
-  .min(1, {message: 'Het onderdeel is verplicht.'});
-
-const urlInput = string({required_error: 'De url is verplicht'})
-  .min(1, {message: 'De url is verplicht'})
-  .url({message: 'Het moet een geldige url zijn.'});
-
-const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
-  .min(1, {message: 'Het voertuig is verplicht.'});
-</script>
-
 <template>
   <BaseForm
     @save="$emit('save', $event)"
@@ -112,3 +76,39 @@ const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
     </div>
   </BaseForm>
 </template>
+
+<script setup lang="ts">
+import {pipe} from 'fp-ts/lib/function';
+import {onMounted} from 'vue';
+import {string} from 'zod';
+import {getAllVehicles, vehicles} from '~/state/vehicle';
+import {Part} from '~/types';
+import BaseForm from './BaseForm.vue';
+import BaseFormInput from './BaseFormInput.vue';
+import BaseFormSelect from './BaseFormSelect.vue';
+
+defineProps<{
+  defaultValue?: Part;
+}>();
+
+defineEmits<{
+  (event: 'save', value: FormData): void;
+  (event: 'cancel', value: never): void;
+}>();
+
+onMounted(async () => {
+  await pipe(
+    getAllVehicles()
+  )();
+});
+
+const titleInput = string({required_error: 'Het onderdeel is verplicht'})
+  .min(1, {message: 'Het onderdeel is verplicht.'});
+
+const urlInput = string({required_error: 'De url is verplicht'})
+  .min(1, {message: 'De url is verplicht'})
+  .url({message: 'Het moet een geldige url zijn.'});
+
+const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
+  .min(1, {message: 'Het voertuig is verplicht.'});
+</script>

@@ -1,38 +1,3 @@
-<script setup lang="ts">
-import {pipe} from 'fp-ts/lib/function';
-import {onMounted} from 'vue';
-import {date, number, string} from 'zod';
-import {getAllVehicles, vehicles} from '~/state/vehicle';
-import type {Mileage} from '~/types';
-import BaseForm from './BaseForm.vue';
-import BaseFormInput from './BaseFormInput.vue';
-import BaseFormSelect from './BaseFormSelect.vue';
-
-defineProps<{
-  defaultValue?: Mileage;
-}>();
-
-defineEmits<{
-  (event: 'save', value: FormData): void;
-  (event: 'cancel', value: never): void;
-}>();
-
-onMounted(async () => {
-  await pipe(
-    getAllVehicles()
-  )();
-});
-
-const mileageInput = number({required_error: 'De kilometerstand is verplicht'})
-  .min(0, {message: 'De kilometerstand moet gelijk of hoger zijn dan 0.'});
-
-const dateInput = string({required_error: 'De datum is verplicht'})
-  .min(1, {message: 'De datum is verplicht.'});
-
-const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
-  .min(1, {message: 'Het voertuig is verplicht.'});
-</script>
-
 <template>
   <BaseForm
     @save="$emit('save', $event)"
@@ -111,3 +76,38 @@ const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
     </div>
   </BaseForm>
 </template>
+
+<script setup lang="ts">
+import {pipe} from 'fp-ts/lib/function';
+import {onMounted} from 'vue';
+import {number, string} from 'zod';
+import {getAllVehicles, vehicles} from '~/state/vehicle';
+import type {Mileage} from '~/types';
+import BaseForm from './BaseForm.vue';
+import BaseFormInput from './BaseFormInput.vue';
+import BaseFormSelect from './BaseFormSelect.vue';
+
+defineProps<{
+  defaultValue?: Mileage;
+}>();
+
+defineEmits<{
+  (event: 'save', value: FormData): void;
+  (event: 'cancel', value: never): void;
+}>();
+
+onMounted(async () => {
+  await pipe(
+    getAllVehicles()
+  )();
+});
+
+const mileageInput = number({required_error: 'De kilometerstand is verplicht'})
+  .min(0, {message: 'De kilometerstand moet gelijk of hoger zijn dan 0.'});
+
+const dateInput = string({required_error: 'De datum is verplicht'})
+  .min(1, {message: 'De datum is verplicht.'});
+
+const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
+  .min(1, {message: 'Het voertuig is verplicht.'});
+</script>

@@ -1,40 +1,3 @@
-<script setup lang="ts">
-import {pipe} from 'fp-ts/lib/function';
-import * as TE from 'fp-ts/lib/TaskEither';
-import {onMounted} from 'vue';
-import MileageList from '~/components/MileageList.vue';
-import Centered from '~/layouts/Centered.vue';
-import {closeModal, openModal} from '~/services/modal';
-import {insertOneMileage, getAllMileages, mileages} from '~/state/mileage';
-
-onMounted(async () => {
-  await pipe(
-    getAllMileages()
-  )();
-});
-
-function addMileage(): void {
-  openModal(
-    () => import('~/components/MileageForm.vue'),
-    {},
-    {
-      cancel: (): void => closeModal(),
-      save: async (data: FormData): Promise<void> => {
-        await pipe(
-          insertOneMileage(data),
-          TE.matchW(
-            (e) => {
-              // todo: display error to the user.
-              console.error(e);
-            },
-            () => closeModal()
-          )
-        )();
-      }
-    });
-}
-</script>
-
 <template>
   <Centered>
     <div class="row">
@@ -66,3 +29,43 @@ function addMileage(): void {
     </div>
   </Centered>
 </template>
+
+<script setup lang="ts">
+import {pipe} from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/lib/TaskEither';
+import {defineAsyncComponent, onMounted} from 'vue';
+import MileageList from '~/components/MileageList.vue';
+import Centered from '~/layouts/Centered.vue';
+import {closePopUp, openModal} from '~/services/pop-up';
+import {getAllMileages, insertOneMileage, mileages} from '~/state/mileage';
+
+onMounted(async () => {
+  await pipe(
+    getAllMileages()
+  )();
+});
+
+function addMileage(): void {
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/MileageForm.vue')),
+    emits: {
+      cancel: (): void => {
+        closePopUp();
+      },
+      save: async (data: FormData): Promise<void> => {
+        await pipe(
+          insertOneMileage(data),
+          TE.matchW(
+            (e) => {
+              console.error(e);
+            },
+            () => {
+              closePopUp();
+            }
+          )
+        )();
+      }
+    }
+  });
+}
+</script>
