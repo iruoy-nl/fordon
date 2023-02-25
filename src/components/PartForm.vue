@@ -42,7 +42,7 @@
         <BaseFormInput
           type="number"
           name="cost"
-          :default-value="defaultValue?.cost"
+          :default-value="defaultValue?.cost || null"
           :validator="costInput"
         >
           Kosten
