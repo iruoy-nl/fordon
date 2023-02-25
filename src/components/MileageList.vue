@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import {pipe} from 'fp-ts/lib/function';
-import {parseAndFormat} from '~/services/date';
-import {closeModal, openModal} from '~/services/modal';
-import type {Mileage} from '~/types';
 import * as TE from 'fp-ts/lib/TaskEither';
-import {updateMileageById, deleteMileageById} from '~/state/mileage';
-import {useRouter} from 'vue-router';
-import {openContextMenu} from '~/services/context-menu';
 import {defineAsyncComponent} from 'vue';
+import {useRouter} from 'vue-router';
+import {parseAndFormat} from '~/services/date';
+import {closePopUp, openMenu, openModal} from '~/services/pop-up';
+import {deleteMileageById, updateMileageById} from '~/state/mileage';
+import type {Mileage} from '~/types';
 
 defineProps<{
   mileages: Mileage[],
@@ -15,56 +14,61 @@ defineProps<{
 
 const {push} = useRouter();
 
-function openOptions(
-  mileage: Mileage
+function openOptionsMenu(
+  mileage: Mileage,
+  event: MouseEvent
 ): void {
-  openContextMenu(
-    defineAsyncComponent(() => import('~/components/ContextMenuOptions.vue')),
-    {
-      onEdit: (): void => editMileage(mileage),
-      onDelete: (): void => deleteMileage(mileage)
+  openMenu({
+    slot: defineAsyncComponent(() => import('~/components/BasePopUpMenu.vue')),
+    position: {x: event.clientX, y: event.clientY},
+    props: {
+      options: [
+        {icon: 'pen', label: 'Wijzigen', onClick: () => editMileage(mileage)},
+        {icon: 'trash', label: 'Verwijderen', onClick: () => deleteMileage(mileage)}
+      ]
     }
-  );
+  });
 }
 
 function editMileage(
   mileage: Mileage
 ): void {
-  openModal(
-    () => import('~/components/MileageForm.vue'),
-    {
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/MileageForm.vue')),
+    props: {
       defaultValue: mileage
     },
-    {
-      cancel: (): void => closeModal(),
-      save: async (data: unknown): Promise<void> => {
+    emits: {
+      cancel: (): void => closePopUp(),
+      save: async (data: FormData): Promise<void> => {
         await pipe(
-          updateMileageById(mileage.id, data as FormData),
+          updateMileageById(mileage.id, data),
           TE.match(
             (e) => {
-              // todo: display the error to the user
               console.error(e);
             },
             () => {
-              closeModal();
+              closePopUp();
             }
           )
         )();
       }
-    });
+    }});
 }
 
 function deleteMileage(
   mileage: Mileage
 ): void {
-  openModal(
-    () => import('~/components/ModalConfirm.vue'),
-    {
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/PopUpModalConfirm.vue')),
+    props: {
       title: 'Weet je het zeker?',
       body: 'Deze actie kan niet ongedaan worden gemaakt.'
     },
-    {
-      cancel: (): void => closeModal(),
+    emits: {
+      cancel: (): void => {
+        closePopUp();
+      },
       confirm: async (): Promise<void> => {
         await pipe(
           deleteMileageById(mileage.id),
@@ -73,13 +77,13 @@ function deleteMileage(
               console.error(e);
             },
             () => {
-              closeModal();
+              closePopUp();
               push({name: 'mileages'});
             }
           )
         )();
       }
-    }
+    }}
   );
 }
 </script>
@@ -105,7 +109,7 @@ function deleteMileage(
           v-for="mileage in mileages"
           :key="mileage.id"
         >
-          <tr @contextmenu.prevent="openOptions(mileage)">
+          <tr @contextmenu.prevent="openOptionsMenu(mileage, $event)">
             <td>
               <span>{{ mileage.mileage }}</span>
               <small>km</small>

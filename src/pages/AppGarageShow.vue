@@ -3,11 +3,11 @@ import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
 import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
-import {computed, onMounted} from 'vue';
+import {computed, defineAsyncComponent, onMounted} from 'vue';
 import {useRouter} from 'vue-router';
 import Centered from '~/layouts/Centered.vue';
-import {closeModal, openModal} from '~/services/modal';
-import {updateVehicleById, getVehicleById, deleteVehicleById, vehicles} from '~/state/vehicle';
+import {closePopUp, openModal} from '~/services/pop-up';
+import {deleteVehicleById, getVehicleById, updateVehicleById, vehicles} from '~/state/vehicle';
 import {Vehicle} from '~/types';
 
 const {currentRoute, push} = useRouter();
@@ -34,27 +34,30 @@ function editVehicle(
 ): void {
   if (O.isNone(vehicle)) return;
 
-  openModal(
-    () => import('~/components/VehicleForm.vue'),
-    {
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/VehicleForm.vue')),
+    props: {
       defaultValue: vehicle.value
     },
-    {
-      cancel: (): void => closeModal(),
+    emits: {
+      cancel: (): void => {
+        closePopUp();
+      },
       save: async (data: FormData): Promise<void> => {
         await pipe(
           updateVehicleById(vehicle.value.id, data),
           TE.match(
             (e) => {
-              // todo: display error to the user.
               console.error(e);
             },
-            () => closeModal()
+            () => {
+              closePopUp()
+            }
           )
         )();
       }
     }
-  );
+  });
 }
 
 function removeVehicle(
@@ -62,31 +65,32 @@ function removeVehicle(
 ): void {
   if (O.isNone(vehicle)) return;
 
-  openModal(
-    () => import('~/components/ModalConfirm.vue'),
-    {
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/PopUpModalConfirm.vue')),
+    props: {
       title: 'Weet je het zeker?',
       body: `Als je het voertuig ${vehicle.value.model} verwijdert worden ook alle bijbehorende kilometers verwijderd.`
     },
-    {
-      cancel: (): void => closeModal(),
+    emits: {
+      cancel: (): void => {
+        closePopUp();
+      },
       confirm: async (): Promise<void> => {
         await pipe(
           deleteVehicleById(vehicle.value.id),
           TE.match(
             (e) => {
-              // todo: display error to the user.
               console.error(e);
             },
             () => {
-              closeModal();
+              closePopUp();
               push({name: 'garage'});
             }
           )
         )();
       }
     }
-  );
+  });
 }
 </script>
 

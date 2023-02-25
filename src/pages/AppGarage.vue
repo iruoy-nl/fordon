@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {pipe} from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
-import {onMounted} from 'vue';
+import {defineAsyncComponent, onMounted} from 'vue';
 import VehicleList from '~/components/VehicleList.vue';
 import Centered from '~/layouts/Centered.vue';
-import {closeModal, openModal} from '~/services/modal';
+import {closePopUp, openModal} from '~/services/pop-up';
 import {getAllVehicles, insertOneVehicle, vehicles} from '~/state/vehicle';
 
 onMounted(async () => {
@@ -14,24 +14,27 @@ onMounted(async () => {
 });
 
 function addVehicle(): void {
-  openModal(
-    () => import('~/components/VehicleForm.vue'),
-    {},
-    {
-      cancel: (): void => closeModal(),
+  openModal({
+    slot: defineAsyncComponent(() => import('~/components/VehicleForm.vue')),
+    emits: {
+      cancel: (): void => {
+        closePopUp();
+      },
       save: async (data: FormData): Promise<void> => {
         await pipe(
           insertOneVehicle(data),
           TE.matchW(
             (e) => {
-              // todo: display error to the user.
               console.error(e);
             },
-            () => closeModal()
+            () => {
+              closePopUp();
+            }
           )
         )();
       }
-    });
+    }
+  });
 }
 </script>
 

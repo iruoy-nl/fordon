@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import BaseContextMenuContainer from './components/BaseContextMenuContainer.vue';
-import BaseModalContainer from './components/BaseModalContainer.vue';
+import BasePopUpContainer from './components/BasePopUpContainer.vue';
 </script>
 
 <template>
-  <BaseContextMenuContainer />
-  <BaseModalContainer />
+  <BasePopUpContainer />
   <router-view />
 </template>
