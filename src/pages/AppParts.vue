@@ -1,3 +1,35 @@
+<template>
+  <Centered>
+    <div class="row">
+      <div class="w-100 my-3" />
+
+      <div class="col">
+        <div class="row justify-content-between">
+          <div class="col">
+            <h1>Onderdelen</h1>
+            <p>...</p>
+          </div>
+
+          <div class="col-auto my-auto">
+            <button
+              class="btn btn-primary"
+              @click="addPart"
+            >
+              Nieuw
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100 my-3" />
+
+      <div class="col">
+        <PartList :parts="parts" />
+      </div>
+    </div>
+  </Centered>
+</template>
+
 <script setup lang="ts">
 import {pipe} from 'fp-ts/lib/function';
 import {defineAsyncComponent, onMounted} from 'vue';
@@ -37,35 +69,3 @@ function addPart(): void {
   });
 }
 </script>
-
-<template>
-  <Centered>
-    <div class="row">
-      <div class="w-100 my-3" />
-
-      <div class="col">
-        <div class="row justify-content-between">
-          <div class="col">
-            <h1>Onderdelen</h1>
-            <p>...</p>
-          </div>
-
-          <div class="col-auto my-auto">
-            <button
-              class="btn btn-primary"
-              @click="addPart"
-            >
-              Nieuw
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="w-100 my-3" />
-
-      <div class="col">
-        <PartList :parts="parts" />
-      </div>
-    </div>
-  </Centered>
-</template>

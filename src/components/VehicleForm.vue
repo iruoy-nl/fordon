@@ -1,25 +1,3 @@
-<script setup lang="ts">
-import {string} from 'zod';
-import type {Vehicle} from '~/types';
-import BaseForm from './BaseForm.vue';
-import BaseFormInput from './BaseFormInput.vue';
-
-defineProps<{
-  defaultValue?: Vehicle;
-}>();
-
-defineEmits<{
-  (event: 'save', value: FormData): void;
-  (event: 'cancel', value: never): void;
-}>();
-
-const parseModel = string({required_error: 'Het model is verplicht.'})
-  .min(1, {message: 'Het model is verplicht.'});
-
-const parsePhoto = string({required_error: 'De foto is verplicht.'})
-  .min(1, {message: 'De foto is verplicht.'});
-</script>
-
 <template>
   <BaseForm
     @save="a => $emit('save', a)"
@@ -83,3 +61,25 @@ const parsePhoto = string({required_error: 'De foto is verplicht.'})
     </div>
   </BaseForm>
 </template>
+
+<script setup lang="ts">
+import {string} from 'zod';
+import type {Vehicle} from '~/types';
+import BaseForm from './BaseForm.vue';
+import BaseFormInput from './BaseFormInput.vue';
+
+defineProps<{
+  defaultValue?: Vehicle;
+}>();
+
+defineEmits<{
+  (event: 'save', value: FormData): void;
+  (event: 'cancel', value: never): void;
+}>();
+
+const parseModel = string({required_error: 'Het model is verplicht.'})
+  .min(1, {message: 'Het model is verplicht.'});
+
+const parsePhoto = string({required_error: 'De foto is verplicht.'})
+  .min(1, {message: 'De foto is verplicht.'});
+</script>

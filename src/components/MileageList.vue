@@ -1,3 +1,47 @@
+<template>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th class="w-25">
+            Kilometers
+          </th>
+          <th class="w-50">
+            Voertuig
+          </th>
+          <th class="w-25">
+            Datum
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <template
+          v-for="mileage in mileages"
+          :key="mileage.id"
+        >
+          <tr @contextmenu.prevent="openOptionsMenu(mileage, $event)">
+            <td>
+              <span>{{ mileage.mileage }}</span>
+              <small>km</small>
+            </td>
+            <td>
+              <img
+                :src="mileage.vehicle.photoUrl"
+                style="height: 24px; width: 24px;"
+                class="rounded"
+              >
+              {{ mileage.vehicle.model }}
+            </td>
+            <td>
+              {{ parseAndFormat(mileage.date) }}
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</template>
+
 <script setup lang="ts">
 import {pipe} from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
@@ -87,47 +131,3 @@ function deleteMileage(
   );
 }
 </script>
-
-<template>
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th class="w-25">
-            Kilometers
-          </th>
-          <th class="w-50">
-            Voertuig
-          </th>
-          <th class="w-25">
-            Datum
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <template
-          v-for="mileage in mileages"
-          :key="mileage.id"
-        >
-          <tr @contextmenu.prevent="openOptionsMenu(mileage, $event)">
-            <td>
-              <span>{{ mileage.mileage }}</span>
-              <small>km</small>
-            </td>
-            <td>
-              <img
-                :src="mileage.vehicle.photoUrl"
-                style="height: 24px; width: 24px;"
-                class="rounded"
-              >
-              {{ mileage.vehicle.model }}
-            </td>
-            <td>
-              {{ parseAndFormat(mileage.date) }}
-            </td>
-          </tr>
-        </template>
-      </tbody>
-    </table>
-  </div>
-</template>

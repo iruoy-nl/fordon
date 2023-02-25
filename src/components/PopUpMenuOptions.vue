@@ -1,14 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  onEdit: () => void,
-  onDelete: () => void,
-}>();
-
-defineEmits<{
-  (event: 'close', value: never): void;
-}>();
-</script>
-
 <template>
   <div
     class="row g-0"
@@ -37,3 +26,14 @@ defineEmits<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  onEdit: () => void,
+  onDelete: () => void,
+}>();
+
+defineEmits<{
+  (event: 'close', value: never): void;
+}>();
+</script>

@@ -1,20 +1,3 @@
-<script setup lang="ts">
-import {ZodType} from 'zod';
-import {useFormField} from '~/services/form';
-
-const props = defineProps<{
-  name: string;
-  type: 'text' | 'file' | 'number' | 'date' | 'url';
-  defaultValue?: unknown;
-  validator?: ZodType;
-}>();
-
-const {current, error, touch} = useFormField(
-  props.defaultValue,
-  props.validator
-);
-</script>
-
 <template>
   <label
     :for="`${name}-input`"
@@ -41,3 +24,20 @@ const {current, error, touch} = useFormField(
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import {ZodType} from 'zod';
+import {useFormField} from '~/services/form';
+
+const props = defineProps<{
+  name: string;
+  type: 'text' | 'file' | 'number' | 'date' | 'url';
+  defaultValue?: unknown;
+  validator?: ZodType;
+}>();
+
+const {current, error, touch} = useFormField(
+  props.defaultValue,
+  props.validator
+);
+</script>

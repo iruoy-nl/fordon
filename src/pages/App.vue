@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import TheSidebar from '~/components/TheSidebar.vue';
-</script>
-
 <template>
   <div class="container-fluid">
     <div class="row vh-100">
@@ -15,3 +11,7 @@ import TheSidebar from '~/components/TheSidebar.vue';
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import TheSidebar from '~/components/TheSidebar.vue';
+</script>

@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import {Vehicle} from '~/types';
-
-defineProps<{
-  vehicles: Vehicle[];
-}>();
-</script>
-
 <template>
   <div class="row g-2">
     <template
@@ -32,6 +24,14 @@ defineProps<{
     </template>
   </div>
 </template>
+
+<script setup lang="ts">
+import {Vehicle} from '~/types';
+
+defineProps<{
+  vehicles: Vehicle[];
+}>();
+</script>
 
 <style scoped lang="scss">
 img {

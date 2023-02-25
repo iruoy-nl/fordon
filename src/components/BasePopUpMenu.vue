@@ -1,19 +1,3 @@
-<script setup lang="ts">
-export type BasePopUpMenuOption = {
-  label: string;
-  icon: string;
-  onClick: () => void;
-};
-
-defineProps<{
-  options: BasePopUpMenuOption[];
-}>();
-
-defineEmits<{
-  (event: 'close', value: never): void;
-}>();
-</script>
-
 <template>
   <div
     class="row g-0"
@@ -37,3 +21,19 @@ defineEmits<{
     </template>
   </div>
 </template>
+
+<script setup lang="ts">
+export type BasePopUpMenuOption = {
+  label: string;
+  icon: string;
+  onClick: () => void;
+};
+
+defineProps<{
+  options: BasePopUpMenuOption[];
+}>();
+
+defineEmits<{
+  (event: 'close', value: never): void;
+}>();
+</script>

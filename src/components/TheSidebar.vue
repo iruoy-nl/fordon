@@ -1,28 +1,3 @@
-<script setup lang="ts">
-import * as O from 'fp-ts/lib/Option';
-import {ref} from 'vue';
-import {useRouter} from 'vue-router';
-import BaseLogo from '~/components/BaseLogo.vue';
-import {clear} from '~/state/oauth';
-import {user} from '~/state/user';
-
-const {push} = useRouter();
-
-const pages = ref([
-  // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
-  {icon: 'signpost', title: 'Kilometers', name: 'mileages'},
-  // {icon: "tools", title: "Onderhoud", name: "maintenance"},
-  {icon: 'gear', title: 'Onderdelen', name: 'parts'},
-  {icon: 'card-heading', title: 'Garage', name: 'garage'}
-  // {icon: "sliders", title: "Instellingen", name: "settings"},
-]);
-
-const logout = () => {
-  clear();
-  push({name: 'oauth'});
-};
-</script>
-
 <template>
   <div class="row h-100 justify-content-between border-end p-4">
     <div class="col">
@@ -81,3 +56,28 @@ const logout = () => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import * as O from 'fp-ts/lib/Option';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
+import BaseLogo from '~/components/BaseLogo.vue';
+import {clear} from '~/state/oauth';
+import {user} from '~/state/user';
+
+const {push} = useRouter();
+
+const pages = ref([
+  // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
+  {icon: 'signpost', title: 'Kilometers', name: 'mileages'},
+  // {icon: "tools", title: "Onderhoud", name: "maintenance"},
+  {icon: 'gear', title: 'Onderdelen', name: 'parts'},
+  {icon: 'card-heading', title: 'Garage', name: 'garage'}
+  // {icon: "sliders", title: "Instellingen", name: "settings"},
+]);
+
+const logout = () => {
+  clear();
+  push({name: 'oauth'});
+};
+</script>

@@ -1,3 +1,52 @@
+<template>
+  <Centered :columns="4">
+    <template v-if="O.isNone(vehicle)">
+      ...
+    </template>
+
+    <template v-else>
+      <div class="row pt-5">
+        <div class="col">
+          <h1>{{ vehicle.value.model }}</h1>
+        </div>
+
+        <div class="w-100 my-2" />
+
+        <div class="col">
+          <img
+            :src="vehicle.value.photoUrl"
+            class="w-100 rounded"
+          >
+        </div>
+
+        <div class="w-100 my-2" />
+
+        <div class="col">
+          <div class="row">
+            <div class="col-auto">
+              <button
+                class="btn btn-primary"
+                @click="editVehicle(vehicle)"
+              >
+                Wijzigen
+              </button>
+            </div>
+
+            <div class="col-auto">
+              <button
+                class="btn btn-danger"
+                @click="removeVehicle(vehicle)"
+              >
+                Verwijderen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </Centered>
+</template>
+
 <script setup lang="ts">
 import * as A from 'fp-ts/lib/Array';
 import {pipe} from 'fp-ts/lib/function';
@@ -93,52 +142,3 @@ function removeVehicle(
   });
 }
 </script>
-
-<template>
-  <Centered :columns="4">
-    <template v-if="O.isNone(vehicle)">
-      ...
-    </template>
-
-    <template v-else>
-      <div class="row pt-5">
-        <div class="col">
-          <h1>{{ vehicle.value.model }}</h1>
-        </div>
-
-        <div class="w-100 my-2" />
-
-        <div class="col">
-          <img
-            :src="vehicle.value.photoUrl"
-            class="w-100 rounded"
-          >
-        </div>
-
-        <div class="w-100 my-2" />
-
-        <div class="col">
-          <div class="row">
-            <div class="col-auto">
-              <button
-                class="btn btn-primary"
-                @click="editVehicle(vehicle)"
-              >
-                Wijzigen
-              </button>
-            </div>
-
-            <div class="col-auto">
-              <button
-                class="btn btn-danger"
-                @click="removeVehicle(vehicle)"
-              >
-                Verwijderen
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </Centered>
-</template>

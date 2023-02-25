@@ -1,30 +1,3 @@
-<script setup lang="ts">
-import {onClickOutside} from '@vueuse/core';
-import {computed, ref} from 'vue';
-import {PopUp} from '~/types';
-
-const props = defineProps<{
-  popUp: PopUp;
-}>();
-
-const emits = defineEmits<{
-  (event: 'close', value: null): void;
-}>();
-
-const popUpRef = ref(null);
-
-onClickOutside(popUpRef, () => emits('close', null));
-
-const style = computed(() => {
-  if (props.popUp._tag !== 'menu') return {};
-
-  return {
-    top: `${props.popUp.position.y}px`,
-    left: `${props.popUp.position.x}px`
-  };
-});
-</script>
-
 <template>
   <template v-if="popUp._tag === 'menu'">
     <div
@@ -55,6 +28,33 @@ const style = computed(() => {
     />
   </template>
 </template>
+
+<script setup lang="ts">
+import {onClickOutside} from '@vueuse/core';
+import {computed, ref} from 'vue';
+import {PopUp} from '~/types';
+
+const props = defineProps<{
+  popUp: PopUp;
+}>();
+
+const emits = defineEmits<{
+  (event: 'close', value: null): void;
+}>();
+
+const popUpRef = ref(null);
+
+onClickOutside(popUpRef, () => emits('close', null));
+
+const style = computed(() => {
+  if (props.popUp._tag !== 'menu') return {};
+
+  return {
+    top: `${props.popUp.position.y}px`,
+    left: `${props.popUp.position.x}px`
+  };
+});
+</script>
 
 <style scoped lang="scss">
 #menu {
