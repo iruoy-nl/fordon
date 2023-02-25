@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col mb-3">
         <h1>
-          {{ defaultValue ? 'Wijzig' : 'Nieuw' }} voertuig
+          {{ defaultValue ? `Motor wijzigen` : 'Nieuwe motor' }}
         </h1>
       </div>
 
@@ -19,7 +19,7 @@
           :default-value="defaultValue?.model"
           :validator="parseModel"
         >
-          Model
+          Model*
         </BaseFormInput>
       </div>
 
@@ -31,7 +31,7 @@
           name="photo"
           :validator="parsePhoto"
         >
-          Foto
+          Foto*
         </BaseFormInput>
       </div>
 
@@ -89,9 +89,9 @@ defineEmits<{
   (event: 'cancel', value: never): void;
 }>();
 
-const parseModel = string({required_error: 'Het model is verplicht.'})
-  .min(1, {message: 'Het model is verplicht.'});
+const parseModel = string({required_error: 'Het model is verplicht'})
+  .min(1, {message: 'Het model is verplicht'});
 
-const parsePhoto = string({required_error: 'De foto is verplicht.'})
-  .min(1, {message: 'De foto is verplicht.'});
+const parsePhoto = string({required_error: 'De foto is verplicht'})
+  .min(1, {message: 'De foto is verplicht'});
 </script>

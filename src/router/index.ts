@@ -22,12 +22,12 @@ const router = createRouter({
       component: App,
       children: [
         {
-          path: 'voertuigen',
+          path: 'garage',
           name: 'garage',
           component: AppGarage
         },
         {
-          path: 'voertuigen/:id',
+          path: 'garage/:id',
           name: 'garage-show',
           component: AppGarageShow
         },

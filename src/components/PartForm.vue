@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col mb-3">
         <h1>
-          {{ defaultValue ? 'Wijzig' : 'Nieuwe' }} onderdeel
+          {{ defaultValue ? 'Onderdeel wijzigen' : 'Nieuw onderdeel' }} 
         </h1>
       </div>
 
@@ -19,7 +19,7 @@
           :default-value="defaultValue?.title"
           :validator="titleInput"
         >
-          Onderdeel
+          Onderdeel*
         </BaseFormInput>
       </div>
 
@@ -32,7 +32,7 @@
           :default-value="defaultValue?.url"
           :validator="urlInput"
         >
-          Link naar de website
+          Link naar de website*
         </BaseFormInput>
       </div>
 
@@ -59,7 +59,7 @@
           :options="vehicles"
           :label="(a) => vehicles.find((b) => a.id === b.id)?.model"
         >
-          Voertuig
+          Motor*
         </BaseFormSelect>
       </div>
 
@@ -116,16 +116,16 @@ onMounted(async () => {
 });
 
 const titleInput = string({required_error: 'Het onderdeel is verplicht'})
-  .min(1, {message: 'Het onderdeel is verplicht.'});
+  .min(1, {message: 'Het onderdeel is verplicht'});
 
 const urlInput = string({required_error: 'De url is verplicht'})
   .min(1, {message: 'De url is verplicht'})
-  .url({message: 'Het moet een geldige url zijn.'});
+  .url({message: 'Het moet een geldige url zijn'});
 
-const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
-  .min(1, {message: 'Het voertuig is verplicht.'});
+const vehicleInput = string({required_error: 'De motor is verplicht'})
+  .min(1, {message: 'De motor is verplicht'});
 
-const costInput = number({})
-  .min(0, {message: 'De kosten mogen niet negatief zijn.'})
+const costInput = number({invalid_type_error: 'De kosten moet een nummer zijn'})
+  .min(0, {message: 'De kosten mogen niet negatief zijn'})
   .nullable()
 </script>

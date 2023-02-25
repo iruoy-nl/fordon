@@ -117,8 +117,11 @@ function removeVehicle(
   openModal({
     slot: defineAsyncComponent(() => import('~/components/PopUpModalConfirm.vue')),
     props: {
-      title: 'Weet je het zeker?',
-      body: `Als je het voertuig ${vehicle.value.model} verwijdert worden ook alle bijbehorende kilometers verwijderd.`
+      title: 'Let op!',
+      body: `
+        Weet je zeker dat je ${vehicle.value.model} wilt verwijderen? Alle
+        bijbehorende kilometers en onderdelen zullen ook verwijderd worden.
+      `
     },
     emits: {
       cancel: (): void => {

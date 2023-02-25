@@ -6,8 +6,8 @@
       <div class="col">
         <div class="row justify-content-between">
           <div class="col">
-            <h1>Voertuigen</h1>
-            <p>...</p>
+            <h1>Garage</h1>
+            <p>Een overzicht van al jouw motoren.</p>
           </div>
 
           <div class="col-auto my-auto">
@@ -15,7 +15,7 @@
               class="btn btn-primary"
               @click="addVehicle"
             >
-              Nieuw
+              Motor toevoegen
             </button>
           </div>
         </div>

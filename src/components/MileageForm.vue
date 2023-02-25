@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col mb-3">
         <h1>
-          {{ defaultValue ? 'Wijzig' : 'Nieuwe' }} registratie
+          {{ defaultValue ? 'Registratie wijzigen' : 'Nieuwe registratie' }} 
         </h1>
       </div>
 
@@ -19,7 +19,7 @@
           :default-value="defaultValue?.mileage"
           :validator="mileageInput"
         >
-          Kilometerstand
+          Kilometerstand*
         </BaseFormInput>
       </div>
 
@@ -32,7 +32,7 @@
           :default-value="defaultValue?.date"
           :validator="dateInput"
         >
-          Datum
+          Datum*
         </BaseFormInput>
       </div>
 
@@ -46,7 +46,7 @@
           :options="vehicles"
           :label="(a) => vehicles.find((b) => a.id === b.id)?.model"
         >
-          Voertuig
+          Motor*
         </BaseFormSelect>
       </div>
 
@@ -108,6 +108,6 @@ const mileageInput = number({required_error: 'De kilometerstand is verplicht'})
 const dateInput = string({required_error: 'De datum is verplicht'})
   .min(1, {message: 'De datum is verplicht.'});
 
-const vehicleInput = string({required_error: 'Het voertuig is verplicht.'})
-  .min(1, {message: 'Het voertuig is verplicht.'});
+const vehicleInput = string({required_error: 'De motor is verplicht.'})
+  .min(1, {message: 'De motor is verplicht.'});
 </script>

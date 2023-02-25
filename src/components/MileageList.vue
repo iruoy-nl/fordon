@@ -3,14 +3,14 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th class="w-25">
-            Kilometers
+          <th>
+            Kilometerstand
           </th>
-          <th class="w-50">
-            Voertuig
-          </th>
-          <th class="w-25">
+          <th>
             Datum
+          </th>
+          <th>
+            Motor
           </th>
         </tr>
       </thead>
@@ -25,15 +25,15 @@
               <small>km</small>
             </td>
             <td>
+              {{ parseAndFormat(mileage.date) }}
+            </td>
+            <td>
               <img
                 :src="mileage.vehicle.photoUrl"
                 style="height: 24px; width: 24px;"
                 class="rounded"
               >
               {{ mileage.vehicle.model }}
-            </td>
-            <td>
-              {{ parseAndFormat(mileage.date) }}
             </td>
           </tr>
         </template>
@@ -106,8 +106,8 @@ function deleteMileage(
   openModal({
     slot: defineAsyncComponent(() => import('~/components/PopUpModalConfirm.vue')),
     props: {
-      title: 'Weet je het zeker?',
-      body: 'Deze actie kan niet ongedaan worden gemaakt.'
+      title: 'Let op!',
+      body: 'Deze registratie kan niet worden teruggehaald.'
     },
     emits: {
       cancel: (): void => {
@@ -131,3 +131,9 @@ function deleteMileage(
   );
 }
 </script>
+
+<style scoped lang="scss">
+th {
+  width: 33%;
+}
+</style>

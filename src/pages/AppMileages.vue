@@ -7,7 +7,7 @@
         <div class="row justify-content-between">
           <div class="col">
             <h1>Kilometers</h1>
-            <p>...</p>
+            <p>Noteer hier de kilometerstanden van jouw motoren.</p>
           </div>
 
           <div class="col-auto my-auto">
@@ -15,7 +15,7 @@
               class="btn btn-primary"
               @click="addMileage"
             >
-              Nieuw
+              Nieuwe registratie
             </button>
           </div>
         </div>

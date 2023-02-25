@@ -3,14 +3,14 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th class="w-25">
+          <th>
             Onderdeel
           </th>
-          <th class="w-25">
+          <th>
             Kosten
           </th>
-          <th class="w-50">
-            Voertuig
+          <th>
+            Motor
           </th>
         </tr>
       </thead>
@@ -110,8 +110,8 @@ function deletePart(
   openModal({
     slot: defineAsyncComponent(() => import('~/components/PopUpModalConfirm.vue')),
     props: {
-      title: 'Weet je het zeker?',
-      body: 'Deze actie kan niet ongedaan worden gemaakt.'
+      title: 'Let op!',
+      body: 'Dit onderdeel kan niet worden teruggehaald.'
     },
     emits: {
       cancel: (): void => {
@@ -134,3 +134,9 @@ function deletePart(
   );
 }
 </script>
+
+<style scoped lang="scss">
+th {
+  width: 33%;
+}
+</style>

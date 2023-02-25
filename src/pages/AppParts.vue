@@ -7,7 +7,7 @@
         <div class="row justify-content-between">
           <div class="col">
             <h1>Onderdelen</h1>
-            <p>...</p>
+            <p>Alle onderdelen die jij nodig bent tijdens het doen van onderhoud.</p>
           </div>
 
           <div class="col-auto my-auto">
@@ -15,7 +15,7 @@
               class="btn btn-primary"
               @click="addPart"
             >
-              Nieuw
+              Nieuw onderdeel
             </button>
           </div>
         </div>
