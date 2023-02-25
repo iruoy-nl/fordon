@@ -18,6 +18,7 @@
           name="mileage"
           :default-value="defaultValue?.mileage"
           :validator="mileageInput"
+          placeholder="32000"
         >
           Kilometerstand*
         </BaseFormInput>

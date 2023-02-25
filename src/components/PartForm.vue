@@ -18,6 +18,7 @@
           name="title"
           :default-value="defaultValue?.title"
           :validator="titleInput"
+          placeholder="Oliefilter"
         >
           Onderdeel*
         </BaseFormInput>
@@ -31,6 +32,7 @@
           name="url"
           :default-value="defaultValue?.url"
           :validator="urlInput"
+          placeholder="https://oliefilters.nl/"
         >
           Link naar de website*
         </BaseFormInput>
@@ -44,6 +46,7 @@
           name="cost"
           :default-value="defaultValue?.cost || null"
           :validator="costInput"
+          placeholder="14,99"
         >
           Kosten
         </BaseFormInput>

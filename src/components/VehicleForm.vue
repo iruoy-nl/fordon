@@ -18,6 +18,7 @@
           name="model"
           :default-value="defaultValue?.model"
           :validator="parseModel"
+          placeholder="Suziki Gs500e"
         >
           Model*
         </BaseFormInput>
@@ -42,6 +43,7 @@
           type="text"
           name="licensePlate"
           :default-value="defaultValue?.licensePlate"
+          placeholder="MR-25-ZB"
         >
           Kenteken
         </BaseFormInput>

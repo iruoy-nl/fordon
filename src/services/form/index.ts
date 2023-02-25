@@ -72,6 +72,7 @@ export function useFormField(
 
   return {
     current,
+    touched,
     touch: (): void => {
       touched.value = true;
     },

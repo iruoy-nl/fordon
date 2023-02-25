@@ -11,7 +11,7 @@
       :id="`${name}-input`"
       v-model="current"
       :name="name"
-      :class="{'form-select': true, 'is-invalid': error}"
+      :class="{'form-select': true, 'is-invalid': error, 'is-valid': touched && !error}"
       @focusout="touch"
     >
       <template
@@ -46,5 +46,5 @@ const props = defineProps<{
   validator?: ZodType;
 }>();
 
-const {current, error, touch} = useFormField(props.defaultValue, props.validator);
+const {current, error, touch, touched} = useFormField(props.defaultValue, props.validator);
 </script>
