@@ -1,9 +1,12 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import App from '~/pages/App.vue';
+import AppDashboard from '~/pages/AppDashboard.vue';
 import AppGarage from '~/pages/AppGarage.vue';
 import AppGarageShow from '~/pages/AppGarageShow.vue';
+import AppMaintenance from '~/pages/AppMaintenance.vue';
 import AppMileages from '~/pages/AppMileages.vue';
 import AppParts from '~/pages/AppParts.vue';
+import AppSettings from '~/pages/AppSettings.vue';
 import OAuthPage from '~/pages/OAuth.vue';
 import {isAuthenticated} from './middleware';
 
@@ -18,7 +21,7 @@ const router = createRouter({
     {
       path: '/app',
       name: 'app',
-      redirect: {name: 'mileages'},
+      redirect: {name: 'dashboard'},
       component: App,
       children: [
         {
@@ -40,6 +43,21 @@ const router = createRouter({
           path: 'onderdelen',
           name: 'parts',
           component: AppParts
+        },
+        {
+          path: 'onderhoud',
+          name:'maintenance',
+          component: AppMaintenance
+        },
+        {
+          path: 'instellingen',
+          name: 'settings',
+          component: AppSettings
+        },
+        {
+          path: 'overzicht',
+          name: 'dashboard',
+          component: AppDashboard
         }
       ]
     }

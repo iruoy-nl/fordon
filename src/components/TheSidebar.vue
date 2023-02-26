@@ -68,12 +68,12 @@ import {user} from '~/state/user';
 const {push} = useRouter();
 
 const pages = ref([
-  // {icon: "speedometer", title: "Overzicht", name: "dashboard"},
+  {icon: 'speedometer', title: 'Overzicht', name: 'dashboard'},
   {icon: 'signpost', title: 'Kilometers', name: 'mileages'},
-  // {icon: "tools", title: "Onderhoud", name: "maintenance"},
+  {icon: 'tools', title: 'Onderhoud', name: 'maintenance'},
   {icon: 'gear', title: 'Onderdelen', name: 'parts'},
-  {icon: 'card-heading', title: 'Garage', name: 'garage'}
-  // {icon: "sliders", title: "Instellingen", name: "settings"},
+  {icon: 'card-heading', title: 'Garage', name: 'garage'},
+  {icon: 'sliders', title: 'Instellingen', name: 'settings'}
 ]);
 
 const logout = () => {
