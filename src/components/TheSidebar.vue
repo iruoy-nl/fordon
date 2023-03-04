@@ -32,6 +32,7 @@
           :src="user.value.avatarUrl"
           alt="avatar"
           style="width: 64px; height: 64px"
+          referrerpolicy="no-referrer"
         >
 
         <div class="w-100 my-2" />
