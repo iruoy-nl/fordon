@@ -16,7 +16,7 @@
 
   "rules": {
     // Formatting
-    "indent": ["warn", 2],
+    "indent": ["warn", 2, {"SwitchCase": 1}],
     "comma-dangle": ["warn", "never"],
     "array-bracket-spacing": ["warn", "never"],
     "space-before-blocks": ["warn", "always"],

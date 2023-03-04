@@ -24,7 +24,7 @@
       <div class="w-100 my-3" />
 
       <div class="col">
-        <!--  -->
+        <ServiceList :services="services" />
       </div>
     </div>
   </Centered>
@@ -32,4 +32,22 @@
 
 <script setup lang="ts">
 import Centered from '~/layouts/Centered.vue';
+import * as TE from 'fp-ts/lib/TaskEither';
+import ServiceList from '~/components/ServiceList.vue';
+import {services, getAllServices} from '~/state/service';
+import {onMounted} from 'vue';
+import {constVoid, pipe} from 'fp-ts/lib/function';
+
+onMounted(async () => {
+  await pipe(
+    getAllServices(),
+    TE.match(
+      (e) => {
+        console.error(e);
+      },
+      constVoid
+    )
+  )(
+  );
+});
 </script>

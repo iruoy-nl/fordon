@@ -71,18 +71,6 @@ const router = createRouter({
   linkActiveClass: 'active'
 });
 
-router.beforeEach((to, from, next) => {
-  const protect = /^\/app.*/;
-
-  if (protect.test(to.path)) {
-    const result = isAuthenticated(to, from, next);
-    if (result) {
-      next(result);
-      return;
-    }
-  }
-
-  next();
-});
+router.beforeEach(isAuthenticated);
 
 export default router;
