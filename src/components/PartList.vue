@@ -36,9 +36,14 @@
               <img
                 :src="part.vehicle.photoUrl"
                 style="height: 24px; width: 24px;"
-                class="rounded"
+                class="rounded me-2"
               >
-              {{ part.vehicle.model }}
+              <router-link
+                :to="{name: 'garage-show', params: {id: part.vehicle.id}}"
+                class="text-primary"
+              >
+                {{ part.vehicle.model }}
+              </router-link>
             </td>
           </tr>
         </template>

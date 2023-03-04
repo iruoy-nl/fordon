@@ -31,9 +31,14 @@
               <img
                 :src="mileage.vehicle.photoUrl"
                 style="height: 24px; width: 24px;"
-                class="rounded"
+                class="rounded me-2"
               >
-              {{ mileage.vehicle.model }}
+              <router-link
+                :to="{name: 'garage-show', params: {id: mileage.vehicle.id}}"
+                class="text-primary"
+              >
+                {{ mileage.vehicle.model }}
+              </router-link>
             </td>
           </tr>
         </template>
