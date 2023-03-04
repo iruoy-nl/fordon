@@ -3,9 +3,10 @@ import App from '~/pages/App.vue';
 import AppDashboard from '~/pages/AppDashboard.vue';
 import AppGarage from '~/pages/AppGarage.vue';
 import AppGarageShow from '~/pages/AppGarageShow.vue';
-import AppMaintenance from '~/pages/AppMaintenance.vue';
+import AppLogs from '~/pages/AppLogs.vue';
 import AppMileages from '~/pages/AppMileages.vue';
 import AppParts from '~/pages/AppParts.vue';
+import AppService from '~/pages/AppService.vue';
 import AppSettings from '~/pages/AppSettings.vue';
 import OAuthPage from '~/pages/OAuth.vue';
 import {isAuthenticated} from './middleware';
@@ -47,7 +48,12 @@ const router = createRouter({
         {
           path: 'onderhoud',
           name:'maintenance',
-          component: AppMaintenance
+          component: AppService
+        },
+        {
+          path: 'historie',
+          name: 'logs',
+          component: AppLogs
         },
         {
           path: 'instellingen',
