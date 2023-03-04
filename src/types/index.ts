@@ -3,6 +3,7 @@ export * from '~/types/mileage';
 export * from '~/types/part';
 export * from '~/types/pop-up';
 export * from '~/types/provider';
+export * from '~/types/service';
 export * from '~/types/user';
 export * from '~/types/vehicle';
 
