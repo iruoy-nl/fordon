@@ -15,7 +15,8 @@
               class="btn btn-primary"
               @click="addPart"
             >
-              Nieuw onderdeel
+              <i class="bi bi-plus" />
+              Nieuw
             </button>
           </div>
         </div>

@@ -15,7 +15,8 @@
               class="btn btn-primary"
               @click="addVehicle"
             >
-              Motor toevoegen
+              <i class="bi bi-plus" />
+              Nieuw
             </button>
           </div>
         </div>

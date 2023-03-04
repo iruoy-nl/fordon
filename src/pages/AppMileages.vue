@@ -15,7 +15,8 @@
               class="btn btn-primary"
               @click="addMileage"
             >
-              Nieuwe registratie
+              <i class="bi bi-plus" />
+              Nieuw
             </button>
           </div>
         </div>
