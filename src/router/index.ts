@@ -69,7 +69,11 @@ router.beforeEach((to, from, next) => {
   const protect = /^\/app.*/;
 
   if (protect.test(to.path)) {
-    return isAuthenticated(to, from, next);
+    const result = isAuthenticated(to, from, next);
+    if (result) {
+      next(result);
+      return;
+    }
   }
 
   next();
