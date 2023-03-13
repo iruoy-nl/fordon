@@ -27,5 +27,5 @@ dist-ssr
 .env
 
 # Pocketbase
-/pb_data
+pocketbase/pb_data
 
